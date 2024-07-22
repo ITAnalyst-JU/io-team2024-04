@@ -1,1 +1,1 @@
-rootProject.name = 'project'
+include 'desktop', 'core'
