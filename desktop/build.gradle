@@ -1,18 +1,17 @@
-sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = [ "src/" ]
 sourceSets.main.resources.srcDirs = ["../assets"]
 
-project.ext.mainClassName = "src.main.DesktopLauncher"
+project.ext.mainClassName = "main.DesktopLauncher"
 project.ext.assetsDir = new File("../assets")
 
 import org.gradle.internal.os.OperatingSystem
 
 tasks.register('run', JavaExec) {
     dependsOn classes
-    mainClass = project.mainClassName
+    mainClass = project.findProperty("mainClassName")
     classpath = sourceSets.main.runtimeClasspath
     standardInput = System.in
-    workingDir = project.assetsDir
+    workingDir = project.findProperty("assetsDir")
     ignoreExitValue = true
 
     if (OperatingSystem.current() == OperatingSystem.MAC_OS) {
@@ -23,10 +22,10 @@ tasks.register('run', JavaExec) {
 
 tasks.register('debug', JavaExec) {
     dependsOn classes
-    mainClass = project.mainClassName
+    mainClass = project.findProperty("mainClassName")
     classpath = sourceSets.main.runtimeClasspath
     standardInput = System.in
-    workingDir = project.assetsDir
+    workingDir = project.findProperty("assetsDir")
     ignoreExitValue = true
     debug = true
 }
@@ -34,7 +33,7 @@ tasks.register('debug', JavaExec) {
 tasks.register('dist', Jar) {
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
     manifest {
-        attributes 'Main-Class': project.mainClassName
+        attributes 'Main-Class': project.findProperty("mainClassName")
     }
     dependsOn configurations.runtimeClasspath
     from {

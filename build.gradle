@@ -1,5 +1,5 @@
 buildscript {
-    
+
 
     repositories {
         mavenLocal()
@@ -8,10 +8,9 @@ buildscript {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         google()
     }
-    dependencies {
-        
+    dependencies {}
 
-    }
+
 }
 
 allprojects {
@@ -37,6 +36,17 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
         maven { url "https://jitpack.io" }
     }
+
+    // Only to make IntelliJ happy
+    configurations {
+        api
+        implementation
+    }
+}
+
+// Only to make me happy - no compilation warnings due to libGDX
+tasks.withType(JavaCompile) {
+    options.compilerArgs += ['-Xlint:-deprecation']
 }
 
 project(":desktop") {
