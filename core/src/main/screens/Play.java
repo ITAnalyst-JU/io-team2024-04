@@ -4,15 +4,21 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import main.entities.Player;
 
 public class Play implements Screen {
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
+
+    private Player player;
 
     @Override
     public void show() {
@@ -21,6 +27,8 @@ public class Play implements Screen {
         renderer = new OrthogonalTiledMapRenderer(map);
 
         camera  = new OrthographicCamera();
+
+        player = new Player(new Sprite(new Texture("assets/player.png")));
     }
 
     @Override
@@ -30,6 +38,10 @@ public class Play implements Screen {
 
         renderer.setView(camera);
         renderer.render();
+
+        renderer.getBatch().begin();
+        player.draw(renderer.getBatch());
+        renderer.getBatch().end();
     }
 
     @Override
