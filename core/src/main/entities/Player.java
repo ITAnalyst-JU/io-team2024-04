@@ -84,7 +84,7 @@ public class Player extends Sprite implements InputProcessor {
     }
 
     // We don't use other methods right now.
-    // They have to be here because Java doesn't support inheritance after multiple classes.
+    // They have to be here because Java doesn't support multiple inheritance.
 
     @Override
     public boolean keyTyped(char c) {
