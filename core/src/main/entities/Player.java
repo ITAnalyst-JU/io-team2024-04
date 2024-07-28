@@ -12,11 +12,11 @@ public class Player extends Sprite implements InputProcessor {
     private Vector2 currentVelocity = new Vector2(0, 0);
 
     private float yVelocityLimit = 60 * 3;
-    private float gravity = 60 * 1.8f;
+    private float gravity = 60 * 3;
 
     private float xVelocityBase = 60 * 4;
 
-    private int xKeyPressed = 0;
+    private boolean rightKeyPressed = false, leftKeyPressed = false;
 
     public Player(Sprite sprite) {
         super(sprite);
@@ -38,7 +38,13 @@ public class Player extends Sprite implements InputProcessor {
             currentVelocity.y = yVelocityLimit;
         }
 
-        currentVelocity.x = xKeyPressed * xVelocityBase;
+        currentVelocity.x = 0;
+        if (rightKeyPressed) {
+            currentVelocity.x += xVelocityBase;
+        }
+        if (leftKeyPressed) {
+            currentVelocity.x -= xVelocityBase;
+        }
 
 
         setX(getX() + currentVelocity.x * timeDelta);
@@ -50,10 +56,10 @@ public class Player extends Sprite implements InputProcessor {
     public boolean keyDown(int keyNo) {
         switch (keyNo) {
             case Input.Keys.A:
-                xKeyPressed = -1;
+                leftKeyPressed = true;
                 break;
             case Input.Keys.D:
-                xKeyPressed = 1;
+                rightKeyPressed = true;
                 break;
             case Input.Keys.W:
                 currentVelocity.y = yVelocityLimit;
@@ -67,8 +73,10 @@ public class Player extends Sprite implements InputProcessor {
     public boolean keyUp(int keyNo) {
         switch (keyNo) {
             case Input.Keys.A:
+                leftKeyPressed = false;
+                break;
             case Input.Keys.D:
-                xKeyPressed = 0;
+                rightKeyPressed = false;
                 break;
 
         }
