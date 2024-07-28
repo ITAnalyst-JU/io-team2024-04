@@ -1,7 +1,6 @@
 package main.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -38,6 +37,9 @@ public class Play implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        camera.position.set(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, 0);
+        camera.update();
+
         renderer.setView(camera);
         renderer.render();
 
@@ -48,9 +50,8 @@ public class Play implements Screen {
 
     @Override
     public void resize(int i, int i1) {
-        camera.viewportWidth = i;
-        camera.viewportHeight = i1;
-        camera.update();
+        camera.viewportWidth = i/3;
+        camera.viewportHeight = i1/3;
     }
 
     @Override
