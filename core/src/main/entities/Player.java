@@ -5,21 +5,25 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 
 public class Player extends Sprite implements InputProcessor {
 
     private Vector2 currentVelocity = new Vector2(0, 0);
 
-    private float yVelocityLimit = 60 * 3;
-    private float gravity = 60 * 3;
-
-    private float xVelocityBase = 60 * 4;
+    private float yVelocityLimit = 60 * 4;
+    private float gravity = 60 * 9;
+    private float xVelocityBase = 60 * 2;
 
     private boolean rightKeyPressed = false, leftKeyPressed = false;
 
-    public Player(Sprite sprite) {
+    private TiledMapTileLayer mapLayer;
+
+    public Player(Sprite sprite, TiledMapTileLayer mapLayer) {
         super(sprite);
+        setSize(mapLayer.getTileWidth(), mapLayer.getTileHeight());
+        this.mapLayer = mapLayer;
     }
 
     @Override
@@ -46,11 +50,28 @@ public class Player extends Sprite implements InputProcessor {
             currentVelocity.x -= xVelocityBase;
         }
 
+        float newX = getX() + currentVelocity.x * timeDelta;
+        float newY = getY() + currentVelocity.y * timeDelta;
 
-        setX(getX() + currentVelocity.x * timeDelta);
-        setY(getY() + currentVelocity.y * timeDelta);
+        if (!isCellBlocked(newX, newY) && !isCellBlocked(newX, newY+getHeight()) && !isCellBlocked(newX+getWidth(), newY) && !isCellBlocked(newX+getWidth(), newY+getHeight())) {
+            setX(newX);
+            setY(newY);
+        } else {
+            currentVelocity.y = 0;
+        }
+
+//        setX(getX() + currentVelocity.x * timeDelta);
+//        setY(getY() + currentVelocity.y * timeDelta);
     }
 
+    // Collision detection may instead use layers.
+    private boolean isCellBlocked(float x, float y) {
+        try {
+            return mapLayer.getCell((int) (x / mapLayer.getTileWidth()), (int) (y / mapLayer.getTileHeight())).getTile().getProperties().containsKey("hasCollision");
+        } catch (NullPointerException e) {
+            return true;
+        }
+    }
 
     @Override
     public boolean keyDown(int keyNo) {

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import main.entities.Player;
@@ -21,15 +22,17 @@ public class Play implements Screen {
 
     @Override
     public void show() {
-        map = new TmxMapLoader().load("assets/map_base.tmx");
+        map = new TmxMapLoader().load("assets/map.tmx");
 
         renderer = new OrthogonalTiledMapRenderer(map);
 
         camera  = new OrthographicCamera();
 
-        player = new Player(new Sprite(new Texture("assets/player.png")));
+        player = new Player(new Sprite(new Texture("assets/player.png")), (TiledMapTileLayer)map.getLayers().get(0));
 
         Gdx.input.setInputProcessor(player);
+
+        player.setPosition(100, 490);
     }
 
     @Override
