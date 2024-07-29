@@ -17,12 +17,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.Program;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainMenuScreen implements Screen {
     private final Program game;
     private Stage stage;
     private Skin skin;
-    private TextButton startButton;
-    private TextButton exitButton;
+    private List<TextButton> buttons;
 
     public MainMenuScreen(final Program game) {
         this.game = game;
@@ -48,8 +50,14 @@ public class MainMenuScreen implements Screen {
         labelStyle.font = font;
         skin.add("default", labelStyle);
 
-        startButton = new TextButton("Start game", skin);
-        exitButton = new TextButton("Exit", skin);
+        TextButton startButton = new TextButton("Start game", skin);
+        TextButton optionsButton = new TextButton("Options", skin);
+        TextButton exitButton = new TextButton("Exit", skin);
+
+        buttons = new ArrayList<>();
+        buttons.add(startButton);
+        buttons.add(optionsButton);
+        buttons.add(exitButton);
 
         Table table = new Table();
         table.setFillParent(true);
@@ -57,9 +65,10 @@ public class MainMenuScreen implements Screen {
 
         table.add(new Label("The Prophet", skin, "default")).expandX().padBottom(50);
         table.row();
-        table.add(startButton).expandX().padBottom(10);
-        table.row();
-        table.add(exitButton).expandX();
+        for (TextButton button : buttons) {
+            table.add(button).expandX().padBottom(10);
+            table.row();
+        }
 
         stage.addActor(table);
 
@@ -70,6 +79,13 @@ public class MainMenuScreen implements Screen {
             }
         });
 
+        optionsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new OptionsScreen(game));
+            }
+        });
+
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -77,21 +93,15 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-        startButton.addListener(new InputListener() {
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                stage.setKeyboardFocus(startButton);
-                updateButtonFocus();
-            }
-        });
-
-        exitButton.addListener(new InputListener() {
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                stage.setKeyboardFocus(exitButton);
-                updateButtonFocus();
-            }
-        });
+        for (TextButton button : buttons) {
+            button.addListener(new InputListener() {
+                @Override
+                public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                    stage.setKeyboardFocus(button);
+                    updateButtonFocus();
+                }
+            });
+        }
 
         stage.setKeyboardFocus(startButton);
         updateButtonFocus();
@@ -127,33 +137,32 @@ public class MainMenuScreen implements Screen {
     }
 
     private void moveFocus(Direction direction) {
-        Table table = (Table) stage.getActors().get(0);
         TextButton currentFocus = (TextButton) stage.getKeyboardFocus();
-        int currentIndex = table.getChildren().indexOf(currentFocus, true);
+        int currentIndex = buttons.indexOf(currentFocus);
 
         if (direction == Direction.UP) {
-            if (currentIndex > 1) {
-                stage.setKeyboardFocus(table.getChildren().get(currentIndex - 1));
+            if (currentIndex > 0) {
+                stage.setKeyboardFocus(buttons.get(currentIndex - 1));
             } else {
-                stage.setKeyboardFocus(table.getChildren().get(table.getChildren().size - 1));
+                stage.setKeyboardFocus(buttons.getLast());
             }
         } else if (direction == Direction.DOWN) {
-            if (currentIndex < table.getChildren().size - 1) {
-                stage.setKeyboardFocus(table.getChildren().get(currentIndex + 1));
+            if (currentIndex < buttons.size() - 1) {
+                stage.setKeyboardFocus(buttons.get(currentIndex + 1));
             } else {
-                stage.setKeyboardFocus(table.getChildren().get(1));
+                stage.setKeyboardFocus(buttons.getFirst());
             }
         }
         updateButtonFocus();
     }
 
     private void updateButtonFocus() {
-        if (stage.getKeyboardFocus() == startButton) {
-            startButton.setStyle(skin.get("focused", TextButton.TextButtonStyle.class));
-            exitButton.setStyle(skin.get("default", TextButton.TextButtonStyle.class));
-        } else if (stage.getKeyboardFocus() == exitButton) {
-            startButton.setStyle(skin.get("default", TextButton.TextButtonStyle.class));
-            exitButton.setStyle(skin.get("focused", TextButton.TextButtonStyle.class));
+        for (TextButton button : buttons) {
+            if (stage.getKeyboardFocus() == button) {
+                button.setStyle(skin.get("focused", TextButton.TextButtonStyle.class));
+            } else {
+                button.setStyle(skin.get("default", TextButton.TextButtonStyle.class));
+            }
         }
     }
 
