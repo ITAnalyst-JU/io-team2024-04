@@ -29,6 +29,7 @@
  <tile id="2733">
   <properties>
    <property name="hasCollision" type="bool" value="false"/>
+   <property name="isFinishing" type="bool" value="false"/>
   </properties>
  </tile>
  <tile id="2793">
