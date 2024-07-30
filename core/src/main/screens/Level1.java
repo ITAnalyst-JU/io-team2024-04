@@ -1,5 +1,6 @@
 package main.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -10,15 +11,24 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.utils.TimeUtils;
 import main.entities.Player;
 
-public class Play implements Screen {
+import java.sql.Time;
 
+public class Level1 implements Screen {
+
+    private Game game;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
 
     private Player player;
+    private long beginTime;
+
+    public Level1(Game game) {
+        this.game = game;
+    }
 
     @Override
     public void show() {
@@ -33,6 +43,8 @@ public class Play implements Screen {
         Gdx.input.setInputProcessor(player);
 
         player.setPosition(100, 490);
+
+        beginTime = TimeUtils.millis();
     }
 
     @Override
@@ -49,12 +61,19 @@ public class Play implements Screen {
         renderer.getBatch().begin();
         player.draw(renderer.getBatch());
         renderer.getBatch().end();
+
+        if (player.ifLevelFinished()) {
+            long timePassed = TimeUtils.timeSinceMillis(beginTime);
+            //do something, like showing time. stopping game etc.
+            //game.setScreen(someScreen)
+
+        }
     }
 
     @Override
     public void resize(int i, int i1) {
-        camera.viewportWidth = i/3;
-        camera.viewportHeight = i1/3;
+        camera.viewportWidth = (float)i/3;
+        camera.viewportHeight = (float)i1/3;
     }
 
     @Override
