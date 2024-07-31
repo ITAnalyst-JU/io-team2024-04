@@ -1,4 +1,4 @@
-package main.screens;
+package core.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -12,9 +12,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.TimeUtils;
-import main.entities.Player;
-
-import java.sql.Time;
+import core.entities.Player;
 
 public class Level1 implements Screen {
 
@@ -32,13 +30,13 @@ public class Level1 implements Screen {
 
     @Override
     public void show() {
-        map = new TmxMapLoader().load("assets/map.tmx");
+        map = new TmxMapLoader().load("map.tmx");
 
         renderer = new OrthogonalTiledMapRenderer(map);
 
         camera  = new OrthographicCamera();
 
-        player = new Player(new Sprite(new Texture("assets/player.png")), (TiledMapTileLayer)map.getLayers().get(0));
+        player = new Player(new Sprite(new Texture("player.png")), (TiledMapTileLayer)map.getLayers().get(0));
 
         Gdx.input.setInputProcessor(player);
 

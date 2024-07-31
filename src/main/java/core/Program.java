@@ -3,6 +3,7 @@ package core;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import core.screens.Level1;
 import core.screens.MainMenuScreen;
 
 public class Program extends Game {

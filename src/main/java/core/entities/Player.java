@@ -1,4 +1,4 @@
-package main.entities;
+package core.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
