@@ -12,11 +12,12 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.TimeUtils;
+import core.Program;
 import core.entities.Player;
 
 public class Level1 implements Screen {
 
-    private Game game;
+    private Program game;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
@@ -24,7 +25,7 @@ public class Level1 implements Screen {
     private Player player;
     private long beginTime;
 
-    public Level1(Game game) {
+    public Level1(Program game) {
         this.game = game;
     }
 
@@ -63,7 +64,7 @@ public class Level1 implements Screen {
         if (player.ifLevelFinished()) {
             long timePassed = TimeUtils.timeSinceMillis(beginTime);
             //do something, like showing time. stopping game etc.
-            //game.setScreen(someScreen)
+            game.setScreen(new MainMenuScreen(game));
 
         }
     }
