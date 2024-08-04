@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 
-public class Player extends Sprite implements InputProcessor {
+public class Player extends AbstractEntity implements InputProcessor {
 
     private Vector2 currentVelocity = new Vector2(0, 0);
     private float yVelocityLimit = 60 * 4;
@@ -17,14 +17,11 @@ public class Player extends Sprite implements InputProcessor {
 
     private boolean rightKeyPressed = false, leftKeyPressed = false;
 
-    private TiledMapTileLayer mapLayer;
-
     private boolean didGameFinish = false;
 
     public Player(Sprite sprite, TiledMapTileLayer mapLayer) {
-        super(sprite);
+        super(sprite, mapLayer);
         setSize(mapLayer.getTileWidth(), mapLayer.getTileHeight());
-        this.mapLayer = mapLayer;
     }
 
     @Override
@@ -57,42 +54,19 @@ public class Player extends Sprite implements InputProcessor {
 
         float oldX = getX(), newX = oldX + currentVelocity.x * timeDelta, oldY = getY(), newY = oldY + currentVelocity.y * timeDelta;
 
-        if (isCellFinishing(newX, newY) || isCellFinishing(newX, newY+getHeight()) || isCellFinishing(newX+getWidth(), newY)
-                || isCellFinishing(newX+getWidth(), newY+getHeight())) {
+        if (detectCollisionWithTile(newX, newY, propertyNameFinishing)) {
             this.didGameFinish = true;
         }
 
-        // Very basic implementation. Could work for bots. Lacks granularity.
-        if (!isCellBlocked(newX, oldY) && !isCellBlocked(newX, oldY+getHeight()) && !isCellBlocked(newX+getWidth(), oldY)
-                && !isCellBlocked(newX+getWidth(), oldY+getHeight())) {
+
+        if (!detectCollisionWithTile(newX, newY, propertyNameCollision)) {
             setX(newX);
-        } else {
-            newX = oldX;
-        }
-        if (!isCellBlocked(oldX, newY) && !isCellBlocked(newX, newY+getHeight()) && !isCellBlocked(newX+getWidth(), newY)
-                && !isCellBlocked(newX+getWidth(), newY+getHeight())) {
             setY(newY);
         } else {
             currentVelocity.y = 0;
-        }
-    }
-
-    // Collision detection may instead use layers.
-    private boolean isCellBlocked(float x, float y) {
-        try {
-            return mapLayer.getCell((int) (x / mapLayer.getTileWidth()), (int) (y / mapLayer.getTileHeight())).getTile().getProperties().containsKey("hasCollision");
-        } catch (NullPointerException e) {
-            return true;
-        }
-    }
-
-    //this is the same method. Ideally we'd want parameter, but java doesn't allow default parameters :(
-
-    private boolean isCellFinishing(float x, float y) {
-        try {
-            return mapLayer.getCell((int) (x / mapLayer.getTileWidth()), (int) (y / mapLayer.getTileHeight())).getTile().getProperties().containsKey("isFinishing");
-        } catch (NullPointerException e) {
-            return true;
+            Vector2 newPosition = detectCollisionWithTilePrecise(new Vector2(oldX, oldY), new Vector2(newX, newY), propertyNameCollision);
+            setX(newPosition.x);
+            setY(newPosition.y);
         }
     }
 
