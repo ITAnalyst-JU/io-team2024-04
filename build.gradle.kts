@@ -4,8 +4,8 @@ plugins {
     id("application")
 }
 
-group = "the.great.tcs"
-version = "1.0-ALPHA"
+group = "the.great.tcs" /* ;) */
+version = "0.0.1"
 
 java {
     toolchain {
@@ -48,5 +48,36 @@ application {
 }
 
 tasks.test {
+    description = "Runs the unit tests"
     useJUnitPlatform()
+    workingDir = file("./src/test/resources")
+}
+
+/* below tasks only for learning purposes */
+tasks.register("danceWithGradleD(a)emon", JavaExec::class) {
+    description = "Runs this project as a JVM application"
+    dependsOn("classes")
+    mainClass.set("desktop.DesktopLauncher")
+    classpath = sourceSets["main"].runtimeClasspath
+    standardInput = System.`in`
+    workingDir = file("./src/main/resources")
+    setIgnoreExitValue(true)
+    if (System.getProperty("os.name").contains("mac", true)) {
+        jvmArgs("$jvmArgs -XstartOnFirstThread")
+    }
+}
+
+tasks.register("debug", JavaExec::class) {
+    description = "Debug"
+    dependsOn("classes")
+    mainClass.set("desktop.DesktopLauncher")
+    classpath = sourceSets["main"].runtimeClasspath
+    standardInput = System.`in`
+    workingDir = file("./src/main/resources")
+    setIgnoreExitValue(true)
+    if (System.getProperty("os.name").contains("mac", true)) {
+        jvmArgs("$jvmArgs -XstartOnFirstThread")
+    }
+
+    debug = true
 }
