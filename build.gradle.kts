@@ -44,7 +44,7 @@ dependencies {
 }
 
 application {
-    mainClass = "desktop.DesktopLauncher"
+    mainClass.set("desktop.DesktopLauncher")
 }
 
 tasks.test {

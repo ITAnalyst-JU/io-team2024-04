@@ -1,34 +1,22 @@
 package core.views;
 
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import core.orchestrator.SupremeOrchestrator;
 
-public class PreferencesScreen implements Screen {
+public class PreferencesScreen extends AbstractScreen {
 
-    @Override
-    public void show() {
+    private Label label;
+    private Label.LabelStyle labelStyle;
+    public PreferencesScreen(SupremeOrchestrator supremeOrchestrator) {
+        super(supremeOrchestrator);
+
+        labelStyle = new Label.LabelStyle();
+        labelStyle.font = new BitmapFont();
+        label = new Label("Hello, Stage!", labelStyle);
+        label.setPosition(100, 150);
+
+        super.stage.addActor(label);
     }
 
-    @Override
-    public void render(float delta) {
-    }
-
-    @Override
-    public void resize(int width, int height) {
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void hide() {
-    }
-
-    @Override
-    public void dispose() {
-    }
 }

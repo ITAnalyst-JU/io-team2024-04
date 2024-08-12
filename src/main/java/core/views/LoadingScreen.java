@@ -1,34 +1,14 @@
 package core.views;
 
-import com.badlogic.gdx.Screen;
+import core.orchestrator.SupremeOrchestrator;
 
-public class LoadingScreen implements Screen {
-    
-    @Override
-    public void show() {
+public class LoadingScreen extends AbstractScreen {
+    public LoadingScreen(SupremeOrchestrator supremeOrchestrator) {
+        super(supremeOrchestrator);
     }
 
     @Override
     public void render(float delta) {
-    }
-
-    @Override
-    public void resize(int width, int height) {
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void hide() {
-    }
-
-    @Override
-    public void dispose() {
+        super.notifyOrchestator(ScreenState.MENU);
     }
 }

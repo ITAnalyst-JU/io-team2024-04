@@ -1,9 +1,9 @@
-package core.orchestrator;
+package core.views;
 
 public enum ScreenState {
     MENU,
     PREFERENCES,
-    APPLICATTION,
+    APPLICATION,
     ENDGAME,
-    LOADGING,
+    LOADING,
 }

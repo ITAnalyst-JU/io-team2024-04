@@ -2,7 +2,7 @@ package desktop;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
-public class ConfigFactory {
+public class ConfigCreator {
     public static Lwjgl3ApplicationConfiguration GetDesktopDefaultConfig() {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setForegroundFPS(60);
