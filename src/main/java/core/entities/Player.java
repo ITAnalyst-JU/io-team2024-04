@@ -1,89 +1,74 @@
 package core.entities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.*;
+import core.utilities.Constants;
+import core.utilities.Constants.Physics;
 
-public class Player extends AbstractEntity implements InputProcessor {
+public class Player implements InputProcessor {
+    private Sprite sprite;
 
-    private Vector2 currentVelocity = new Vector2(0, 0);
-    private float yVelocityLimit = 60 * 4;
-    private float gravity = 60 * 9;
-    private float xVelocityBase = 60 * 2;
+    private Body body;
 
-    private boolean rightKeyPressed = false, leftKeyPressed = false;
+    private float yVelocityLimit = 10f;
+    private float xVelocityBase = 10f;
 
-    private boolean didGameFinish = false;
+    public Player(Sprite sprite, TiledMapTileLayer mapLayer, World world) {
+        this.sprite = sprite;
+        System.out.println(mapLayer.getTileHeight());
+        sprite.setSize(mapLayer.getTileWidth(), mapLayer.getTileHeight());
 
-    public Player(Sprite sprite, TiledMapTileLayer mapLayer) {
-        super(sprite, mapLayer);
-        setSize(mapLayer.getTileWidth(), mapLayer.getTileHeight());
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.fixedRotation = true;
+        body = world.createBody(bodyDef);
+        body.setLinearDamping(0);
+        PolygonShape polygonShape = new PolygonShape();
+        polygonShape.setAsBox(sprite.getWidth()/Physics.Scale / 2f, sprite.getHeight()/Physics.Scale / 2f);
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = polygonShape;
+        fixtureDef.density = 1f;
+        fixtureDef.friction = 0;
+        fixtureDef.restitution = 0;
+        Fixture fixture = body.createFixture(fixtureDef);
+        fixture.setUserData(this);
+        polygonShape.dispose();
     }
 
-    @Override
+    public Vector2 update() {
+        Vector2 position = body.getPosition();
+        position.x *= Constants.Physics.Scale;
+        position.y *= Constants.Physics.Scale;
+        sprite.setPosition(position.x - sprite.getWidth()/2f, position.y - sprite.getHeight()/2f);
+        return position;
+    }
+
+    public void setPosition(Vector2 position) {
+        body.setTransform(position, 0);
+    }
+
     public void draw(Batch batch) {
-        update(Gdx.graphics.getDeltaTime());
-        super.draw(batch);
-    }
-
-    public boolean ifLevelFinished() {
-        return didGameFinish;
-    }
-
-    private void update(float timeDelta) {
-        currentVelocity.y -= gravity * timeDelta;
-
-        if (currentVelocity.y < -yVelocityLimit) {
-            currentVelocity.y = -yVelocityLimit;
-        }
-        if (currentVelocity.y > yVelocityLimit) {
-            currentVelocity.y = yVelocityLimit;
-        }
-
-        currentVelocity.x = 0;
-        if (rightKeyPressed) {
-            currentVelocity.x += xVelocityBase;
-        }
-        if (leftKeyPressed) {
-            currentVelocity.x -= xVelocityBase;
-        }
-
-        float oldX = getX(), newX = oldX + currentVelocity.x * timeDelta, oldY = getY(), newY = oldY + currentVelocity.y * timeDelta;
-
-        if (detectCollisionWithTile(newX, newY, propertyNameFinishing)) {
-            this.didGameFinish = true;
-        }
-
-
-        if (!detectCollisionWithTile(newX, newY, propertyNameCollision)) {
-            setX(newX);
-            setY(newY);
-        } else {
-            currentVelocity.y = 0;
-            Vector2 newPosition = detectCollisionWithTilePrecise(new Vector2(oldX, oldY), new Vector2(newX, newY), propertyNameCollision);
-            setX(newPosition.x);
-            setY(newPosition.y);
-        }
+        sprite.draw(batch);
     }
 
     @Override
     public boolean keyDown(int keyNo) {
         switch (keyNo) {
             case Input.Keys.A:
-                leftKeyPressed = true;
+                body.applyLinearImpulse(new Vector2(-xVelocityBase, 0), body.getPosition(), false);
                 break;
             case Input.Keys.D:
-                rightKeyPressed = true;
+                body.applyLinearImpulse(new Vector2(xVelocityBase, 0), body.getPosition(), false);
                 break;
             case Input.Keys.W:
-                currentVelocity.y = yVelocityLimit;
+                body.setLinearVelocity(body.getLinearVelocity().x, yVelocityLimit);
                 break;
         }
-
         return true;
     }
 
@@ -91,14 +76,23 @@ public class Player extends AbstractEntity implements InputProcessor {
     public boolean keyUp(int keyNo) {
         switch (keyNo) {
             case Input.Keys.A:
-                leftKeyPressed = false;
-                break;
             case Input.Keys.D:
-                rightKeyPressed = false;
+                body.setLinearVelocity(0, body.getLinearVelocity().y);
                 break;
-
         }
+//        switch(keyNo) {
+//            case Input.Keys.A:
+//                physicsBody.applyLinearImpulse(new Vector2(xVelocityBase, 0), physicsBody.getPosition(), false);
+//                break;
+//            case Input.Keys.D:
+//                physicsBody.applyLinearImpulse(new Vector2(-xVelocityBase, 0), physicsBody.getPosition(), false);
+//                break;
+//        }
         return true;
+    }
+
+    @Override public String toString() {
+        return "player";
     }
 
     // We don't use other methods right now.
