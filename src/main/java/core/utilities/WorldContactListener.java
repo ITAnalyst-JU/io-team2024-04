@@ -2,7 +2,7 @@ package core.utilities;
 
 import com.badlogic.gdx.physics.box2d.*;
 import core.entities.Player;
-import core.views.LevelInterface;
+import core.levels.LevelInterface;
 
 public class WorldContactListener implements ContactListener {
     private LevelInterface level;
@@ -20,8 +20,6 @@ public class WorldContactListener implements ContactListener {
             fixA = fixB;
             fixB = temp;
         }
-        System.out.println(fixA.getUserData());
-        System.out.println(fixB.getUserData());
         if (Constants.LayerNames.Finishing.equals(fixB.getUserData())) {
             level.setLevelFinished();
             return;

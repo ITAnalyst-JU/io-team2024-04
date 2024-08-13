@@ -2,6 +2,7 @@ package core.orchestrator;
 
 import com.badlogic.gdx.Game;
 import core.levels.LevelOrchestrator;
+import core.levels.LevelScreen;
 import core.views.*;
 
 public class SupremeOrchestrator extends Game {
@@ -11,7 +12,7 @@ public class SupremeOrchestrator extends Game {
     private LoadingScreen loadingScreen;
     private PreferencesScreen preferencesScreen;
     private MenuScreen menuScreen;
-    private MainScreen mainScreen;
+    private LevelScreen levelScreen;
     private EndScreen endScreen;    
     private ScreenState screenState;
     private LevelSelectionScreen levelSelectionScreen;
@@ -49,10 +50,10 @@ public class SupremeOrchestrator extends Game {
                 this.screenState = ScreenState.PREFERENCES;
                 break;
             case ScreenState.APPLICATION:
-                if (this.mainScreen == null) {
-                    this.mainScreen = (MainScreen) screenAbstractFactory.createScreen(ScreenState.APPLICATION);
+                if (this.levelScreen == null) {
+                    this.levelScreen = (LevelScreen) screenAbstractFactory.createScreen(ScreenState.APPLICATION);
                 }
-                this.setScreen(mainScreen);
+                this.setScreen(levelScreen);
                 this.screenState = ScreenState.APPLICATION;
                 break;
             case ScreenState.ENDGAME:

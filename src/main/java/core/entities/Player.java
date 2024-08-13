@@ -20,7 +20,7 @@ public class Player implements InputProcessor {
 
     public Player(Sprite sprite, TiledMapTileLayer mapLayer, World world) {
         this.sprite = sprite;
-        System.out.println(mapLayer.getTileHeight());
+
         sprite.setSize(mapLayer.getTileWidth(), mapLayer.getTileHeight());
 
         BodyDef bodyDef = new BodyDef();

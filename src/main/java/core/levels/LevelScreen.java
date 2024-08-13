@@ -1,7 +1,6 @@
-package core.views;
+package core.levels;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,14 +16,15 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
-import core.Program;
 import core.entities.Player;
+import core.orchestrator.SupremeOrchestrator;
 import core.utilities.Constants;
 import core.utilities.WorldContactListener;
+import core.views.AbstractScreen;
+import core.views.ScreenState;
 
-public class LevelScreen implements Screen, LevelInterface {
+public class LevelScreen extends AbstractScreen implements LevelInterface {
 
-    private Program game;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
@@ -40,8 +40,8 @@ public class LevelScreen implements Screen, LevelInterface {
     boolean isLevelFinished = false;
     boolean playerDied = false;
 
-    public LevelScreen(Program game, Vector2 playerBeginPosition, String mapName) {
-        this.game = game;
+    public LevelScreen(SupremeOrchestrator orchestrator, Vector2 playerBeginPosition, String mapName) {
+        super(orchestrator);
         this.playerBeginPosition = playerBeginPosition;
         this.mapName = mapName;
     }
@@ -50,7 +50,7 @@ public class LevelScreen implements Screen, LevelInterface {
     public void show() {
         world = new World(Constants.Physics.Gravity, false);
         map = new TmxMapLoader().load(mapName);
-        player = new Player(new Sprite(new Texture("player.png")),
+        player = new Player(new Sprite(new Texture("player/player.png")),
                 (TiledMapTileLayer)map.getLayers().get(Constants.LayerNames.Tiles), world);
 
         setPlayerDied();
@@ -89,7 +89,7 @@ public class LevelScreen implements Screen, LevelInterface {
         if (isLevelFinished) {
             long timePassed = TimeUtils.timeSinceMillis(beginTime);
 
-            game.setScreen(new MainMenuScreen(game));
+            this.notifyOrchestator(ScreenState.MENU);
         }
     }
 
