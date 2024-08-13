@@ -2,13 +2,14 @@ package core.utilities;
 
 import com.badlogic.gdx.physics.box2d.*;
 import core.entities.Player;
-import core.levels.LevelInterface;
 
 public class WorldContactListener implements ContactListener {
-    private LevelInterface level;
 
-    public WorldContactListener(LevelInterface level) {
-        this.level = level;
+    private boolean gameEnded;
+    private boolean playerDead;
+
+    public WorldContactListener() {
+
     }
 
     @Override
@@ -21,11 +22,11 @@ public class WorldContactListener implements ContactListener {
             fixB = temp;
         }
         if (Constants.LayerNames.Finishing.equals(fixB.getUserData())) {
-            level.setLevelFinished();
+            gameEnded = true;
             return;
         }
         if (Constants.LayerNames.Deadly.equals(fixB.getUserData())) {
-            level.setPlayerDied();
+            playerDead = true;
             return;
         }
 
@@ -44,5 +45,17 @@ public class WorldContactListener implements ContactListener {
     @Override
     public void postSolve(Contact contact, ContactImpulse contactImpulse) {
 
+    }
+
+    public boolean isGameEnded() {
+        return this.gameEnded;
+    }
+
+    public boolean isPlayerDead() {
+        return this.playerDead;
+    }
+
+    public void setPlayerDead(boolean playerDead) {
+        this.playerDead = playerDead;
     }
 }

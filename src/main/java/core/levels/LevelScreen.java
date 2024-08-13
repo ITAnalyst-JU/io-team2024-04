@@ -32,7 +32,7 @@ import core.utilities.WorldContactListener;
 import core.views.AbstractScreen;
 import core.views.ScreenState;
 
-public class LevelScreen extends AbstractScreen implements LevelInterface {
+public class LevelScreen extends AbstractScreen {
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
@@ -46,11 +46,10 @@ public class LevelScreen extends AbstractScreen implements LevelInterface {
     private Vector2 playerBeginPosition;
     private String mapName;
 
+    private WorldContactListener contactListener;
+
     //TODO: Find better solution
     private List<AbstractEntity> entities;
-
-    boolean isLevelFinished = false;
-    boolean playerDied = false;
 
     public LevelScreen(SupremeOrchestrator orchestrator, Vector2 playerBeginPosition, String mapName) {
         super(orchestrator);
@@ -60,7 +59,6 @@ public class LevelScreen extends AbstractScreen implements LevelInterface {
 
     @Override
     public void show() {
-        isLevelFinished = false;
         world = new World(Constants.Physics.Gravity, false);
         map = new TmxMapLoader().load(mapName);
         player = new Player(new Sprite(new Texture("player/player.png")),
@@ -113,12 +111,12 @@ public class LevelScreen extends AbstractScreen implements LevelInterface {
                 }
             }
         });
-        
 
-        setPlayerDied();
 
         this.loadMap(map);
-        world.setContactListener(new WorldContactListener(this));
+        contactListener = new WorldContactListener();
+        contactListener.setPlayerDead(true); // instead of setting position, and because dieing works exactly like spowning (and always should)
+        world.setContactListener(contactListener);
 
         renderer = new OrthogonalTiledMapRenderer(map);
         camera  = new OrthographicCamera();
@@ -132,9 +130,9 @@ public class LevelScreen extends AbstractScreen implements LevelInterface {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         world.step(Gdx.graphics.getDeltaTime(), 6, 2);
-        if (playerDied) {
-            playerDied = false;
-            player.setPosition(playerBeginPosition);
+        if (contactListener.isPlayerDead()) {
+            contactListener.setPlayerDead(false);
+            player.setPosition(playerBeginPosition, false);
         }
         player.update();
 
@@ -149,7 +147,7 @@ public class LevelScreen extends AbstractScreen implements LevelInterface {
         entities.forEach(e -> e.draw(renderer.getBatch()));
         renderer.getBatch().end();
 
-        if (isLevelFinished) {
+        if (contactListener.isGameEnded()) {
             long timePassed = TimeUtils.timeSinceMillis(beginTime);
 
             this.notifyOrchestator(ScreenState.MENU);
@@ -207,15 +205,5 @@ public class LevelScreen extends AbstractScreen implements LevelInterface {
         world.dispose();
         map.dispose();
         renderer.dispose();
-    }
-
-    @Override
-    public void setLevelFinished() {
-        this.isLevelFinished = true;
-    }
-
-    @Override
-    public void setPlayerDied() {
-        this.playerDied = true;
     }
 }

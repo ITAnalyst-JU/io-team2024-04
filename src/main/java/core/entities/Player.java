@@ -18,6 +18,8 @@ public class Player implements InputProcessor {
     private float yVelocityLimit = 10f;
     private float xVelocityBase = 10f;
 
+    private int sideKeyPressed = 0;
+
     public Player(Sprite sprite, TiledMapTileLayer mapLayer, World world) {
         this.sprite = sprite;
 
@@ -33,7 +35,7 @@ public class Player implements InputProcessor {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = polygonShape;
         fixtureDef.density = 1f;
-        fixtureDef.friction = 0;
+        fixtureDef.friction = 1f;
         fixtureDef.restitution = 0;
         Fixture fixture = body.createFixture(fixtureDef);
         fixture.setUserData(this);
@@ -41,6 +43,7 @@ public class Player implements InputProcessor {
     }
 
     public Vector2 update() {
+        body.setLinearVelocity(sideKeyPressed * this.xVelocityBase, body.getLinearVelocity().y);
         Vector2 position = body.getPosition();
         position.x *= Constants.Physics.Scale;
         position.y *= Constants.Physics.Scale;
@@ -48,7 +51,10 @@ public class Player implements InputProcessor {
         return position;
     }
 
-    public void setPosition(Vector2 position) {
+    public void setPosition(Vector2 position, boolean preserveVelocity) {
+        if (!preserveVelocity) {
+            body.setLinearVelocity(0, 0);
+        }
         body.setTransform(position, 0);
     }
 
@@ -60,10 +66,12 @@ public class Player implements InputProcessor {
     public boolean keyDown(int keyNo) {
         switch (keyNo) {
             case Input.Keys.A:
-                body.applyLinearImpulse(new Vector2(-xVelocityBase, 0), body.getPosition(), false);
+                this.sideKeyPressed--;
+//                body.applyLinearImpulse(new Vector2(-xVelocityBase, 0), body.getPosition(), false);
                 break;
             case Input.Keys.D:
-                body.applyLinearImpulse(new Vector2(xVelocityBase, 0), body.getPosition(), false);
+                this.sideKeyPressed++;
+//                body.applyLinearImpulse(new Vector2(xVelocityBase, 0), body.getPosition(), false);
                 break;
             case Input.Keys.W:
                 body.setLinearVelocity(body.getLinearVelocity().x, yVelocityLimit);
@@ -76,18 +84,14 @@ public class Player implements InputProcessor {
     public boolean keyUp(int keyNo) {
         switch (keyNo) {
             case Input.Keys.A:
+                this.sideKeyPressed++;
+//                body.setLinearVelocity(0, body.getLinearVelocity().y);
+                break;
             case Input.Keys.D:
-                body.setLinearVelocity(0, body.getLinearVelocity().y);
+                this.sideKeyPressed--;
+//                body.setLinearVelocity(0, body.getLinearVelocity().y);
                 break;
         }
-//        switch(keyNo) {
-//            case Input.Keys.A:
-//                physicsBody.applyLinearImpulse(new Vector2(xVelocityBase, 0), physicsBody.getPosition(), false);
-//                break;
-//            case Input.Keys.D:
-//                physicsBody.applyLinearImpulse(new Vector2(-xVelocityBase, 0), physicsBody.getPosition(), false);
-//                break;
-//        }
         return true;
     }
 
