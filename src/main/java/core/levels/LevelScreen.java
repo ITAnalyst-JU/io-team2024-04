@@ -60,6 +60,7 @@ public class LevelScreen extends AbstractScreen implements LevelInterface {
 
     @Override
     public void show() {
+        isLevelFinished = false;
         world = new World(Constants.Physics.Gravity, false);
         map = new TmxMapLoader().load(mapName);
         player = new Player(new Sprite(new Texture("player/player.png")),
