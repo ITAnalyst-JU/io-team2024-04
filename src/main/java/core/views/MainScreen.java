@@ -4,25 +4,25 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.TimeUtils;
 import core.levels.AbstractLevel;
-import core.levels.LevelAbstractFactory;
 import core.orchestrator.SupremeOrchestrator;
 
 public class MainScreen extends AbstractScreen {
 
     private AbstractLevel level;
     // TODO: delegate level abstract factory higher
-    private final LevelAbstractFactory levelAbstractFactory;
 
     public MainScreen(SupremeOrchestrator supremeOrchestrator) {
         super(supremeOrchestrator);
-        levelAbstractFactory = new LevelAbstractFactory();
+    }
 
+    public void setLevel(AbstractLevel level) {
+        this.level = level;
     }
 
     @Override
     public void show() {
         if (level == null) {
-            level = levelAbstractFactory.createLevel(1);
+           throw new IllegalStateException("Level is not set");
         }
     }
 

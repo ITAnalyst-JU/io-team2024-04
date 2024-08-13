@@ -6,4 +6,5 @@ public enum ScreenState {
     APPLICATION,
     ENDGAME,
     LOADING,
+    LEVELSELECTION,
 }

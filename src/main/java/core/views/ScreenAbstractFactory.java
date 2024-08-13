@@ -16,6 +16,7 @@ public class ScreenAbstractFactory {
             case APPLICATION -> new MainScreen(supremeOrchestrator);
             case ENDGAME -> new EndScreen(supremeOrchestrator);
             case LOADING -> new LoadingScreen(supremeOrchestrator);
+            case LEVELSELECTION -> new LevelSelectionScreen(supremeOrchestrator);
             default -> throw new IllegalArgumentException("Invalid screen state: " + screenState);
         };
     }
