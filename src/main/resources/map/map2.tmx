@@ -90,4 +90,92 @@
   <object id="19" x="384" y="512" width="32" height="336"/>
   <object id="20" x="2368" y="192" width="16" height="656"/>
  </objectgroup>
+ <objectgroup id="5" name="Entities Layer">
+  <object id="21" x="450" y="440">
+   <properties>
+    <property name="enemy" value="moving"/>
+    <property name="maxX" type="float" value="500"/>
+    <property name="minX" type="float" value="300"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="22" x="208.155" y="475.508">
+   <properties>
+    <property name="enemy" value="basic"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="23" x="668.704" y="376.524">
+   <properties>
+    <property name="enemy" value="basic"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="24" x="470" y="372">
+   <properties>
+    <property name="direction" value="static"/>
+    <property name="platform" value="moving"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="25" x="486" y="372">
+   <properties>
+    <property name="direction" value="static"/>
+    <property name="platform" value="moving"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="26" x="502" y="372">
+   <properties>
+    <property name="direction" value="static"/>
+    <property name="platform" value="moving"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="27" x="550" y="371">
+   <properties>
+    <property name="direction" value="vertical"/>
+    <property name="maxY" type="float" value="420"/>
+    <property name="minY" type="float" value="300"/>
+    <property name="platform" value="moving"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="28" x="566" y="371">
+   <properties>
+    <property name="direction" value="vertical"/>
+    <property name="maxY" type="float" value="420"/>
+    <property name="minY" type="float" value="300"/>
+    <property name="platform" value="moving"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="29" x="200" y="400">
+   <properties>
+    <property name="direction" value="horizontal"/>
+    <property name="maxX" type="float" value="350"/>
+    <property name="minX" type="float" value="100"/>
+    <property name="platform" value="moving"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="30" x="216" y="400">
+   <properties>
+    <property name="direction" value="horizontal"/>
+    <property name="maxX" type="float" value="366"/>
+    <property name="minX" type="float" value="116"/>
+    <property name="platform" value="moving"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="31" x="232" y="400">
+   <properties>
+    <property name="direction" value="horizontal"/>
+    <property name="maxX" type="float" value="382"/>
+    <property name="minX" type="float" value="132"/>
+    <property name="platform" value="moving"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
 </map>
