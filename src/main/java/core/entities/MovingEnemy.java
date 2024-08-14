@@ -9,10 +9,15 @@ import core.utilities.Constants;
 
 public class MovingEnemy extends AbstractEnemy {
 
+    private final float maxSpeed = 3f;
+    private final float speedDelta = 1f;
+
     private float minX = 0, maxX = 0;
+    private boolean movingRight = true;
 
     public MovingEnemy(Sprite sprite, TiledMapTileLayer mapLayer, World world) {
         super(sprite, mapLayer, world);
+        body.setLinearVelocity(maxSpeed, 0);
     }
 
     public void setMovementBounds(float minX, float maxX) {
@@ -22,7 +27,18 @@ public class MovingEnemy extends AbstractEnemy {
 
     @Override
     public Vector2 update() {
-        //TODO: Implement enemy movement
+        if (body.getPosition().x < minX) {
+            movingRight = true;
+        } else if (body.getPosition().x > maxX) {
+            movingRight = false;
+        }
+        if(movingRight) {
+            if(body.getLinearVelocity().x < maxSpeed)
+                body.setLinearVelocity(body.getLinearVelocity().x + speedDelta, body.getLinearVelocity().y);
+        } else {
+            if(body.getLinearVelocity().x > -maxSpeed)
+                body.setLinearVelocity(body.getLinearVelocity().x - speedDelta, body.getLinearVelocity().y);
+        }
         Vector2 position = body.getPosition();
         position.x *= Constants.Physics.Scale;
         position.y *= Constants.Physics.Scale;

@@ -74,7 +74,7 @@ public class LevelScreen extends AbstractScreen {
                 if(obj.getProperties().get("enemy").equals("moving")) {
                     MovingEnemy enemy = new MovingEnemy(new Sprite(new Texture("entities/enemy.png")), (TiledMapTileLayer)map.getLayers().get(0), world);
                     enemy.setPosition(new Vector2((float)obj.getProperties().get("x")/Physics.Scale, (float)obj.getProperties().get("y")/Physics.Scale), false);
-                    enemy.setMovementBounds((float)obj.getProperties().get("minX"), (float)obj.getProperties().get("maxX"));
+                    enemy.setMovementBounds((float)obj.getProperties().get("minX")/Physics.Scale, (float)obj.getProperties().get("maxX")/Physics.Scale);
                     entities.add(enemy);
                 }
                 else if(obj.getProperties().get("enemy").equals("basic")){

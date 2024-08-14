@@ -45,6 +45,7 @@ public abstract class AbstractEntity {
         body.setTransform(position, 0);
     }
 
+    //TODO: update dependig on timeDelta
     public abstract Vector2 update();
 
     public void draw(Batch batch) {
