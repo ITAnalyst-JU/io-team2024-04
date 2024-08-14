@@ -93,7 +93,7 @@ public class LevelScreen extends AbstractScreen {
                         direction = MovementDirection.HORIZONTAL;
                     }
                     else if(obj.getProperties().get("direction").equals("vertical")) {
-                        direction = MovementDirection.VERTICAl;
+                        direction = MovementDirection.VERTICAL;
                     }
                     else {
                         throw new RuntimeException();
@@ -104,11 +104,12 @@ public class LevelScreen extends AbstractScreen {
                     if(direction == MovementDirection.HORIZONTAL) {
                         platform.setMovementBounds((float)obj.getProperties().get("minX")/Physics.Scale, (float)obj.getProperties().get("maxX")/Physics.Scale);
                     }
-                    else if(direction == MovementDirection.VERTICAl) {
+                    else if(direction == MovementDirection.VERTICAL) {
                         // For reasons uncomprehensible to human mind, Tiled Y axis is inverted
                         // TODO: Replace magic numbers with map values
                         platform.setMovementBounds((960 - (float)obj.getProperties().get("maxY"))/Physics.Scale, (960 - (float)obj.getProperties().get("minY"))/Physics.Scale);
                     }
+                    platform.direction = direction;
                     entities.add(platform);
                 }
             }

@@ -20,15 +20,12 @@ public abstract class AbstractEntity {
     
     protected boolean toRemove = false;
 
-    public AbstractEntity(Sprite sprite, TiledMapTileLayer mapLayer, World world, boolean isStatic) {
+    public AbstractEntity(Sprite sprite, TiledMapTileLayer mapLayer, World world, BodyDef.BodyType bodyType) {
         this.sprite = sprite;
 
         sprite.setSize(mapLayer.getTileWidth(), mapLayer.getTileHeight());
         BodyDef bodyDef = new BodyDef();
-        if(isStatic)
-            bodyDef.type = BodyDef.BodyType.StaticBody;
-        else
-            bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.type = bodyType;
         bodyDef.fixedRotation = true;
         body = world.createBody(bodyDef);
         body.setLinearDamping(0);
