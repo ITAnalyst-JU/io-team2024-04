@@ -51,4 +51,8 @@ public abstract class AbstractEntity {
     public void draw(Batch batch) {
         sprite.draw(batch);
     }
+
+    public void remove() {
+        body.getWorld().destroyBody(body);
+    }
 }

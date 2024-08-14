@@ -30,6 +30,11 @@ public class Player extends AbstractEntity implements InputProcessor {
     }
 
     @Override
+    public void remove() {
+        throw new UnsupportedOperationException("Player is immortal and cannot be killed.");
+    }
+
+    @Override
     public boolean keyDown(int keyNo) {
         switch (keyNo) {
             case Input.Keys.A:
