@@ -2,6 +2,10 @@ package core.entities;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
+
+import core.utilities.Constants;
 
 public class MovingPlatform extends AbstractPlatform {
 
@@ -12,16 +16,14 @@ public class MovingPlatform extends AbstractPlatform {
 
     private float minPosition, maxPosition;
 
-    public MovingPlatform(Sprite sprite, TiledMapTileLayer mapLayer, MovementDirection direction) {
-        super(sprite, mapLayer);
-        this.direction = direction;
-        setSize(mapLayer.getTileWidth(), mapLayer.getTileHeight());
+    public MovingPlatform(Sprite sprite, TiledMapTileLayer mapLayer, World world) {
+        super(sprite, mapLayer, world);
     }
 
     public static enum MovementDirection {
-        Static,
-        Vertical,
-        Horizontal
+        STATIC,
+        VERTICAl,
+        HORIZONTAL
     }
 
     public void setMovementBounds(float minPosition, float maxPosition) {
@@ -30,40 +32,13 @@ public class MovingPlatform extends AbstractPlatform {
     }
 
     @Override
-    protected void update(float timeDelta) {
-        if(direction == MovementDirection.Static) {
-            return;
-        }
-        else if (direction == MovementDirection.Vertical) {
-            if (getY() >= maxPosition) {
-                reverse = true;
-            }
-            else if (getY() <= minPosition) {
-                reverse = false;
-            }
-
-            if (reverse) {
-                setY(getY() - speed * timeDelta);
-            }
-            else {
-                setY(getY() + speed * timeDelta);
-            }
-        }
-        else if (direction == MovementDirection.Horizontal) {
-            if (getX() >= maxPosition) {
-                reverse = true;
-            }
-            else if (getX() <= minPosition) {
-                reverse = false;
-            }
-
-            if (reverse) {
-                setX(getX() - speed * timeDelta);
-            }
-            else {
-                setX(getX() + speed * timeDelta);
-            }
-        }
+    public Vector2 update() {
+        //TODO: Implement platform movement
+        Vector2 position = body.getPosition();
+        position.x *= Constants.Physics.Scale;
+        position.y *= Constants.Physics.Scale;
+        sprite.setPosition(position.x - sprite.getWidth()/2f, position.y - sprite.getHeight()/2f);
+        return position;
     }
-    
+
 }

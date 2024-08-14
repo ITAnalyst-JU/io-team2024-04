@@ -8,12 +8,8 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import core.utilities.Constants;
-import core.utilities.Constants.Physics;
 
-public class Player implements InputProcessor {
-    private Sprite sprite;
-
-    private Body body;
+public class Player extends AbstractEntity implements InputProcessor {
 
     private float yVelocityLimit = 10f;
     private float xVelocityBase = 10f;
@@ -21,25 +17,7 @@ public class Player implements InputProcessor {
     private int sideKeyPressed = 0;
 
     public Player(Sprite sprite, TiledMapTileLayer mapLayer, World world) {
-        this.sprite = sprite;
-
-        sprite.setSize(mapLayer.getTileWidth(), mapLayer.getTileHeight());
-
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.fixedRotation = true;
-        body = world.createBody(bodyDef);
-        body.setLinearDamping(0);
-        PolygonShape polygonShape = new PolygonShape();
-        polygonShape.setAsBox(sprite.getWidth()/Physics.Scale / 2f, sprite.getHeight()/Physics.Scale / 2f);
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = polygonShape;
-        fixtureDef.density = 1f;
-        fixtureDef.friction = 1f;
-        fixtureDef.restitution = 0;
-        Fixture fixture = body.createFixture(fixtureDef);
-        fixture.setUserData(this);
-        polygonShape.dispose();
+        super(sprite, mapLayer, world);
     }
 
     public Vector2 update() {
@@ -49,17 +27,6 @@ public class Player implements InputProcessor {
         position.y *= Constants.Physics.Scale;
         sprite.setPosition(position.x - sprite.getWidth()/2f, position.y - sprite.getHeight()/2f);
         return position;
-    }
-
-    public void setPosition(Vector2 position, boolean preserveVelocity) {
-        if (!preserveVelocity) {
-            body.setLinearVelocity(0, 0);
-        }
-        body.setTransform(position, 0);
-    }
-
-    public void draw(Batch batch) {
-        sprite.draw(batch);
     }
 
     @Override

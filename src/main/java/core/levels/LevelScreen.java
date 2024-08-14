@@ -29,6 +29,7 @@ import core.entities.Player;
 import core.orchestrator.SupremeOrchestrator;
 import core.utilities.Constants;
 import core.utilities.WorldContactListener;
+import core.utilities.Constants.Physics;
 import core.views.AbstractScreen;
 import core.views.ScreenState;
 
@@ -67,17 +68,18 @@ public class LevelScreen extends AbstractScreen {
         entities = new ArrayList<>();
 
         //TODO: Refactor this
+        //All positions are in pixels, so we need to divide them by Physics.Scale
         map.getLayers().get("Entities Layer").getObjects().forEach(obj -> {
             if(obj.getProperties().containsKey("enemy")) {
                 if(obj.getProperties().get("enemy").equals("moving")) {
-                    MovingEnemy enemy = new MovingEnemy(new Sprite(new Texture("entities/enemy.png")), (TiledMapTileLayer)map.getLayers().get(0));
-                    enemy.setPosition((float)obj.getProperties().get("x"), (float)obj.getProperties().get("y"));
+                    MovingEnemy enemy = new MovingEnemy(new Sprite(new Texture("entities/enemy.png")), (TiledMapTileLayer)map.getLayers().get(0), world);
+                    enemy.setPosition(new Vector2((float)obj.getProperties().get("x")/Physics.Scale, (float)obj.getProperties().get("y")/Physics.Scale), false);
                     enemy.setMovementBounds((float)obj.getProperties().get("minX"), (float)obj.getProperties().get("maxX"));
                     entities.add(enemy);
                 }
                 else if(obj.getProperties().get("enemy").equals("basic")){
-                    BasicEnemy enemy = new BasicEnemy(new Sprite(new Texture("entities/enemy.png")), (TiledMapTileLayer)map.getLayers().get(0));
-                    enemy.setPosition((float)obj.getProperties().get("x"), (float)obj.getProperties().get("y"));
+                    BasicEnemy enemy = new BasicEnemy(new Sprite(new Texture("entities/enemy.png")), (TiledMapTileLayer)map.getLayers().get(0), world);
+                    enemy.setPosition(new Vector2((float)obj.getProperties().get("x")/Physics.Scale, (float)obj.getProperties().get("y")/Physics.Scale), false);
                     entities.add(enemy);
                 }
             }
@@ -85,27 +87,27 @@ public class LevelScreen extends AbstractScreen {
                 if(obj.getProperties().get("platform").equals("moving")) {
                     MovingPlatform.MovementDirection direction;
                     if(obj.getProperties().get("direction").equals("static")) {
-                        direction = MovementDirection.Static;
+                        direction = MovementDirection.STATIC;
                     }
                     else if(obj.getProperties().get("direction").equals("horizontal")) {
-                        direction = MovementDirection.Horizontal;
+                        direction = MovementDirection.HORIZONTAL;
                     }
                     else if(obj.getProperties().get("direction").equals("vertical")) {
-                        direction = MovementDirection.Vertical;
+                        direction = MovementDirection.VERTICAl;
                     }
                     else {
                         throw new RuntimeException();
                     }
 
-                    MovingPlatform platform = new MovingPlatform(new Sprite(new Texture("entities/platform.png")), (TiledMapTileLayer)map.getLayers().get(0), direction);
-                    platform.setPosition((float)obj.getProperties().get("x"), (float)obj.getProperties().get("y"));
-                    if(direction == MovementDirection.Horizontal) {
-                        platform.setMovementBounds((float)obj.getProperties().get("minX"), (float)obj.getProperties().get("maxX"));
+                    MovingPlatform platform = new MovingPlatform(new Sprite(new Texture("entities/platform.png")), (TiledMapTileLayer)map.getLayers().get(0), world);
+                    platform.setPosition(new Vector2((float)obj.getProperties().get("x")/Physics.Scale, (float)obj.getProperties().get("y")/Physics.Scale), false);
+                    if(direction == MovementDirection.HORIZONTAL) {
+                        platform.setMovementBounds((float)obj.getProperties().get("minX")/Physics.Scale, (float)obj.getProperties().get("maxX")/Physics.Scale);
                     }
-                    else if(direction == MovementDirection.Vertical) {
+                    else if(direction == MovementDirection.VERTICAl) {
                         // For reasons uncomprehensible to human mind, Tiled Y axis is inverted
                         // TODO: Replace magic numbers with map values
-                        platform.setMovementBounds(960 - (float)obj.getProperties().get("maxY"), 960 - (float)obj.getProperties().get("minY"));
+                        platform.setMovementBounds((960 - (float)obj.getProperties().get("maxY"))/Physics.Scale, (960 - (float)obj.getProperties().get("minY"))/Physics.Scale);
                     }
                     entities.add(platform);
                 }
@@ -122,6 +124,7 @@ public class LevelScreen extends AbstractScreen {
         camera  = new OrthographicCamera();
         Gdx.input.setInputProcessor(player);
         beginTime = TimeUtils.millis();
+
     }
 
     @Override
@@ -135,6 +138,7 @@ public class LevelScreen extends AbstractScreen {
             player.setPosition(playerBeginPosition, false);
         }
         player.update();
+        entities.forEach(e -> e.update());
 
         camera.position.set(player.update(), 0);
         camera.update();

@@ -1,43 +1,53 @@
 package core.entities;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 
-public abstract class AbstractEntity extends Sprite {
+import core.utilities.Constants.Physics;
 
-    public static final String propertyNameCollision = "hasCollision";
-    public static final String propertyNameFinishing = "isFinishing";
+public abstract class AbstractEntity {
+    protected Sprite sprite;
+    protected Body body;
 
-    private TiledMapTileLayer mapLayer;
+    public AbstractEntity(Sprite sprite, TiledMapTileLayer mapLayer, World world) {
+        this.sprite = sprite;
 
-    public AbstractEntity(Sprite sprite, TiledMapTileLayer mapLayer) {
-        super(sprite);
-        this.mapLayer = mapLayer;
+        sprite.setSize(mapLayer.getTileWidth(), mapLayer.getTileHeight());
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.fixedRotation = true;
+        body = world.createBody(bodyDef);
+        body.setLinearDamping(0);
+        PolygonShape polygonShape = new PolygonShape();
+        polygonShape.setAsBox(sprite.getWidth()/Physics.Scale / 2f, sprite.getHeight()/Physics.Scale / 2f);
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = polygonShape;
+        fixtureDef.density = 1f;
+        fixtureDef.friction = 1f;
+        fixtureDef.restitution = 0;
+        Fixture fixture = body.createFixture(fixtureDef);
+        fixture.setUserData(this);
+        polygonShape.dispose();
     }
 
-    private boolean checkCellProperty(float x, float y, String property) throws NullPointerException {
-        return mapLayer.getCell((int) (x / mapLayer.getTileWidth()), (int) (y / mapLayer.getTileHeight())).getTile().getProperties().containsKey(property);
-    }
-
-    protected boolean detectCollisionWithTile(float x, float y, String property) {
-        if (checkCellProperty(x, y, property) || checkCellProperty(x, y + getHeight(), property) || checkCellProperty(x + getWidth(), y, property) || checkCellProperty(x + getWidth(), y + getHeight(), property)) {
-            return true;
+    public void setPosition(Vector2 position, boolean preserveVelocity) {
+        if (!preserveVelocity) {
+            body.setLinearVelocity(0, 0);
         }
-        return false;
+        body.setTransform(position, 0);
     }
 
-    protected Vector2 detectCollisionWithTilePrecise(Vector2 oldPosition, Vector2 newPosition, String property) {
-        //TODO: return precise location of where can you move (by checking pixel by pixel).
-        if (detectCollisionWithTile(newPosition.x, newPosition.y, property)) {
-            return oldPosition;
-        } else {
-            return newPosition;
-        }
-    }
+    public abstract Vector2 update();
 
-    protected boolean detectCollisionWithSprite(AbstractEntity entity) {
-        //TODO: Non-rectangular collision detection?
-        return getBoundingRectangle().overlaps(entity.getBoundingRectangle());
+    public void draw(Batch batch) {
+        sprite.draw(batch);
     }
 }
