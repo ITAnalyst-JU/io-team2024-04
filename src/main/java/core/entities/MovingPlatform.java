@@ -7,7 +7,7 @@ public class MovingPlatform extends AbstractPlatform {
 
     public MovementDirection direction;
 
-    private float speed = 60;
+    private final float speed = 60;
     private boolean reverse = false;
 
     private float minPosition, maxPosition;
@@ -18,7 +18,7 @@ public class MovingPlatform extends AbstractPlatform {
         setSize(mapLayer.getTileWidth(), mapLayer.getTileHeight());
     }
 
-    public static enum MovementDirection {
+    public enum MovementDirection {
         Static,
         Vertical,
         Horizontal
@@ -32,7 +32,6 @@ public class MovingPlatform extends AbstractPlatform {
     @Override
     protected void update(float timeDelta) {
         if(direction == MovementDirection.Static) {
-            return;
         }
         else if (direction == MovementDirection.Vertical) {
             if (getY() >= maxPosition) {

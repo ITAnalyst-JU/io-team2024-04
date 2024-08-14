@@ -1,10 +1,10 @@
 package core.views;
 
-public enum ScreenState {
+public enum ScreenEnum {
     MENU,
     PREFERENCES,
-    APPLICATION,
+    GAME,
     ENDGAME,
     LOADING,
-    LEVELSELECTION,
+    LEVELSELECTION
 }

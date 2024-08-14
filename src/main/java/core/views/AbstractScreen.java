@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import core.general.Observable;
 import core.general.Observer;
 
-public class AbstractScreen extends Observable<Observer<ScreenState>> implements Screen {
+public class AbstractScreen extends Observable<Observer<ScreenEnum>> implements Screen {
 
     // Generated cycle in class dependency graph
     // observer pattern used
@@ -18,13 +18,13 @@ public class AbstractScreen extends Observable<Observer<ScreenState>> implements
         this.stage = stage;
     }
 
-    public void notifyOrchestrator(ScreenState screenState) {
-
-        notifyObservers(observer -> observer.respondToEvent(screenState));
+    void notifyOrchestrator(ScreenEnum screenEnum) {
+        notifyObservers(observer -> observer.respondToEvent(screenEnum));
     }
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override

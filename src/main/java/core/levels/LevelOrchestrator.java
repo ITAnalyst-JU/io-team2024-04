@@ -11,13 +11,18 @@ public class LevelOrchestrator {
         this.levels = new HashMap<>();
     }
 
-    public AbstractLevel getLevel(int levelNumber) {
+    public AbstractLevel getLevel(LevelEnum levelEnum) {
+        int levelNumber = levelEnum.getLevelNumber();
+        if (!levels.containsKey(levelNumber)) {
+            this.loadLevel(levelNumber);
+        }
         return levels.get(levelNumber);
     }
 
-    public void loadLevel(int levelNumber) {
+
+
+    private void loadLevel(int levelNumber) {
         AbstractLevel level = levelAbstractFactory.createLevel(levelNumber);
         levels.put(levelNumber, level);
     }
-
 }

@@ -10,10 +10,9 @@ import core.views.ScreenAbstractFactory;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		new Lwjgl3Application(
-			SupremeOrchestratorComposer.composeSupremeOrchestrator(
-					new SupremeOrchestrator(),
-					new ScreenAbstractFactory(),
-					new LevelOrchestrator(new LevelAbstractFactory())),
+			new SupremeOrchestrator(
+				new ScreenAbstractFactory(),
+				new LevelOrchestrator(new LevelAbstractFactory())),
             ConfigCreator.SetDesktopDefaultConfig(new Lwjgl3ApplicationConfiguration()));
 	}
 }

@@ -27,7 +27,6 @@ public class WorldContactListener implements ContactListener {
         }
         if (Constants.LayerNames.Deadly.equals(fixB.getUserData())) {
             playerDead = true;
-            return;
         }
 
     }

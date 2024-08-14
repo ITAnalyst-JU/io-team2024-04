@@ -1,24 +1,29 @@
 package core.views;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import core.orchestrator.SupremeOrchestrator;
+import core.levels.LevelEnum;
 
-import java.util.ArrayList;
+public class LevelSelectionScreen extends UIScreen {
+    private LevelEnum nextLevel;
 
-public class LevelSelectionScreen extends AbstractScreen {
+    public LevelEnum getNextLevel() {
+        return nextLevel;
+    }
 
     public LevelSelectionScreen(Stage stage) {
         super(stage);
+
+        Label titleLabel = new Label("Gradle Demon Adventures", skin, "default");
+        table.top().padTop(50);
+        table.add(titleLabel).expandX().padBottom(50);
+        table.row();
+
+        addButton("P = NP", () -> System.out.println("Not for you"));
+        addButton("Mario", () -> {
+            nextLevel = LevelEnum.LEVEL_1;
+            notifyOrchestrator(ScreenEnum.GAME);
+        });
+        addButton("Back to Menu", () -> notifyOrchestrator(ScreenEnum.MENU));
     }
 }

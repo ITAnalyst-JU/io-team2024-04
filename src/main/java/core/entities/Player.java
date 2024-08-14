@@ -11,12 +11,12 @@ import core.utilities.Constants;
 import core.utilities.Constants.Physics;
 
 public class Player implements InputProcessor {
-    private Sprite sprite;
+    private final Sprite sprite;
 
-    private Body body;
+    private final Body body;
 
-    private float yVelocityLimit = 10f;
-    private float xVelocityBase = 10f;
+    private final float yVelocityLimit = 10f;
+    private final float xVelocityBase = 10f;
 
     private int sideKeyPressed = 0;
 

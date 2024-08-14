@@ -8,9 +8,9 @@ import com.badlogic.gdx.math.Vector2;
 
 public class BasicEnemy extends AbstractEnemy {
 
-    private Vector2 currentVelocity = new Vector2(0, 0);
-    private float yVelocityLimit = 60 * 4;
-    private float gravity = 60 * 9;
+    private final Vector2 currentVelocity = new Vector2(0, 0);
+    private final float yVelocityLimit = 60 * 4;
+    private final float gravity = 60 * 9;
 
     public BasicEnemy(Sprite sprite, TiledMapTileLayer mapLayer) {
         super(sprite, mapLayer);

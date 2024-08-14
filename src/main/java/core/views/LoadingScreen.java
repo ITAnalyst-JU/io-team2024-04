@@ -1,7 +1,6 @@
 package core.views;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import core.orchestrator.SupremeOrchestrator;
 
 public class LoadingScreen extends AbstractScreen {
     public LoadingScreen(Stage stage) {
@@ -10,6 +9,6 @@ public class LoadingScreen extends AbstractScreen {
 
     @Override
     public void render(float delta) {
-        super.notifyOrchestrator(ScreenState.MENU);
+        super.notifyOrchestrator(ScreenEnum.MENU);
     }
 }

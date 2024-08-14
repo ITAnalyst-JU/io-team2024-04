@@ -11,9 +11,9 @@ public class MovingEnemy extends AbstractEnemy {
     protected float xVelocityBase = 30;
     protected float yVelocityBase = 100;
 
-    private Vector2 currentVelocity = new Vector2(0, 0);
-    private float yVelocityLimit = 60 * 4;
-    private float gravity = 60 * 9;
+    private final Vector2 currentVelocity = new Vector2(0, 0);
+    private final float yVelocityLimit = 60 * 4;
+    private final float gravity = 60 * 9;
 
     public MovingEnemy(Sprite sprite, TiledMapTileLayer mapLayer) {
         super(sprite, mapLayer);

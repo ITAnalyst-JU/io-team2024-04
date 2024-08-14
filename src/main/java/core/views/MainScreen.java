@@ -27,43 +27,31 @@ import core.entities.MovingEnemy;
 import core.entities.MovingPlatform;
 import core.entities.MovingPlatform.MovementDirection;
 import core.entities.Player;
-import core.orchestrator.SupremeOrchestrator;
+import core.levels.AbstractLevel;
 import core.utilities.Constants;
 import core.utilities.WorldContactListener;
 
 public class MainScreen extends AbstractScreen {
 
-    private TiledMap map;
-    private OrthogonalTiledMapRenderer renderer;
-    private OrthographicCamera camera;
+    private final AbstractLevel level;
 
-    private World world;
-
-    private Player player;
-    private long beginTime;
-
-    private Vector2 playerBeginPosition;
-    private String mapName;
-
-    private WorldContactListener contactListener;
-
-    //TODO: Find better solution
-    private List<AbstractEntity> entities;
-
-    public MainScreen(Stage stage, Vector2 playerBeginPosition, String mapName) {
+    public MainScreen(Stage stage, AbstractLevel level) {
         super(stage);
-        this.playerBeginPosition = playerBeginPosition;
-        this.mapName = mapName;
+        this.level = level;
     }
 
     @Override
     public void show() {
-        world = new World(Constants.Physics.Gravity, false);
-        map = new TmxMapLoader().load(mapName);
-        player = new Player(new Sprite(new Texture("player/player.png")),
-                (TiledMapTileLayer)map.getLayers().get(Constants.LayerNames.Tiles), world);
-
-        entities = new ArrayList<>();
+        // TODO: delete locals
+        level.setWorld(new World(Constants.Physics.Gravity, false));
+        World world = level.getWorld();
+        level.setMap(new TmxMapLoader().load(level.getMapName()));
+        TiledMap map = level.getMap();
+        level.setPlayer(new Player(new Sprite(new Texture("player/player.png")),
+                (TiledMapTileLayer)map.getLayers().get(Constants.LayerNames.Tiles), world));
+        Player player = level.getPlayer();
+        level.setEntities(new ArrayList<>());
+        List<AbstractEntity> entities = level.getEntities();
 
         //TODO: Refactor this
         map.getLayers().get("Entities Layer").getObjects().forEach(obj -> {
@@ -102,7 +90,7 @@ public class MainScreen extends AbstractScreen {
                         platform.setMovementBounds((float)obj.getProperties().get("minX"), (float)obj.getProperties().get("maxX"));
                     }
                     else if(direction == MovementDirection.Vertical) {
-                        // For reasons uncomprehensible to human mind, Tiled Y axis is inverted
+                        // For reasons incomprehensible to human mind, Tiled Y axis is inverted
                         // TODO: Replace magic numbers with map values
                         platform.setMovementBounds(960 - (float)obj.getProperties().get("maxY"), 960 - (float)obj.getProperties().get("minY"));
                     }
@@ -113,20 +101,32 @@ public class MainScreen extends AbstractScreen {
 
 
         this.loadMap(map);
-        contactListener = new WorldContactListener();
-        contactListener.setPlayerDead(true); // instead of setting position, and because dieing works exactly like spowning (and always should)
+        level.setContactListener(new WorldContactListener());
+        WorldContactListener contactListener = level.getContactListener();
+        contactListener.setPlayerDead(true); // instead of setting position, and because dying works exactly like spawning (and always should)
         world.setContactListener(contactListener);
 
-        renderer = new OrthogonalTiledMapRenderer(map);
-        camera  = new OrthographicCamera();
+        level.setRenderer(new OrthogonalTiledMapRenderer(map));
+        level.setCamera(new OrthographicCamera());
         Gdx.input.setInputProcessor(player);
-        beginTime = TimeUtils.millis();
+        level.setBeginTime(TimeUtils.millis());
     }
 
     @Override
     public void render(float v) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        // TODO: delete locals
+        World world = level.getWorld();
+        TiledMap map = level.getMap();
+        Player player = level.getPlayer();
+        List<AbstractEntity> entities = level.getEntities();
+        OrthogonalTiledMapRenderer renderer = level.getRenderer();
+        OrthographicCamera camera = level.getCamera();
+        WorldContactListener contactListener = level.getContactListener();
+        long beginTime = level.getBeginTime();
+        Vector2 playerBeginPosition = level.getPlayerBeginPosition();
 
         world.step(Gdx.graphics.getDeltaTime(), 6, 2);
         if (contactListener.isPlayerDead()) {
@@ -149,19 +149,21 @@ public class MainScreen extends AbstractScreen {
         if (contactListener.isGameEnded()) {
             long timePassed = TimeUtils.timeSinceMillis(beginTime);
 
-            this.notifyOrchestrator(ScreenState.MENU);
+            this.notifyOrchestrator(ScreenEnum.MENU);
         }
     }
 
     public void loadMap(TiledMap map) {
+        // TODO: delete locals
+        World world = level.getWorld();
+
         for (MapLayer layer : map.getLayers()) {
             String layerName = layer.getName();
             if (layerName.equals(Constants.LayerNames.Tiles) || layerName.equals("Entities Layer")) {//TODO: change this to a constant
                 continue;
             }
             for (MapObject object : layer.getObjects()) {
-                if (object instanceof RectangleMapObject) {
-                    RectangleMapObject rectangleObject = (RectangleMapObject) object;
+                if (object instanceof RectangleMapObject rectangleObject) {
                     Rectangle rectangle = rectangleObject.getRectangle();
                     BodyDef bodyDef = new BodyDef();
                     bodyDef.type = BodyDef.BodyType.StaticBody;
@@ -180,6 +182,7 @@ public class MainScreen extends AbstractScreen {
 
     @Override
     public void resize(int i, int i1) {
+        OrthographicCamera camera = level.getCamera();
         camera.viewportWidth = (float)i/3;
         camera.viewportHeight = (float)i1/3;
     }
@@ -201,8 +204,6 @@ public class MainScreen extends AbstractScreen {
 
     @Override
     public void dispose() {
-        world.dispose();
-        map.dispose();
-        renderer.dispose();
+        level.dispose();
     }
 }

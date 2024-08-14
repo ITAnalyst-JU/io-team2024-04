@@ -9,7 +9,7 @@ public abstract class AbstractEntity extends Sprite {
     public static final String propertyNameCollision = "hasCollision";
     public static final String propertyNameFinishing = "isFinishing";
 
-    private TiledMapTileLayer mapLayer;
+    private final TiledMapTileLayer mapLayer;
 
     public AbstractEntity(Sprite sprite, TiledMapTileLayer mapLayer) {
         super(sprite);
@@ -21,10 +21,7 @@ public abstract class AbstractEntity extends Sprite {
     }
 
     protected boolean detectCollisionWithTile(float x, float y, String property) {
-        if (checkCellProperty(x, y, property) || checkCellProperty(x, y + getHeight(), property) || checkCellProperty(x + getWidth(), y, property) || checkCellProperty(x + getWidth(), y + getHeight(), property)) {
-            return true;
-        }
-        return false;
+        return checkCellProperty(x, y, property) || checkCellProperty(x, y + getHeight(), property) || checkCellProperty(x + getWidth(), y, property) || checkCellProperty(x + getWidth(), y + getHeight(), property);
     }
 
     protected Vector2 detectCollisionWithTilePrecise(Vector2 oldPosition, Vector2 newPosition, String property) {
