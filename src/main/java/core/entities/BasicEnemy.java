@@ -15,10 +15,6 @@ public class BasicEnemy extends AbstractEnemy {
 
     @Override
     public Vector2 update() {
-        Vector2 position = body.getPosition();
-        position.x *= Constants.Physics.Scale;
-        position.y *= Constants.Physics.Scale;
-        sprite.setPosition(position.x - sprite.getWidth()/2f, position.y - sprite.getHeight()/2f);
-        return position;
+        return super.update();
     }
 }

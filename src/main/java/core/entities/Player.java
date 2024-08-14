@@ -22,11 +22,7 @@ public class Player extends AbstractEntity implements InputProcessor {
 
     public Vector2 update() {
         body.setLinearVelocity(sideKeyPressed * this.xVelocityBase, body.getLinearVelocity().y);
-        Vector2 position = body.getPosition();
-        position.x *= Constants.Physics.Scale;
-        position.y *= Constants.Physics.Scale;
-        sprite.setPosition(position.x - sprite.getWidth()/2f, position.y - sprite.getHeight()/2f);
-        return position;
+        return super.update();
     }
 
     @Override

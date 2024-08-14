@@ -46,7 +46,7 @@ public class WorldContactListener implements ContactListener {
     private void enemyContact(Fixture enemyFix, Fixture fix2) {
         if (enemyFix.getUserData() instanceof AbstractEnemy enemy) {
             if (Constants.LayerNames.Deadly.equals(fix2.getUserData())) {
-                enemy.remove();
+                enemy.setToRemove();
                 return;
             }
         }

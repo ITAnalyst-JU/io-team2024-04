@@ -18,6 +18,7 @@ public class MovingPlatform extends AbstractPlatform {
 
     public MovingPlatform(Sprite sprite, TiledMapTileLayer mapLayer, World world) {
         super(sprite, mapLayer, world);
+        body.setGravityScale(0);
     }
 
     public static enum MovementDirection {
@@ -34,11 +35,7 @@ public class MovingPlatform extends AbstractPlatform {
     @Override
     public Vector2 update() {
         //TODO: Implement platform movement
-        Vector2 position = body.getPosition();
-        position.x *= Constants.Physics.Scale;
-        position.y *= Constants.Physics.Scale;
-        sprite.setPosition(position.x - sprite.getWidth()/2f, position.y - sprite.getHeight()/2f);
-        return position;
+        return super.update();
     }
 
 }

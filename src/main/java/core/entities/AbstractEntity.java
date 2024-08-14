@@ -11,11 +11,14 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
+import core.utilities.Constants;
 import core.utilities.Constants.Physics;
 
 public abstract class AbstractEntity {
     protected Sprite sprite;
     protected Body body;
+    
+    protected boolean toRemove = false;
 
     public AbstractEntity(Sprite sprite, TiledMapTileLayer mapLayer, World world) {
         this.sprite = sprite;
@@ -45,14 +48,27 @@ public abstract class AbstractEntity {
         body.setTransform(position, 0);
     }
 
-    //TODO: update dependig on timeDelta
-    public abstract Vector2 update();
+    //TODO: update depending on timeDelta
+    public Vector2 update() {
+        Vector2 position = body.getPosition();
+        position.x *= Constants.Physics.Scale;
+        position.y *= Constants.Physics.Scale;
+        sprite.setPosition(position.x - sprite.getWidth()/2f, position.y - sprite.getHeight()/2f);
+        return position;
+    };
 
     public void draw(Batch batch) {
         sprite.draw(batch);
     }
 
+    //TODO: Actually remove the body from the world
     public void remove() {
-        body.getWorld().destroyBody(body);
+        // body.getWorld().destroyBody(body);
+        setPosition(new Vector2(-100, -100), false);
+        body.setGravityScale(0);
+    }
+
+    public void setToRemove() {
+        toRemove = true;
     }
 }
