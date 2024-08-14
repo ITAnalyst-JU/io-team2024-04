@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.World;
 public abstract class AbstractEnemy extends AbstractEntity {
 
     public AbstractEnemy(Sprite sprite, TiledMapTileLayer mapLayer, World world) {
-        super(sprite, mapLayer, world);
+        super(sprite, mapLayer, world, false);
     }
 
     @Override

@@ -17,7 +17,7 @@ public class Player extends AbstractEntity implements InputProcessor {
     private int sideKeyPressed = 0;
 
     public Player(Sprite sprite, TiledMapTileLayer mapLayer, World world) {
-        super(sprite, mapLayer, world);
+        super(sprite, mapLayer, world, false);
     }
 
     public Vector2 update() {
