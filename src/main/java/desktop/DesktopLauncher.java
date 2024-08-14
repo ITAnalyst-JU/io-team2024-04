@@ -1,6 +1,7 @@
 package desktop;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import core.levels.LevelAbstractFactory;
 import core.levels.LevelOrchestrator;
 import core.orchestrator.SupremeOrchestrator;
@@ -13,6 +14,6 @@ public class DesktopLauncher {
 					new SupremeOrchestrator(),
 					new ScreenAbstractFactory(),
 					new LevelOrchestrator(new LevelAbstractFactory())),
-            ConfigCreator.GetDesktopDefaultConfig());
+            ConfigCreator.SetDesktopDefaultConfig(new Lwjgl3ApplicationConfiguration()));
 	}
 }

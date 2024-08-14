@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import core.orchestrator.SupremeOrchestrator;
@@ -18,10 +19,10 @@ public abstract class UIScreen extends AbstractScreen {
     protected BitmapFont font;
     protected Table table;
 
-    public UIScreen(SupremeOrchestrator supremeOrchestrator) {
-        super(supremeOrchestrator);
+    public UIScreen(Stage stage) {
+        super(stage);
         initializeUIComponents();
-        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(super.stage);
         setupGlobalKeyListener();
     }
 

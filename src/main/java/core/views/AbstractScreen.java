@@ -4,23 +4,23 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import core.orchestrator.SupremeOrchestrator;
+import core.general.Observable;
+import core.general.Observer;
 
-public class AbstractScreen implements Screen {
-    // Generates cycle in class dependency graph
-    // TODO: think about observer
-    private final SupremeOrchestrator orchestrator;
+public class AbstractScreen extends Observable<Observer<ScreenState>> implements Screen {
+
+    // Generated cycle in class dependency graph
+    // observer pattern used
+    // dependency inversion principle applied ;)
     protected Stage stage;
 
-    public AbstractScreen(SupremeOrchestrator supremeOrchestrator) {
-        stage = new Stage(new ScreenViewport()); // TODO: dependency injection
-        this.orchestrator = supremeOrchestrator;
+    public AbstractScreen(Stage stage) {
+        this.stage = stage;
     }
 
-    // foundations for observer pattern
-    public void notifyOrchestator(ScreenState screenState) {
-        orchestrator.changeScreen(screenState);
+    public void notifyOrchestrator(ScreenState screenState) {
+
+        notifyObservers(observer -> observer.respondToEvent(screenState));
     }
 
     @Override

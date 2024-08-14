@@ -25,8 +25,6 @@ val aiVersion = "1.8.2"
 val gdxControllersVersion = "2.2.1"
 
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
     api("com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion")
     api("com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop")
     api("com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-desktop")
@@ -41,6 +39,10 @@ dependencies {
     api("com.badlogicgames.gdx:gdx-ai:$aiVersion")
     api("com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion")
     api("com.badlogicgames.gdx:gdx-box2d:$gdxVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.+")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("org.assertj:assertj-core:3.+")
+    testImplementation("org.mockito:mockito-core:5.+")
 }
 
 application {
@@ -51,6 +53,7 @@ tasks.test {
     description = "Runs the unit tests"
     useJUnitPlatform()
     workingDir = file("./src/test/resources")
+    jvmArgs("-Xshare:off", "-XX:+EnableDynamicAgentLoading")
 }
 
 /* below tasks only for learning purposes */

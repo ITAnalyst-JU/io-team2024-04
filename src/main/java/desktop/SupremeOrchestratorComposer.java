@@ -13,7 +13,6 @@ public class SupremeOrchestratorComposer
     {
         supremeOrchestrator.setScreenAbstractFactory(screenAbstractFactory);
         supremeOrchestrator.setLevelOrchestrator(levelOrchestrator);
-        screenAbstractFactory.setSupremeOrchestrator(supremeOrchestrator);
         return supremeOrchestrator;
     }
 }

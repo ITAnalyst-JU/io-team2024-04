@@ -1,4 +1,4 @@
-package core.levels;
+package core.views;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +18,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import core.entities.AbstractEntity;
@@ -29,10 +30,8 @@ import core.entities.Player;
 import core.orchestrator.SupremeOrchestrator;
 import core.utilities.Constants;
 import core.utilities.WorldContactListener;
-import core.views.AbstractScreen;
-import core.views.ScreenState;
 
-public class LevelScreen extends AbstractScreen {
+public class MainScreen extends AbstractScreen {
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
@@ -51,8 +50,8 @@ public class LevelScreen extends AbstractScreen {
     //TODO: Find better solution
     private List<AbstractEntity> entities;
 
-    public LevelScreen(SupremeOrchestrator orchestrator, Vector2 playerBeginPosition, String mapName) {
-        super(orchestrator);
+    public MainScreen(Stage stage, Vector2 playerBeginPosition, String mapName) {
+        super(stage);
         this.playerBeginPosition = playerBeginPosition;
         this.mapName = mapName;
     }
@@ -150,7 +149,7 @@ public class LevelScreen extends AbstractScreen {
         if (contactListener.isGameEnded()) {
             long timePassed = TimeUtils.timeSinceMillis(beginTime);
 
-            this.notifyOrchestator(ScreenState.MENU);
+            this.notifyOrchestrator(ScreenState.MENU);
         }
     }
 
