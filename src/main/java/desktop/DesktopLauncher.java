@@ -7,6 +7,7 @@ import core.levels.LevelOrchestrator;
 import core.orchestrator.SupremeOrchestrator;
 import core.views.ScreenAbstractFactory;
 
+// UNTESTABLE
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		new Lwjgl3Application(
