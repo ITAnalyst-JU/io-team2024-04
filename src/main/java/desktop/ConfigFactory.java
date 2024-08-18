@@ -7,12 +7,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.*;
+
+// NOTE: cannot use Gdx.*, context is not initialized
 
 public class ConfigFactory {
     private static final String CONFIG_PATH = "config/config.json";
@@ -59,22 +56,29 @@ public class ConfigFactory {
         try {
             return mapper.writeValueAsString(configRecord);
         } catch (Exception e) {
-            System.err.println("Failed to serialize config record!");
+            System.err.println("[ConfigFactory] Failed to serialize config record!");
             System.exit(1);
             return null; // not reachable
         }
     }
 
     private static void saveConfig(String configJson) {
-        FileHandle configFile = Gdx.files.local(CONFIG_PATH);
-        configFile.writeString(configJson, false);
+        BufferedWriter configFile = FileHandler.getFileWriter(CONFIG_PATH);
+        try {
+            configFile.write(configJson);
+        } catch (IOException e) {
+            System.err.println("[ConfigFactory] Failed to write config file!");
+            System.exit(2);
+        } finally {
+            configFile.close();
+        }
     }
 
     private static ConfigRecord deserializeConfig(String configJson) {
         try {
             return mapper.readValue(configJson, ConfigRecord.class);
         } catch (Exception e) {
-            System.err.println("Failed to deserialize config record!");
+            System.err.println("[ConfigFactory] Failed to deserialize config record!");
             System.exit(1);
             return null; // not reachable
         }

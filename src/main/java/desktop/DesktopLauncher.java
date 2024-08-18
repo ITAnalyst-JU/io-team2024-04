@@ -1,14 +1,12 @@
 package desktop;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import core.levels.LevelAbstractFactory;
 import core.levels.LevelOrchestrator;
 import core.orchestrator.SupremeOrchestrator;
 import core.views.ScreenAbstractFactory;
 
-// UNTESTABLE
+// NOTE: UNTESTABLE
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		new Lwjgl3Application(
