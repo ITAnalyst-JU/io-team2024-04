@@ -2,26 +2,35 @@ package core.entities;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 
 public class MovingPlatform extends AbstractPlatform {
 
-    public MovementDirection direction;
+    public MovementDirection direction = MovementDirection.STATIC;
 
-    private final float speed = 60;
-    private boolean reverse = false;
+    private final float speed = 2f;
 
-    private float minPosition, maxPosition;
+    private float minPosition = 0, maxPosition = 0;
 
-    public MovingPlatform(Sprite sprite, TiledMapTileLayer mapLayer, MovementDirection direction) {
-        super(sprite, mapLayer);
-        this.direction = direction;
-        setSize(mapLayer.getTileWidth(), mapLayer.getTileHeight());
+    public MovingPlatform(Sprite sprite, TiledMapTileLayer mapLayer, World world) {
+        super(sprite, mapLayer, world);
+        switch (direction) {
+            case HORIZONTAL:
+                body.setLinearVelocity(speed, 0);
+                break;
+            case VERTICAL:
+                body.setLinearVelocity(0, speed);
+                break;
+            case STATIC:
+                break;
+        }
     }
 
-    public enum MovementDirection {
-        Static,
-        Vertical,
-        Horizontal
+    public static enum MovementDirection {
+        STATIC,
+        VERTICAL,
+        HORIZONTAL
     }
 
     public void setMovementBounds(float minPosition, float maxPosition) {
@@ -30,39 +39,30 @@ public class MovingPlatform extends AbstractPlatform {
     }
 
     @Override
-    protected void update(float timeDelta) {
-        if(direction == MovementDirection.Static) {
+    public Vector2 update() {
+        switch (direction) {
+            case HORIZONTAL:
+                if (body.getPosition().x < minPosition) {
+                    body.setLinearVelocity(speed, 0);
+                } else if (body.getPosition().x > maxPosition) {
+                    body.setLinearVelocity(-speed, 0);
+                }
+                if(body.getLinearVelocity().x == 0)
+                    body.setLinearVelocity(speed, 0);
+                break;
+            case VERTICAL:
+                if (body.getPosition().y < minPosition) {
+                    body.setLinearVelocity(0, speed);
+                } else if (body.getPosition().y > maxPosition) {
+                    body.setLinearVelocity(0, -speed);
+                }
+                if(body.getLinearVelocity().y == 0)
+                    body.setLinearVelocity(0, speed);
+                break;
+            case STATIC:
+                break;
         }
-        else if (direction == MovementDirection.Vertical) {
-            if (getY() >= maxPosition) {
-                reverse = true;
-            }
-            else if (getY() <= minPosition) {
-                reverse = false;
-            }
-
-            if (reverse) {
-                setY(getY() - speed * timeDelta);
-            }
-            else {
-                setY(getY() + speed * timeDelta);
-            }
-        }
-        else if (direction == MovementDirection.Horizontal) {
-            if (getX() >= maxPosition) {
-                reverse = true;
-            }
-            else if (getX() <= minPosition) {
-                reverse = false;
-            }
-
-            if (reverse) {
-                setX(getX() - speed * timeDelta);
-            }
-            else {
-                setX(getX() + speed * timeDelta);
-            }
-        }
+        return super.update();
     }
-    
+
 }

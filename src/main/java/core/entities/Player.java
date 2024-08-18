@@ -8,12 +8,8 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import core.utilities.Constants;
-import core.utilities.Constants.Physics;
 
-public class Player implements InputProcessor {
-    private final Sprite sprite;
-
-    private final Body body;
+public class Player extends AbstractEntity implements InputProcessor {
 
     private final float yVelocityLimit = 10f;
     private final float xVelocityBase = 10f;
@@ -21,45 +17,17 @@ public class Player implements InputProcessor {
     private int sideKeyPressed = 0;
 
     public Player(Sprite sprite, TiledMapTileLayer mapLayer, World world) {
-        this.sprite = sprite;
-
-        sprite.setSize(mapLayer.getTileWidth(), mapLayer.getTileHeight());
-
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.fixedRotation = true;
-        body = world.createBody(bodyDef);
-        body.setLinearDamping(0);
-        PolygonShape polygonShape = new PolygonShape();
-        polygonShape.setAsBox(sprite.getWidth()/Physics.Scale / 2f, sprite.getHeight()/Physics.Scale / 2f);
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = polygonShape;
-        fixtureDef.density = 1f;
-        fixtureDef.friction = 1f;
-        fixtureDef.restitution = 0;
-        Fixture fixture = body.createFixture(fixtureDef);
-        fixture.setUserData(this);
-        polygonShape.dispose();
+        super(sprite, mapLayer, world, BodyDef.BodyType.DynamicBody);
     }
 
     public Vector2 update() {
         body.setLinearVelocity(sideKeyPressed * this.xVelocityBase, body.getLinearVelocity().y);
-        Vector2 position = body.getPosition();
-        position.x *= Constants.Physics.Scale;
-        position.y *= Constants.Physics.Scale;
-        sprite.setPosition(position.x - sprite.getWidth()/2f, position.y - sprite.getHeight()/2f);
-        return position;
+        return super.update();
     }
 
-    public void setPosition(Vector2 position, boolean preserveVelocity) {
-        if (!preserveVelocity) {
-            body.setLinearVelocity(0, 0);
-        }
-        body.setTransform(position, 0);
-    }
-
-    public void draw(Batch batch) {
-        sprite.draw(batch);
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException("Player is immortal and cannot be killed.");
     }
 
     @Override

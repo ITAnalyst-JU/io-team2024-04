@@ -1,6 +1,8 @@
 package core.utilities;
 
 import com.badlogic.gdx.physics.box2d.*;
+
+import core.entities.AbstractEnemy;
 import core.entities.Player;
 
 public class WorldContactListener implements ContactListener {
@@ -16,19 +18,40 @@ public class WorldContactListener implements ContactListener {
     public void beginContact(Contact contact) {
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
-        if (fixB.getUserData() instanceof Player) {
-            Fixture temp = fixA;
-            fixA = fixB;
-            fixB = temp;
+        if (fixA.getUserData() instanceof Player) {
+            playerContact(fixA, fixB);
         }
-        if (Constants.LayerNames.Finishing.equals(fixB.getUserData())) {
+        if (fixB.getUserData() instanceof Player) {
+            playerContact(fixB, fixA);
+        }
+        if (fixA.getUserData() instanceof AbstractEnemy) {
+            enemyContact(fixA, fixB);
+        }
+        if (fixB.getUserData() instanceof AbstractEnemy) {
+            enemyContact(fixB, fixA);
+        }
+    }
+
+    private void playerContact(Fixture playerFix, Fixture fix2) {
+        if (Constants.LayerNames.Deadly.equals(fix2.getUserData()) || fix2.getUserData() instanceof AbstractEnemy) {
+            playerDead = true;
+        }
+        if (Constants.LayerNames.Finishing.equals(fix2.getUserData())) {
             gameEnded = true;
             return;
         }
-        if (Constants.LayerNames.Deadly.equals(fixB.getUserData())) {
-            playerDead = true;
-        }
+    }
 
+    private void enemyContact(Fixture enemyFix, Fixture fix2) {
+        if (enemyFix.getUserData() instanceof AbstractEnemy enemy) {
+            if (Constants.LayerNames.Deadly.equals(fix2.getUserData())) {
+                enemy.setToRemove();
+                return;
+            }
+        }
+        else {
+            throw new IllegalArgumentException("Not an enemy fixture");
+        }
     }
 
     @Override
