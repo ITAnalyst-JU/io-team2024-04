@@ -7,8 +7,9 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.io.File;
 
-import static desktop.constants.ConfigConstants.*;
 import static desktop.constants.ErrorCodes.*;
+import static desktop.constants.ConfigConstants.*;
+
 
 // NOTE: cannot use Gdx.*, context is not initialized
 

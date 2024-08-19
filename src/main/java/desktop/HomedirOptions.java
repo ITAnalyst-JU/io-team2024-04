@@ -6,6 +6,7 @@ import com.badlogic.gdx.Preferences;
 import static desktop.constants.PreferencesConstants.*;
 
 // TODO: think about having this in home directory, is it good idea?
+// NOTE: PROBABLY UNTESTABLE
 
 public class HomedirOptions {
     private static final String CONF_MUSIC_VOLUME = "volume";
