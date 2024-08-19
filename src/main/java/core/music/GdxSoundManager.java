@@ -25,6 +25,7 @@ public class GdxSoundManager implements SoundControl {
         }
         currentMusic = Gdx.audio.newMusic(Gdx.files.internal(musicPath));
         currentMusic.setLooping(loop);
+        currentMusic.setVolume(soundManager.getVolume());
         currentMusic.play();
     }
 
@@ -36,5 +37,19 @@ public class GdxSoundManager implements SoundControl {
             currentMusic = null;
         }
     }
+
+    @Override
+    public void setVolume(float volume) {
+        soundManager.setVolume(volume);
+        if (currentMusic != null) {
+            currentMusic.setVolume(volume);
+        }
+    }
+
+    @Override
+    public float getVolume() {
+        return soundManager.getVolume();
+    }
+
 }
 

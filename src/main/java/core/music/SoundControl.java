@@ -5,4 +5,6 @@ public interface SoundControl {
     void stopAllSounds();
     void playMusic(String musicPath, boolean loop);
     void stopMusic();
+    void setVolume(float volume);
+    float getVolume();
 }

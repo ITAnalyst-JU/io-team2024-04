@@ -22,4 +22,12 @@ public class SoundInteractor {
     public void stopBackgroundMusic() {
         soundControl.stopMusic();
     }
+
+    public void setVolume(float volume) {
+        soundControl.setVolume(volume);
+    }
+
+    public float getVolume() {
+        return soundControl.getVolume();
+    }
 }
