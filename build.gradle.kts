@@ -48,6 +48,7 @@ dependencies {
 
 application {
     mainClass.set("desktop.DesktopLauncher")
+    tasks.run.get().workingDir = file("./src/main/resources")
 }
 
 tasks.test {

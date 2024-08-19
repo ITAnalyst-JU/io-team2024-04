@@ -3,7 +3,7 @@ package core.levels;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LevelOrchestrator {
+public class LevelOrchestrator implements ILevelOrchestrator {
     private final LevelAbstractFactory levelAbstractFactory;
     private final Map<Integer, AbstractLevel> levels;
     public LevelOrchestrator(LevelAbstractFactory levelAbstractFactory) {

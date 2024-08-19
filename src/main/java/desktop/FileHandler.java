@@ -1,30 +1,51 @@
-// package desktop;
+package desktop;
 
-// import java.io.BufferedWriter;
-// import java.io.File;
-// import java.io.FileWriter;
-// import java.io.IOException;
+import java.io.*;
 
-// public class FileHandler {
-//     public static BufferedWriter getFileWriter(String path) {
-//         File file = new File(path);
-//         file.getParentFile().mkdirs();
+import static desktop.constants.ErrorCodes.*;
 
-//         if (!file.isFile()) {
-//             try {
-//                 file.createNewFile();
-//             } catch (IOException e) {
-//                 System.err.println("[FileHandler] Failed to create file: " + path);
-//                 System.exit(2);
-//             }
-//         }
+public class FileHandler {
+    public static File createFile(String path) {
+        File file = new File(path);
+        file.getParentFile().mkdirs();
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            System.err.println(
+                    "[FileHandler.createFile] Failed to create file: " + path);
+            System.exit(CONFIG_FILE_CREATION_ERROR);
+        }
+        return file;
+    }
+    public static File getFileDescriptor(String path) {
+        File file = new File(path);
+        if (!file.isFile()) return null;
+        return file;
+    }
 
-//         try {
-//             return new BufferedWriter(new FileWriter(file));
-//         } catch (IOException e) {
-//             System.err.println("[FileHandler] Failed to create BufferedWriter for file: " + path);
-//             System.exit(2);
-//         }
-//         return null; // not reachable
-//     }
-// }
+    public static String readFromFile(File file) {
+        StringBuilder content = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                content.append(line).append("\n");
+            }
+        } catch (IOException e) {
+            System.err.println(
+                    "[FileHandler.readFromFile] Failed to read file: " + file.getAbsolutePath());
+            System.exit(BUFFERED_READER_CREATION_ERROR);
+        }
+
+        return content.toString();
+    }
+
+    public static void writeToFile(File file, String content) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            writer.write(content);
+        } catch (IOException e) {
+            System.err.println(
+                    "[FileHandler.writeToFile] Failed to write to file: " + file.getAbsolutePath());
+            System.exit(BUFFERED_WRITER_CREATION_ERROR);
+        }
+    }
+}
