@@ -6,14 +6,15 @@ import core.levels.LevelAbstractFactory;
 import core.levels.LevelOrchestrator;
 import core.orchestrator.SupremeOrchestrator;
 import core.views.ScreenAbstractFactory;
+import desktop.constants.ConfigConstants;
 
-// UNTESTABLE
+// NOTE: UNTESTABLE
 public class DesktopLauncher {
-	public static void main (String[] arg) {
-		new Lwjgl3Application(
-			new SupremeOrchestrator(
-				new ScreenAbstractFactory(),
-				new LevelOrchestrator(new LevelAbstractFactory())),
-            ConfigCreator.SetDesktopDefaultConfig(new Lwjgl3ApplicationConfiguration()));
-	}
+    public static void main(String[] arg) {
+        new Lwjgl3Application(
+                new SupremeOrchestrator(
+                        new ScreenAbstractFactory(),
+                        new LevelOrchestrator(new LevelAbstractFactory())),
+                ConfigFactory.getDesktopConfig());
+    }
 }

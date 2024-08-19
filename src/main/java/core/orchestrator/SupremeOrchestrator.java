@@ -3,23 +3,23 @@ package core.orchestrator;
 import com.badlogic.gdx.Game;
 import core.general.Observer;
 import core.levels.AbstractLevel;
-import core.levels.LevelOrchestrator;
+import core.levels.ILevelOrchestrator;
 import core.views.MainScreen;
 import core.views.*;
 
 public class SupremeOrchestrator extends Game implements Observer<ScreenEnum> {
 
     private final ScreenAbstractFactory screenAbstractFactory;
-    private final LevelOrchestrator levelOrchestrator;
+    private final ILevelOrchestrator levelOrchestrator;
     private LoadingScreen loadingScreen;
     private PreferencesScreen preferencesScreen;
     private MenuScreen menuScreen;
     private MainScreen mainScreen;
-    private EndScreen endScreen;    
+    private EndScreen endScreen;
     private ScreenEnum screenEnum;
     private LevelSelectionScreen levelSelectionScreen;
 
-    public SupremeOrchestrator(ScreenAbstractFactory screenAbstractFactory, LevelOrchestrator levelOrchestrator) {
+    public SupremeOrchestrator(ScreenAbstractFactory screenAbstractFactory, ILevelOrchestrator levelOrchestrator) {
         this.screenEnum = ScreenEnum.LOADING;
         this.screenAbstractFactory = screenAbstractFactory;
         this.levelOrchestrator = levelOrchestrator;
@@ -31,7 +31,7 @@ public class SupremeOrchestrator extends Game implements Observer<ScreenEnum> {
     }
 
     // TODO: think about screens as temporary objects, delete them and set null
-    public void changeScreen(ScreenEnum screenEnum){
+    public void changeScreen(ScreenEnum screenEnum) {
         switch (screenEnum) {
             case ScreenEnum.MENU:
                 if (this.menuScreen == null) {
