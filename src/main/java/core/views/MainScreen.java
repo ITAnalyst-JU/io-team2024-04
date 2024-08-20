@@ -31,7 +31,6 @@ import core.levels.AbstractLevel;
 import core.utilities.Constants;
 import core.utilities.WorldContactListener;
 import core.utilities.Constants.Physics;
-import core.views.AbstractScreen;
 
 public class MainScreen extends AbstractScreen {
 

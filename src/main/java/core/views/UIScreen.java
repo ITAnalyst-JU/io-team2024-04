@@ -9,9 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import core.orchestrator.SupremeOrchestrator;
 
 import java.util.ArrayList;
+
+// TODO: app sliders and checkboxs
 
 public abstract class UIScreen extends AbstractScreen {
     protected Skin skin;

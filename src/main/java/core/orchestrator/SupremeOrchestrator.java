@@ -27,7 +27,7 @@ public class SupremeOrchestrator extends Game implements Observer<ScreenEnum> {
 
     @Override
     public void create() {
-        this.changeScreen(screenEnum);
+        this.changeScreen(screenEnum); // delegate to screenOrchestrator
     }
 
     // TODO: think about screens as temporary objects, delete them and set null

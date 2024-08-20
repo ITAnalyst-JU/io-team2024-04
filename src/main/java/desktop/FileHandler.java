@@ -4,6 +4,8 @@ import java.io.*;
 
 import static desktop.constants.ErrorCodes.*;
 
+// NOTE: UNTESTABLE
+
 public class FileHandler {
     public static File createFile(String path) {
         File file = new File(path);
