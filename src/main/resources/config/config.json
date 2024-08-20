@@ -1,0 +1,8 @@
+{
+  "foregroundFPS" : 60,
+  "title" : "Gradle Demon Adventures",
+  "windowWidth" : 1280,
+  "windowHeight" : 720,
+  "vsync" : true,
+  "icon" : "icons/icon.png"
+}
