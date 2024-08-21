@@ -8,8 +8,8 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public abstract class AbstractEnemy extends AbstractEntity {
 
-    public AbstractEnemy(Sprite sprite, Vector2 size, World world) {
-        super(sprite, size, world, BodyDef.BodyType.DynamicBody);
+    public AbstractEnemy(Sprite sprite, Vector2 size, World world, BodyDef.BodyType bodyType) {
+        super(sprite, size, world, bodyType);
     }
 
     @Override

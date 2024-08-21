@@ -19,10 +19,8 @@ import com.badlogic.gdx.utils.TimeUtils;
 import core.entities.*;
 import core.utilities.Constants;
 import core.utilities.WorldContactListener;
-import core.views.ScreenEnum;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class AbstractLevel {
@@ -56,11 +54,11 @@ public class AbstractLevel {
         Vector2 entitySize = new Vector2(((TiledMapTileLayer)map.getLayers().get(Constants.LayerNames.Tiles)).getTileHeight(),
                 ((TiledMapTileLayer)map.getLayers().get(Constants.LayerNames.Tiles)).getTileWidth());
 
+        loadMap();
         player = new Player(new Sprite(new Texture("player/player.png")), entitySize, world);
         entities = new ArrayList<>();
         entities.add(player);
         loadEntities(entitySize);
-        loadMap();
 
         contactListener = new WorldContactListener();
         contactListener.setPlayerDead(true);
@@ -112,17 +110,17 @@ public class AbstractLevel {
     }
 
     private void loadEntities(Vector2 entitySize) {
-        for (MapObject obj : map.getLayers().get("Entities Layer").getObjects()){
+        for (MapObject obj : map.getLayers().get(Constants.LayerNames.Entities).getObjects()){
             if(obj.getProperties().containsKey("enemy")) {
                 if(obj.getProperties().get("enemy").equals("moving")) {
                     MovingEnemy enemy = new MovingEnemy(new Sprite(new Texture("entities/enemy.png")), entitySize, world);
-                    enemy.setPosition(new Vector2((float)obj.getProperties().get("x")/ Constants.Physics.Scale, (float)obj.getProperties().get("y")/ Constants.Physics.Scale), false);
+                    enemy.setPosition(getPositionFromObj(obj), true);
                     enemy.setMovementBounds((float)obj.getProperties().get("minX")/ Constants.Physics.Scale, (float)obj.getProperties().get("maxX")/ Constants.Physics.Scale);
                     entities.add(enemy);
                 }
                 else if(obj.getProperties().get("enemy").equals("basic")){
                     BasicEnemy enemy = new BasicEnemy(new Sprite(new Texture("entities/enemy.png")), entitySize, world);
-                    enemy.setPosition(new Vector2((float)obj.getProperties().get("x")/ Constants.Physics.Scale, (float)obj.getProperties().get("y")/ Constants.Physics.Scale), false);
+                    enemy.setPosition(getPositionFromObj(obj), false);
                     entities.add(enemy);
                 }
             }
@@ -130,33 +128,41 @@ public class AbstractLevel {
                 if(obj.getProperties().get("platform").equals("moving")) {
                     MovingPlatform.MovementDirection direction;
                     if(obj.getProperties().get("direction").equals("static")) {
-                        direction = MovingPlatform.MovementDirection.STATIC;
+                        // A static platform allows friction, normal tile doesn't. Possibly other differences in the future, like platform breaking.
+                        // That's why they're loaded differently.
+                        StaticPlatform platform = new StaticPlatform(new Sprite(new Texture("entities/platform.png")), entitySize, world);
+                        platform.setPosition(getPositionFromObj(obj), true);
+                        entities.add(platform);
+                        continue;
                     }
-                    else if(obj.getProperties().get("direction").equals("horizontal")) {
+                    if(obj.getProperties().get("direction").equals("horizontal")) {
                         direction = MovingPlatform.MovementDirection.HORIZONTAL;
                     }
                     else if(obj.getProperties().get("direction").equals("vertical")) {
                         direction = MovingPlatform.MovementDirection.VERTICAL;
                     }
                     else {
-                        throw new RuntimeException();
+                        throw new IllegalArgumentException("Unsupported platform direction");
                     }
 
-                    MovingPlatform platform = new MovingPlatform(new Sprite(new Texture("entities/platform.png")), entitySize, world);
-                    platform.setPosition(new Vector2((float)obj.getProperties().get("x")/ Constants.Physics.Scale, (float)obj.getProperties().get("y")/ Constants.Physics.Scale), false);
+                    MovingPlatform platform = new MovingPlatform(new Sprite(new Texture("entities/platform.png")), entitySize, world, direction);
+                    platform.setPosition(getPositionFromObj(obj), true);
                     if(direction == MovingPlatform.MovementDirection.HORIZONTAL) {
                         platform.setMovementBounds((float)obj.getProperties().get("minX")/ Constants.Physics.Scale, (float)obj.getProperties().get("maxX")/ Constants.Physics.Scale);
                     }
-                    else if(direction == MovingPlatform.MovementDirection.VERTICAL) {
+                    else {
                         // For reasons uncomprehensible to human mind, Tiled Y axis is inverted
                         // TODO: Replace magic numbers with map values
                         platform.setMovementBounds((960 - (float)obj.getProperties().get("maxY"))/ Constants.Physics.Scale, (960 - (float)obj.getProperties().get("minY"))/ Constants.Physics.Scale);
                     }
-                    platform.direction = direction;
                     entities.add(platform);
                 }
             }
         }
+    }
+
+    private static Vector2 getPositionFromObj (MapObject obj) {
+        return new Vector2((float)obj.getProperties().get("x")/ Constants.Physics.Scale, (float)obj.getProperties().get("y")/ Constants.Physics.Scale);
     }
 
     public void loadMap() {

@@ -55,7 +55,7 @@ public abstract class AbstractEntity {
         return position;
     }
 
-    //TODO: update depending on timeDelta
+    //TODO: update depending on timeDelta - is it necessary, if Box2d does it for us?
     public void update() {
         Vector2 position = this.getPosition();
         sprite.setPosition(position.x - sprite.getWidth()/2f, position.y - sprite.getHeight()/2f);
