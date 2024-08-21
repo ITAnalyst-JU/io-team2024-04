@@ -1,11 +1,14 @@
-package desktop;
+package desktop.handlers;
 
 import java.io.*;
 
 import static desktop.constants.ErrorCodes.*;
 
+// NOTE: UNTESTABLE with UTs
+// TODO: integration test
+
 public class FileHandler {
-    public static File createFile(String path) {
+    public File createFile(String path) {
         File file = new File(path);
         file.getParentFile().mkdirs();
         try {
@@ -17,13 +20,14 @@ public class FileHandler {
         }
         return file;
     }
-    public static File getFileDescriptor(String path) {
+
+    public File getFileDescriptor(String path) {
         File file = new File(path);
         if (!file.isFile()) return null;
         return file;
     }
 
-    public static String readFromFile(File file) {
+    public String readFromFile(File file) {
         StringBuilder content = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
@@ -39,7 +43,7 @@ public class FileHandler {
         return content.toString();
     }
 
-    public static void writeToFile(File file, String content) {
+    public void writeToFile(File file, String content) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write(content);
         } catch (IOException e) {
