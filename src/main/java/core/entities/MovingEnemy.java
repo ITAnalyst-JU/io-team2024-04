@@ -15,8 +15,8 @@ public class MovingEnemy extends AbstractEnemy {
     private float minX = 0, maxX = 0;
     private boolean movingRight = true;
 
-    public MovingEnemy(Sprite sprite, TiledMapTileLayer mapLayer, World world) {
-        super(sprite, mapLayer, world);
+    public MovingEnemy(Sprite sprite, Vector2 size, World world) {
+        super(sprite, size, world);
         body.setLinearVelocity(maxSpeed, 0);
     }
 
@@ -26,7 +26,7 @@ public class MovingEnemy extends AbstractEnemy {
     }
 
     @Override
-    public Vector2 update() {
+    public void update() {
         if (body.getPosition().x < minX) {
             movingRight = true;
         } else if (body.getPosition().x > maxX) {
@@ -39,7 +39,7 @@ public class MovingEnemy extends AbstractEnemy {
             if(body.getLinearVelocity().x > -maxSpeed)
                 body.setLinearVelocity(body.getLinearVelocity().x - speedDelta, body.getLinearVelocity().y);
         }
-        return super.update();
+        super.update();
     }
 
 }

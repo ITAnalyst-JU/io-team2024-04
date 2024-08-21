@@ -20,10 +20,10 @@ public abstract class AbstractEntity {
     
     protected boolean toRemove = false;
 
-    public AbstractEntity(Sprite sprite, TiledMapTileLayer mapLayer, World world, BodyDef.BodyType bodyType) {
+    public AbstractEntity(Sprite sprite, Vector2 size, World world, BodyDef.BodyType bodyType) {
         this.sprite = sprite;
 
-        sprite.setSize(mapLayer.getTileWidth(), mapLayer.getTileHeight());
+        sprite.setSize(size.x, size.y);
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = bodyType;
         bodyDef.fixedRotation = true;
@@ -48,13 +48,17 @@ public abstract class AbstractEntity {
         body.setTransform(position, 0);
     }
 
-    //TODO: update depending on timeDelta
-    public Vector2 update() {
+    public Vector2 getPosition () {
         Vector2 position = body.getPosition();
         position.x *= Constants.Physics.Scale;
         position.y *= Constants.Physics.Scale;
-        sprite.setPosition(position.x - sprite.getWidth()/2f, position.y - sprite.getHeight()/2f);
         return position;
+    }
+
+    //TODO: update depending on timeDelta
+    public void update() {
+        Vector2 position = this.getPosition();
+        sprite.setPosition(position.x - sprite.getWidth()/2f, position.y - sprite.getHeight()/2f);
     };
 
     public void draw(Batch batch) {

@@ -13,5 +13,6 @@ public final class Constants {
         public static final String Tiles = "tiles";
         public static final String Finishing = "finish";
         public static final String Deadly = "deadly";
+        public static final String Entities = "Entities Layer";
     }
 }

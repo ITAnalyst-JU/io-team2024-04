@@ -16,13 +16,13 @@ public class Player extends AbstractEntity implements InputProcessor {
 
     private int sideKeyPressed = 0;
 
-    public Player(Sprite sprite, TiledMapTileLayer mapLayer, World world) {
-        super(sprite, mapLayer, world, BodyDef.BodyType.DynamicBody);
+    public Player(Sprite sprite, Vector2 size, World world) {
+        super(sprite, size, world, BodyDef.BodyType.DynamicBody);
     }
 
-    public Vector2 update() {
+    public void update() {
         body.setLinearVelocity(sideKeyPressed * this.xVelocityBase, body.getLinearVelocity().y);
-        return super.update();
+        super.update();
     }
 
     @Override
@@ -35,11 +35,9 @@ public class Player extends AbstractEntity implements InputProcessor {
         switch (keyNo) {
             case Input.Keys.A:
                 this.sideKeyPressed--;
-//                body.applyLinearImpulse(new Vector2(-xVelocityBase, 0), body.getPosition(), false);
                 break;
             case Input.Keys.D:
                 this.sideKeyPressed++;
-//                body.applyLinearImpulse(new Vector2(xVelocityBase, 0), body.getPosition(), false);
                 break;
             case Input.Keys.W:
                 body.setLinearVelocity(body.getLinearVelocity().x, yVelocityLimit);
@@ -53,11 +51,9 @@ public class Player extends AbstractEntity implements InputProcessor {
         switch (keyNo) {
             case Input.Keys.A:
                 this.sideKeyPressed++;
-//                body.setLinearVelocity(0, body.getLinearVelocity().y);
                 break;
             case Input.Keys.D:
                 this.sideKeyPressed--;
-//                body.setLinearVelocity(0, body.getLinearVelocity().y);
                 break;
         }
         return true;

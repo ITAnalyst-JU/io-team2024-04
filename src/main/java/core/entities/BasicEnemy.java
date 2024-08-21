@@ -9,12 +9,8 @@ import core.utilities.Constants;
 
 public class BasicEnemy extends AbstractEnemy {
 
-    public BasicEnemy(Sprite sprite, TiledMapTileLayer mapLayer, World world) {
-        super(sprite, mapLayer, world);
+    public BasicEnemy(Sprite sprite, Vector2 size, World world) {
+        super(sprite, size, world);
     }
 
-    @Override
-    public Vector2 update() {
-        return super.update();
-    }
 }
