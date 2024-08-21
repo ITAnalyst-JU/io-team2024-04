@@ -8,6 +8,9 @@ import desktop.handlers.JsonHandler;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
@@ -36,6 +39,12 @@ public class ConfigFactoryTest {
 
     @Test
     public void testApplyDesktopConfigConfigFileExists() {
+        System.setErr(new PrintStream(new OutputStream() {
+            @Override
+            public void write(int b) throws IOException {
+
+            }
+        }));
         var fileHandler = mock(FileHandler.class);
         var jsonHandler = mock(JsonHandler.class);
         var lwjgl3ApplicationConfiguration = mock(Lwjgl3ApplicationConfiguration.class);

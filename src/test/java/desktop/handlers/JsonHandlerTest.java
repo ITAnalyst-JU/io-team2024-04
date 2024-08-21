@@ -5,6 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class JsonHandlerTest {
@@ -40,6 +44,13 @@ public class JsonHandlerTest {
 
     @Test
     public void testDeserializeError() {
+        System.setErr(new PrintStream(new OutputStream() {
+            @Override
+            public void write(int b) throws IOException {
+
+            }
+        }));
+
         var objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
         var jsonHandler = new JsonHandler<>(objectMapper, DummyRecord.class);
         var serialized = "dummy mistake";
