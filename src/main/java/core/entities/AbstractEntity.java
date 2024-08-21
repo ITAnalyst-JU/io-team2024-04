@@ -34,7 +34,7 @@ public abstract class AbstractEntity {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = polygonShape;
         fixtureDef.density = 1f;
-        fixtureDef.friction = 1f;
+        fixtureDef.friction = 10f;
         fixtureDef.restitution = 0;
         Fixture fixture = body.createFixture(fixtureDef);
         fixture.setUserData(this);

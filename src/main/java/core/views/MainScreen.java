@@ -177,7 +177,12 @@ public class MainScreen extends AbstractScreen {
                     Body body = world.createBody(bodyDef);
                     PolygonShape polygonShape = new PolygonShape();
                     polygonShape.setAsBox(rectangle.getWidth() / Constants.Physics.Scale / 2f, rectangle.getHeight() / Constants.Physics.Scale / 2f);
-                    Fixture fixture = body.createFixture(polygonShape, 0f);
+                    FixtureDef fixtureDef = new FixtureDef();
+                    fixtureDef.shape = polygonShape;
+                    fixtureDef.density = 0f;
+                    fixtureDef.friction = 0f;
+                    Fixture fixture = body.createFixture(fixtureDef);
+
                     fixture.setUserData(layerName);
                     polygonShape.dispose();
                 }
