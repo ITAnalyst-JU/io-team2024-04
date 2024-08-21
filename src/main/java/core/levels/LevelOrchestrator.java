@@ -6,9 +6,9 @@ import java.util.Map;
 public class LevelOrchestrator implements ILevelOrchestrator {
     private final LevelAbstractFactory levelAbstractFactory;
     private final Map<Integer, AbstractLevel> levels;
-    public LevelOrchestrator(LevelAbstractFactory levelAbstractFactory) {
+    public LevelOrchestrator(LevelAbstractFactory levelAbstractFactory, Map<Integer, AbstractLevel> levels) {
         this.levelAbstractFactory = levelAbstractFactory;
-        this.levels = new HashMap<>();
+        this.levels = levels;
     }
 
     public AbstractLevel getLevel(LevelEnum levelEnum) {
