@@ -1,6 +1,6 @@
 package desktop.preferences;
 
-public class PreferencesOrchestrator {
+public class PreferencesOrchestrator implements IPreferencesOrchestrator {
     private final LocalPreferences localPreferences;
 
     public PreferencesOrchestrator(LocalPreferences localPreferences) {

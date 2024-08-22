@@ -1,5 +1,6 @@
 package core.music;
 
+// TODO combine it with preferences
 public class SoundInteractor {
     private final SoundControl soundControl;
 
