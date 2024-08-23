@@ -1,11 +1,22 @@
 package core.music;
 
-// TODO combine it with preferences
+import desktop.preferences.PreferencesOrchestrator;
+
 public class SoundInteractor {
     private final SoundControl soundControl;
+    private final PreferencesOrchestrator preferencesOrchestrator;
 
-    public SoundInteractor(SoundControl soundControl) {
+    public SoundInteractor(SoundControl soundControl, PreferencesOrchestrator preferencesOrchestrator) {
         this.soundControl = soundControl;
+        this.preferencesOrchestrator = preferencesOrchestrator;
+    }
+
+    public void loadPreferences() {
+        float initialMusicVolume = preferencesOrchestrator.getMusicVolume();
+        soundControl.setMusicVolume(initialMusicVolume);
+
+        float initialSoundVolume = preferencesOrchestrator.getSoundVolume();
+        soundControl.setSoundsVolume(initialSoundVolume);
     }
 
     public void playSoundEffect(String soundPath) {
@@ -16,6 +27,15 @@ public class SoundInteractor {
         soundControl.stopAllSounds();
     }
 
+    public void setSoundsVolume(float volume) {
+        soundControl.setSoundsVolume(volume);
+        preferencesOrchestrator.setSoundVolume(volume);  // Save to preferences
+    }
+
+    public float getSoundsVolume() {
+        return soundControl.getSoundsVolume();
+    }
+
     public void playBackgroundMusic(String musicPath, boolean loop) {
         soundControl.playMusic(musicPath, loop);
     }
@@ -24,11 +44,12 @@ public class SoundInteractor {
         soundControl.stopMusic();
     }
 
-    public void setVolume(float volume) {
-        soundControl.setVolume(volume);
+    public void setMusicVolume(float volume) {
+        soundControl.setMusicVolume(volume);
+        preferencesOrchestrator.setMusicVolume(volume);  // Save to preferences
     }
 
-    public float getVolume() {
-        return soundControl.getVolume();
+    public float getMusicVolume() {
+        return soundControl.getMusicVolume();
     }
 }

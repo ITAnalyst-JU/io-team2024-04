@@ -3,9 +3,12 @@ package core.music;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 
+import static desktop.constants.PreferencesConstants.DEFAULT_MUSIC_VOLUME;
+
 public class GdxSoundManager implements SoundControl {
     private final SoundManager soundManager = new SoundManager();
     private Music currentMusic;
+    private float musicVolume = DEFAULT_MUSIC_VOLUME;
 
     @Override
     public void playSound(String soundPath) {
@@ -18,6 +21,16 @@ public class GdxSoundManager implements SoundControl {
     }
 
     @Override
+    public void setSoundsVolume(float volume) {
+        soundManager.setVolume(volume);
+    }
+
+    @Override
+    public float getSoundsVolume() {
+        return soundManager.getVolume();
+    }
+
+    @Override
     public void playMusic(String musicPath, boolean loop) {
         if (currentMusic != null) {
             currentMusic.stop();
@@ -25,7 +38,7 @@ public class GdxSoundManager implements SoundControl {
         }
         currentMusic = Gdx.audio.newMusic(Gdx.files.internal(musicPath));
         currentMusic.setLooping(loop);
-        currentMusic.setVolume(soundManager.getVolume());
+        currentMusic.setVolume(musicVolume);  // Use local musicVolume variable
         currentMusic.play();
     }
 
@@ -39,17 +52,15 @@ public class GdxSoundManager implements SoundControl {
     }
 
     @Override
-    public void setVolume(float volume) {
-        soundManager.setVolume(volume);
+    public void setMusicVolume(float volume) {
+        this.musicVolume = volume;  // Set the music volume
         if (currentMusic != null) {
-            currentMusic.setVolume(volume);
+            currentMusic.setVolume(musicVolume);
         }
     }
 
     @Override
-    public float getVolume() {
-        return soundManager.getVolume();
+    public float getMusicVolume() {
+        return musicVolume;
     }
-
 }
-

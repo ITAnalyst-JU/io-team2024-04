@@ -7,14 +7,12 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import core.levels.LevelAbstractFactory;
 import core.levels.LevelOrchestrator;
 import core.orchestrator.SupremeOrchestrator;
-import desktop.preferences.PreferencesOrchestrator;
 import core.views.ScreenAbstractFactory;
 import core.views.ScreenOrchestrator;
 import desktop.config.ConfigFactory;
 import desktop.config.ConfigRecord;
 import desktop.handlers.FileHandler;
 import desktop.handlers.JsonHandler;
-import desktop.preferences.LocalPreferences;
 
 import java.util.HashMap;
 
@@ -24,7 +22,7 @@ public class DesktopLauncher {
         new Lwjgl3Application(
                 new SupremeOrchestrator(
                         new LevelOrchestrator(new LevelAbstractFactory(), new HashMap<>()),
-                        new ScreenOrchestrator(new ScreenAbstractFactory(new PreferencesOrchestrator(new LocalPreferences())), new HashMap<>())),
+                        new ScreenOrchestrator(new ScreenAbstractFactory(), new HashMap<>())),
                 new ConfigFactory(
                         new FileHandler(),
                         new JsonHandler<>(new ObjectMapper()
