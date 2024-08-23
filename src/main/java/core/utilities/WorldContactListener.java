@@ -3,26 +3,35 @@ package core.utilities;
 import com.badlogic.gdx.physics.box2d.*;
 
 import core.entities.AbstractEnemy;
+import core.entities.AbstractPlatform;
 import core.entities.Player;
+import core.entities.PlayerContactListener;
 
-public class WorldContactListener implements ContactListener {
+public class WorldContactListener implements ContactListener, PlayerContactListener {
 
     private boolean gameEnded;
     private boolean playerDead;
 
-    public WorldContactListener() {
+    private boolean playerContactWithTiles;
+    private boolean playerMidairJumpLeft;
 
+    public WorldContactListener(){
+        gameEnded = false;
+        playerDead = false;
+        playerContactWithTiles = false;
+        playerMidairJumpLeft = false;
     }
 
     @Override
     public void beginContact(Contact contact) {
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
+
         if (fixA.getUserData() instanceof Player) {
-            playerContact(fixA, fixB);
+            playerContactBegin(fixA, fixB);
         }
         if (fixB.getUserData() instanceof Player) {
-            playerContact(fixB, fixA);
+            playerContactBegin(fixB, fixA);
         }
         if (fixA.getUserData() instanceof AbstractEnemy) {
             enemyContact(fixA, fixB);
@@ -32,13 +41,17 @@ public class WorldContactListener implements ContactListener {
         }
     }
 
-    private void playerContact(Fixture playerFix, Fixture fix2) {
-        if (Constants.LayerNames.Deadly.equals(fix2.getUserData()) || fix2.getUserData() instanceof AbstractEnemy) {
-            playerDead = true;
-        }
+    private void playerContactBegin(Fixture playerFix, Fixture fix2) {
         if (Constants.LayerNames.Finishing.equals(fix2.getUserData())) {
             gameEnded = true;
             return;
+        }
+        if (Constants.LayerNames.Deadly.equals(fix2.getUserData()) || fix2.getUserData() instanceof AbstractEnemy) {
+            playerDead = true;
+        }
+        if (Constants.LayerNames.Collision.equals(fix2.getUserData())
+                || fix2.getUserData() instanceof AbstractPlatform) {
+            playerContactWithTiles = true;
         }
     }
 
@@ -56,7 +69,23 @@ public class WorldContactListener implements ContactListener {
 
     @Override
     public void endContact(Contact contact) {
+        Fixture fixA = contact.getFixtureA();
+        Fixture fixB = contact.getFixtureB();
 
+        if (fixA.getUserData() instanceof Player) {
+            playerContactEnd(fixA, fixB);
+        }
+        if (fixB.getUserData() instanceof Player) {
+            playerContactEnd(fixB, fixA);
+        }
+    }
+
+    private void playerContactEnd(Fixture playerFix, Fixture fix2) {
+        if (Constants.LayerNames.Collision.equals(fix2.getUserData())
+                || fix2.getUserData() instanceof AbstractPlatform) {
+            playerContactWithTiles = false;
+            playerMidairJumpLeft = true;
+        }
     }
 
     @Override
@@ -79,5 +108,17 @@ public class WorldContactListener implements ContactListener {
 
     public void setPlayerDead(boolean playerDead) {
         this.playerDead = playerDead;
+    }
+
+    @Override
+    public boolean playerLegalJump(){
+        if (this.playerContactWithTiles) {
+            return true;
+        }
+        if (this.playerMidairJumpLeft) {
+            this.playerMidairJumpLeft = false;
+            return true;
+        }
+        return false;
     }
 }

@@ -11,17 +11,23 @@ import core.utilities.Constants;
 
 public class Player extends AbstractEntity implements InputProcessor {
 
+    // Change to constants in appropriate package?
     private final float yVelocityLimit = 10f;
     private final float xVelocityBase = 10f;
 
+    private PlayerContactListener contactListener;
+    private boolean midairJumpLeft;
+
     private int sideKeyPressed = 0;
 
-    public Player(Sprite sprite, Vector2 size, World world) {
+    public Player(Sprite sprite, Vector2 size, World world, PlayerContactListener contactListener) {
         super(sprite, size, world, BodyDef.BodyType.DynamicBody);
+        this.contactListener = contactListener;
+        midairJumpLeft = true;
     }
 
     public void update() {
-        body.setLinearVelocity(sideKeyPressed * this.xVelocityBase, body.getLinearVelocity().y);
+        body.setLinearVelocity(sideKeyPressed * Constants.Physics.PlayerMoveSpeed, body.getLinearVelocity().y);
         super.update();
     }
 
@@ -40,7 +46,9 @@ public class Player extends AbstractEntity implements InputProcessor {
                 this.sideKeyPressed++;
                 break;
             case Input.Keys.W:
-                body.setLinearVelocity(body.getLinearVelocity().x, yVelocityLimit);
+                if (contactListener.playerLegalJump()){
+                    body.setLinearVelocity(body.getLinearVelocity().x, Constants.Physics.PlayerJumpSpeed);
+                }
                 break;
         }
         return true;
@@ -59,7 +67,8 @@ public class Player extends AbstractEntity implements InputProcessor {
         return true;
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "player";
     }
 

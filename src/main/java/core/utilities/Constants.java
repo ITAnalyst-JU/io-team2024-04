@@ -6,6 +6,8 @@ public final class Constants {
     public static final class Physics {
         public static final float Scale = 16f;
         public static final Vector2 Gravity = new Vector2(0, -15f);
+        public static final float PlayerJumpSpeed = 10f;
+        public static final float PlayerMoveSpeed = 10f;
     }
 
     public static final class LayerNames {

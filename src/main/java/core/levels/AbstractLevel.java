@@ -55,13 +55,14 @@ public class AbstractLevel {
                 ((TiledMapTileLayer)map.getLayers().get(Constants.LayerNames.Tiles)).getTileWidth());
 
         loadMap();
-        player = new Player(new Sprite(new Texture("player/player.png")), entitySize, world);
+        contactListener = new WorldContactListener();
+        contactListener.setPlayerDead(true);
+
+        player = new Player(new Sprite(new Texture("player/player.png")), entitySize, world, contactListener);
         entities = new ArrayList<>();
         entities.add(player);
         loadEntities(entitySize);
 
-        contactListener = new WorldContactListener();
-        contactListener.setPlayerDead(true);
         world.setContactListener(contactListener); // instead of setting position, and because dieing works exactly like spawning (and always should)
         Gdx.input.setInputProcessor(player);
 
