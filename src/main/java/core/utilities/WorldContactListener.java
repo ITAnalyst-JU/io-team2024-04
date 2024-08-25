@@ -2,8 +2,8 @@ package core.utilities;
 
 import com.badlogic.gdx.physics.box2d.*;
 
-import core.entities.AbstractEnemy;
-import core.entities.AbstractPlatform;
+import core.entities.Enemy;
+import core.entities.Platform;
 import core.entities.Player;
 import core.entities.PlayerContactListener;
 
@@ -33,10 +33,10 @@ public class WorldContactListener implements ContactListener, PlayerContactListe
         if (fixB.getUserData() instanceof Player) {
             playerContactBegin(fixB, fixA);
         }
-        if (fixA.getUserData() instanceof AbstractEnemy) {
+        if (fixA.getUserData() instanceof Enemy) {
             enemyContact(fixA, fixB);
         }
-        if (fixB.getUserData() instanceof AbstractEnemy) {
+        if (fixB.getUserData() instanceof Enemy) {
             enemyContact(fixB, fixA);
         }
     }
@@ -46,19 +46,19 @@ public class WorldContactListener implements ContactListener, PlayerContactListe
             gameEnded = true;
             return;
         }
-        if (Constants.LayerNames.Deadly.equals(fix2.getUserData()) || fix2.getUserData() instanceof AbstractEnemy) {
+        if (Constants.LayerNames.Deadly.equals(fix2.getUserData()) || fix2.getUserData() instanceof Enemy) {
             playerDead = true;
         }
         if (Constants.LayerNames.Collision.equals(fix2.getUserData())
-                || fix2.getUserData() instanceof AbstractPlatform) {
+                || fix2.getUserData() instanceof Platform) {
             playerContactWithTiles = true;
         }
     }
 
     private void enemyContact(Fixture enemyFix, Fixture fix2) {
-        if (enemyFix.getUserData() instanceof AbstractEnemy enemy) {
+        if (enemyFix.getUserData() instanceof Enemy enemy) {
             if (Constants.LayerNames.Deadly.equals(fix2.getUserData())) {
-                enemy.setToRemove();
+//                enemy.setToRemove();
                 return;
             }
         }
@@ -82,7 +82,7 @@ public class WorldContactListener implements ContactListener, PlayerContactListe
 
     private void playerContactEnd(Fixture playerFix, Fixture fix2) {
         if (Constants.LayerNames.Collision.equals(fix2.getUserData())
-                || fix2.getUserData() instanceof AbstractPlatform) {
+                || fix2.getUserData() instanceof Platform) {
             playerContactWithTiles = false;
             playerMidairJumpLeft = true;
         }

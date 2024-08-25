@@ -1,36 +1,10 @@
 package core.views;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.TimeUtils;
 
-import core.entities.AbstractEntity;
-import core.entities.BasicEnemy;
-import core.entities.MovingEnemy;
-import core.entities.MovingPlatform;
-import core.entities.MovingPlatform.MovementDirection;
-import core.entities.Player;
 import core.levels.AbstractLevel;
-import core.utilities.Constants;
-import core.utilities.WorldContactListener;
-import core.utilities.Constants.Physics;
 
 public class MainScreen extends AbstractScreen {
 

@@ -110,67 +110,18 @@ public class AbstractLevel {
         // world.dispose();
     }
 
-    private void loadEntities(Vector2 entitySize) {
-        for (MapObject obj : map.getLayers().get(Constants.LayerNames.Entities).getObjects()){
-            if(obj.getProperties().containsKey("enemy")) {
-                if(obj.getProperties().get("enemy").equals("moving")) {
-                    MovingEnemy enemy = new MovingEnemy(new Sprite(new Texture("entities/enemy.png")), entitySize, world);
-                    enemy.setPosition(getPositionFromObj(obj), true);
-                    enemy.setMovementBounds((float)obj.getProperties().get("minX")/ Constants.Physics.Scale, (float)obj.getProperties().get("maxX")/ Constants.Physics.Scale);
-                    entities.add(enemy);
-                }
-                else if(obj.getProperties().get("enemy").equals("basic")){
-                    BasicEnemy enemy = new BasicEnemy(new Sprite(new Texture("entities/enemy.png")), entitySize, world);
-                    enemy.setPosition(getPositionFromObj(obj), false);
-                    entities.add(enemy);
-                }
-            }
-            else if(obj.getProperties().containsKey("platform")) {
-                if(obj.getProperties().get("platform").equals("moving")) {
-                    MovingPlatform.MovementDirection direction;
-                    if(obj.getProperties().get("direction").equals("static")) {
-                        // A static platform allows friction, normal tile doesn't. Possibly other differences in the future, like platform breaking.
-                        // That's why they're loaded differently.
-                        StaticPlatform platform = new StaticPlatform(new Sprite(new Texture("entities/platform.png")), entitySize, world);
-                        platform.setPosition(getPositionFromObj(obj), true);
-                        entities.add(platform);
-                        continue;
-                    }
-                    if(obj.getProperties().get("direction").equals("horizontal")) {
-                        direction = MovingPlatform.MovementDirection.HORIZONTAL;
-                    }
-                    else if(obj.getProperties().get("direction").equals("vertical")) {
-                        direction = MovingPlatform.MovementDirection.VERTICAL;
-                    }
-                    else {
-                        throw new IllegalArgumentException("Unsupported platform direction");
-                    }
-
-                    MovingPlatform platform = new MovingPlatform(new Sprite(new Texture("entities/platform.png")), entitySize, world, direction);
-                    platform.setPosition(getPositionFromObj(obj), true);
-                    if(direction == MovingPlatform.MovementDirection.HORIZONTAL) {
-                        platform.setMovementBounds((float)obj.getProperties().get("minX")/ Constants.Physics.Scale, (float)obj.getProperties().get("maxX")/ Constants.Physics.Scale);
-                    }
-                    else {
-                        // For reasons uncomprehensible to human mind, Tiled Y axis is inverted
-                        // TODO: Replace magic numbers with map values
-                        platform.setMovementBounds((960 - (float)obj.getProperties().get("maxY"))/ Constants.Physics.Scale, (960 - (float)obj.getProperties().get("minY"))/ Constants.Physics.Scale);
-                    }
-                    entities.add(platform);
-                }
-            }
+    private void loadEntities(Vector2 baseSize) {
+        EntityFactory factory = new EntityFactory(baseSize, world);
+        for (MapObject obj : map.getLayers().get("entities").getObjects()) {
+            entities.add(factory.getEntity(obj));
         }
-    }
-
-    private static Vector2 getPositionFromObj (MapObject obj) {
-        return new Vector2((float)obj.getProperties().get("x")/ Constants.Physics.Scale, (float)obj.getProperties().get("y")/ Constants.Physics.Scale);
     }
 
     public void loadMap() {
 
         for (MapLayer layer : map.getLayers()) {
             String layerName = layer.getName();
-            if (layerName.equals(Constants.LayerNames.Tiles) || layerName.equals(Constants.LayerNames.Entities)) {//TODO: change this to a constant
+            if (layerName.equals(Constants.LayerNames.Tiles) || layerName.equals(Constants.LayerNames.Entities) || layerName.equals("entities")) {//TODO: change this to constant list
                 continue;
             }
             for (MapObject object : layer.getObjects()) {

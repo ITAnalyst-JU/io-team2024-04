@@ -2,14 +2,13 @@ package core.entities;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import core.utilities.Constants;
 
 public class Player extends AbstractEntity implements InputProcessor {
+    // Does not extend moving entity because movement is different.
 
     // Change to constants in appropriate package?
     private final float yVelocityLimit = 10f;
@@ -74,6 +73,7 @@ public class Player extends AbstractEntity implements InputProcessor {
 
     // We don't use other methods right now.
     // They have to be here because Java doesn't support multiple inheritance.
+    // Also, LibGDX doesn't adhere to interface segregation principle.
 
     @Override
     public boolean keyTyped(char c) {

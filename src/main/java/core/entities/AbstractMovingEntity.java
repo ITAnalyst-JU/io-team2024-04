@@ -5,16 +5,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class MovingPlatform extends AbstractPlatform {
-
-    private MovementDirection direction;
-
+public abstract class AbstractMovingEntity extends AbstractEntity {
+    private final Platform.MovementDirection direction;
     private final float speed = 2f;
-
     private float minPosition = 0, maxPosition = 0;
 
-    public MovingPlatform(Sprite sprite, Vector2 size, World world, MovementDirection direction) {
-        super(sprite, size, world, BodyDef.BodyType.KinematicBody);
+    public AbstractMovingEntity(Sprite sprite, Vector2 size, World world, Platform.MovementDirection direction) {
+        super(sprite, size, world, direction == MovementDirection.STATIC ? BodyDef.BodyType.StaticBody : BodyDef.BodyType.KinematicBody);
         this.direction = direction;
         switch (direction) {
             case HORIZONTAL:
@@ -23,10 +20,12 @@ public class MovingPlatform extends AbstractPlatform {
             case VERTICAL:
                 body.setLinearVelocity(0, speed);
                 break;
+            case STATIC:
+                body.setLinearVelocity(0, 0);
         }
     }
 
-    public static enum MovementDirection {
+    public enum MovementDirection {
         STATIC,
         VERTICAL,
         HORIZONTAL
@@ -59,5 +58,4 @@ public class MovingPlatform extends AbstractPlatform {
         }
         super.update();
     }
-
 }
