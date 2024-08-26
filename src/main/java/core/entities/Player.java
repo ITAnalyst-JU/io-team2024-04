@@ -15,14 +15,12 @@ public class Player extends AbstractEntity implements InputProcessor {
     private final float xVelocityBase = 10f;
 
     private PlayerContactListener contactListener;
-    private boolean midairJumpLeft;
 
     private int sideKeyPressed = 0;
 
     public Player(Sprite sprite, Vector2 size, World world, PlayerContactListener contactListener) {
         super(sprite, size, world, BodyDef.BodyType.DynamicBody);
         this.contactListener = contactListener;
-        midairJumpLeft = true;
     }
 
     public void update() {
@@ -31,7 +29,12 @@ public class Player extends AbstractEntity implements InputProcessor {
     }
 
     @Override
-    public void remove() {
+    public void hide() {
+        throw new UnsupportedOperationException("Player is immortal and cannot be killed.");
+    }
+
+    @Override
+    public void dispose() {
         throw new UnsupportedOperationException("Player is immortal and cannot be killed.");
     }
 

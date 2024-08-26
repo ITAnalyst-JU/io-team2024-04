@@ -13,11 +13,14 @@ import com.badlogic.gdx.physics.box2d.World;
 import core.utilities.Constants;
 import core.utilities.Constants.Physics;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public abstract class AbstractEntity {
-    protected Sprite sprite;
+    protected final Sprite sprite;
     protected Body body;
-    
-    protected boolean toRemove = false;
+
+    protected Map<String, Object> state;
 
     public AbstractEntity(Sprite sprite, Vector2 size, World world, BodyDef.BodyType bodyType) {
         this.sprite = sprite;
@@ -54,7 +57,6 @@ public abstract class AbstractEntity {
         return position;
     }
 
-    //TODO: update depending on timeDelta - is it necessary, if Box2d does it for us?
     public void update() {
         Vector2 position = this.getPosition();
         sprite.setPosition(position.x - sprite.getWidth()/2f, position.y - sprite.getHeight()/2f);
@@ -64,14 +66,25 @@ public abstract class AbstractEntity {
         sprite.draw(batch);
     }
 
-    //TODO: Actually remove the body from the world
-    public void remove() {
-        // body.getWorld().destroyBody(body);
-        setPosition(new Vector2(-100, -100), false);
+    public void saveState () {
+        state = new HashMap<>();
+        state.put("position", new Vector2(body.getPosition()));
+        state.put("velocity", new Vector2(body.getLinearVelocity()));
+        state.put("gravity", body.getGravityScale());
+    }
+
+    public void recoverState () {
+        body.setTransform((Vector2)state.get("position"), 0);
+        body.setLinearVelocity((Vector2)state.get("velocity"));
+        body.setGravityScale((float)state.get("gravity"));
+    }
+
+    public void hide () {
+        setPosition(Physics.DeletedLocation, false);
         body.setGravityScale(0);
     }
 
-    public void setToRemove() {
-        toRemove = true;
+    public void dispose () {
+         body.getWorld().destroyBody(body);
     }
 }

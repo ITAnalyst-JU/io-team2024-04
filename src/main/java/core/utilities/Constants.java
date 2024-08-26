@@ -8,6 +8,7 @@ public final class Constants {
         public static final Vector2 Gravity = new Vector2(0, -15f);
         public static final float PlayerJumpSpeed = 10f;
         public static final float PlayerMoveSpeed = 10f;
+        public static final Vector2 DeletedLocation = new Vector2(-100, -100);
     }
 
     public static final class LayerNames {

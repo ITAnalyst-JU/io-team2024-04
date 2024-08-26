@@ -18,7 +18,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import core.entities.*;
 import core.utilities.Constants;
-import core.utilities.WorldContactListener;
+import core.entities.LevelContactListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +30,7 @@ public class AbstractLevel {
     private OrthographicCamera camera;
 
     private World world;
+    private EntityManager entityManager;
 
     private Player player;
     private long beginTime;
@@ -37,9 +38,7 @@ public class AbstractLevel {
     private final Vector2 playerBeginPosition;
     private final String mapName;
 
-    private WorldContactListener contactListener;
-
-    private List<AbstractEntity> entities;
+    private LevelContactListener contactListener;
 
     private boolean gameEnded;
 
@@ -55,16 +54,21 @@ public class AbstractLevel {
                 ((TiledMapTileLayer)map.getLayers().get(Constants.LayerNames.Tiles)).getTileWidth());
 
         loadMap();
-        contactListener = new WorldContactListener();
-        contactListener.setPlayerDead(true);
+        contactListener = new LevelContactListener();
+        contactListener.setPlayerDead(true); // TODO: change this !!!
 
         player = new Player(new Sprite(new Texture("player/player.png")), entitySize, world, contactListener);
-        entities = new ArrayList<>();
+        player.setPosition(playerBeginPosition, false);
+        List<AbstractEntity> entities = new ArrayList<>();
         entities.add(player);
-        loadEntities(entitySize);
+        loadEntities(entitySize, entities);
 
-        world.setContactListener(contactListener); // instead of setting position, and because dieing works exactly like spawning (and always should)
+        world.setContactListener(contactListener);
         Gdx.input.setInputProcessor(player);
+
+        entityManager = new BasicEntityManager();
+        entityManager.loadEntities(entities);
+        entityManager.saveState();
 
         renderer = new OrthogonalTiledMapRenderer(map);
         camera = new OrthographicCamera();
@@ -78,11 +82,10 @@ public class AbstractLevel {
 
         if (contactListener.isPlayerDead()) {
             contactListener.setPlayerDead(false);
-            player.setPosition(playerBeginPosition, false);
+            entityManager.recoverState();
         }
-        for (AbstractEntity entity : entities) {
-            entity.update();
-        }
+
+        entityManager.update();
 
         camera.position.set(player.getPosition(), 0);
         camera.update();
@@ -91,10 +94,7 @@ public class AbstractLevel {
 
         Batch batch = renderer.getBatch();
         batch.begin();
-        for(AbstractEntity entity : entities) {
-            entity.draw(batch);
-        }
-        entities.forEach(e -> e.draw(renderer.getBatch()));
+        entityManager.render(batch);
         batch.end();
 
         if (contactListener.isGameEnded()) {
@@ -110,7 +110,7 @@ public class AbstractLevel {
         // world.dispose();
     }
 
-    private void loadEntities(Vector2 baseSize) {
+    private void loadEntities(Vector2 baseSize, List<AbstractEntity> entities) {
         EntityFactory factory = new EntityFactory(baseSize, world);
         for (MapObject obj : map.getLayers().get("entities").getObjects()) {
             entities.add(factory.getEntity(obj));

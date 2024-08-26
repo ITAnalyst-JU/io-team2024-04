@@ -1,13 +1,10 @@
-package core.utilities;
+package core.entities;
 
 import com.badlogic.gdx.physics.box2d.*;
 
-import core.entities.Enemy;
-import core.entities.Platform;
-import core.entities.Player;
-import core.entities.PlayerContactListener;
+import core.utilities.Constants;
 
-public class WorldContactListener implements ContactListener, PlayerContactListener {
+public class LevelContactListener implements ContactListener, PlayerContactListener {
 
     private boolean gameEnded;
     private boolean playerDead;
@@ -15,7 +12,7 @@ public class WorldContactListener implements ContactListener, PlayerContactListe
     private boolean playerContactWithTiles;
     private boolean playerMidairJumpLeft;
 
-    public WorldContactListener(){
+    public LevelContactListener(){
         gameEnded = false;
         playerDead = false;
         playerContactWithTiles = false;
@@ -33,12 +30,6 @@ public class WorldContactListener implements ContactListener, PlayerContactListe
         if (fixB.getUserData() instanceof Player) {
             playerContactBegin(fixB, fixA);
         }
-        if (fixA.getUserData() instanceof Enemy) {
-            enemyContact(fixA, fixB);
-        }
-        if (fixB.getUserData() instanceof Enemy) {
-            enemyContact(fixB, fixA);
-        }
     }
 
     private void playerContactBegin(Fixture playerFix, Fixture fix2) {
@@ -52,18 +43,6 @@ public class WorldContactListener implements ContactListener, PlayerContactListe
         if (Constants.LayerNames.Collision.equals(fix2.getUserData())
                 || fix2.getUserData() instanceof Platform) {
             playerContactWithTiles = true;
-        }
-    }
-
-    private void enemyContact(Fixture enemyFix, Fixture fix2) {
-        if (enemyFix.getUserData() instanceof Enemy enemy) {
-            if (Constants.LayerNames.Deadly.equals(fix2.getUserData())) {
-//                enemy.setToRemove();
-                return;
-            }
-        }
-        else {
-            throw new IllegalArgumentException("Not an enemy fixture");
         }
     }
 
