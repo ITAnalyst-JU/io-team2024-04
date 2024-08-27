@@ -19,10 +19,8 @@ import com.badlogic.gdx.utils.TimeUtils;
 import core.entities.*;
 import core.utilities.Constants;
 import core.utilities.WorldContactListener;
-import core.views.ScreenEnum;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class AbstractLevel {
@@ -102,6 +100,10 @@ public class AbstractLevel {
             gameEnded = true;
             long timePassed = TimeUtils.timeSinceMillis(beginTime);
         }
+    }
+
+    public long getTimePassed() {
+        return TimeUtils.timeSinceMillis(beginTime);
     }
 
     public void dispose() {

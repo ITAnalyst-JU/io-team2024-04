@@ -18,7 +18,7 @@ class SqlDbHighScoreTable implements DbHighScoreTable {
     void createTableIfNotExists() {
         var statement = """
             CREATE TABLE IF NOT EXISTS high_scores (id INTEGER PRIMARY KEY, \
-            level_id INT NOT NULL, username TEXT NOT NULL, time REAL NOT NULL)""";
+            level_id INT NOT NULL, username TEXT NOT NULL, time TIME NOT NULL)""";
         engine.execute(statement, PreparedStatement::executeUpdate);
     }
 
