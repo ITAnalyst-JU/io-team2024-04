@@ -2,7 +2,6 @@ package core.db.database;
 
 import core.db.domain.HighScore;
 
-import java.sql.Time;
 import java.util.List;
 
 public interface DbHighScoreTable {

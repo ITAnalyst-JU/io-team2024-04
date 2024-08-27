@@ -5,7 +5,6 @@ import core.db.app.HighScoreInteractorWithGateway;
 import core.db.domain.HighScore;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Time;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;

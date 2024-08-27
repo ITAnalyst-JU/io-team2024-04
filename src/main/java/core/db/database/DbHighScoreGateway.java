@@ -3,7 +3,6 @@ package core.db.database;
 import core.db.app.HighScoreGateway;
 import core.db.domain.HighScore;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

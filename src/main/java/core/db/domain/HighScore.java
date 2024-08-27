@@ -3,8 +3,6 @@ package core.db.domain;
 import core.general.Observable;
 import core.general.Observer;
 
-import java.sql.Time;
-
 public class HighScore extends Observable<Observer<HighScore>> {
 
     private final int scoreId;
