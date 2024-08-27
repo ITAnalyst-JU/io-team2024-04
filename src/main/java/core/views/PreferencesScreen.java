@@ -1,31 +1,31 @@
 package core.views;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import core.music.SoundInteractor;
+import core.audio.AudioInteractor;
 
 public class PreferencesScreen extends UIScreen {
 
-    public PreferencesScreen(Stage stage, SoundInteractor soundInteractor) {
+    public PreferencesScreen(Stage stage, AudioInteractor audioInteractor) {
         super(stage);
 
-        addSlider("Music Volume", 0, 1, 0.01f, soundInteractor.getMusicVolume(), () -> {
+        addSlider("Music Volume", 0, 1, 0.01f, audioInteractor.getMusicVolume(), () -> {
             float newVolume = getSliderValue(0);
-            soundInteractor.setMusicVolume(newVolume);
+            audioInteractor.setMusicVolume(newVolume);
         });
 
-        addCheckbox("Enable Music", soundInteractor.getMusicVolume() > 0, () -> {
-            boolean isEnabled = getCheckboxState(0);
-            soundInteractor.setMusicVolume(isEnabled ? soundInteractor.getMusicVolume() : 0);
+        addCheckbox("Enable Music", audioInteractor.getMusicVolume() > 0, () -> {
+            boolean isDisabled = getCheckboxState(0);
+            audioInteractor.setMusicVolume(isDisabled ? audioInteractor.getMusicVolume() : 0);
         });
 
-        addSlider("Sound Effects Volume", 0, 1, 0.01f, soundInteractor.getSoundsVolume(), () -> {
+        addSlider("Sound Effects Volume", 0, 1, 0.01f, audioInteractor.getSoundsVolume(), () -> {
             float newVolume = getSliderValue(1);
-            soundInteractor.setSoundsVolume(newVolume);
+            audioInteractor.setSoundsVolume(newVolume);
         });
 
-        addCheckbox("Enable Sound Effects", soundInteractor.getSoundsVolume() > 0, () -> {
+        addCheckbox("Enable Sounds Effects", audioInteractor.getSoundsVolume() > 0, () -> {
             boolean isEnabled = getCheckboxState(1);
-            soundInteractor.setSoundsVolume(isEnabled ? soundInteractor.getSoundsVolume() : 0);
+            audioInteractor.setSoundsVolume(isEnabled ? audioInteractor.getSoundsVolume() : 0);
         });
 
         addButton("Back to Menu", () -> notifyOrchestrator(ScreenEnum.MENU));

@@ -1,11 +1,11 @@
-package core.music;
+package core.audio;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 
 import static desktop.constants.PreferencesConstants.DEFAULT_MUSIC_VOLUME;
 
-public class GdxSoundManager implements SoundControl {
+public class AudioManager implements AudioControl {
     private final SoundManager soundManager = new SoundManager();
     private Music currentMusic;
     private float musicVolume = DEFAULT_MUSIC_VOLUME;

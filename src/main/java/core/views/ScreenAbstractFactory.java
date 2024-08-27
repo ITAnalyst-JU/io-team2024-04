@@ -7,25 +7,25 @@ import core.db.app.HighScoreInteractorWithGateway;
 import core.db.database.DbHighScoreGateway;
 import core.db.sqldb.SqlDbFactory;
 import core.levels.AbstractLevel;
-import core.music.GdxSoundManager;
-import core.music.SoundInteractor;
+import core.audio.AudioManager;
+import core.audio.AudioInteractor;
 import desktop.preferences.LocalPreferences;
 import desktop.preferences.PreferencesOrchestrator;
 
 public class ScreenAbstractFactory {
-    SoundInteractor soundInteractor;
+    AudioInteractor audioInteractor;
     HighScoreInteractor highScoreInteractor;
 
     public ScreenAbstractFactory() {
         PreferencesOrchestrator preferencesOrchestrator = new PreferencesOrchestrator(new LocalPreferences());
-        this.soundInteractor = new SoundInteractor(new GdxSoundManager(), preferencesOrchestrator);
+        this.audioInteractor = new AudioInteractor(new AudioManager(), preferencesOrchestrator);
         this.highScoreInteractor = new HighScoreInteractorWithGateway(new DbHighScoreGateway(SqlDbFactory.highScoreTable()));
     }
 
     public AbstractScreen createScreen(ScreenEnum screenEnum) {
         return switch (screenEnum) {
-            case MENU -> new MenuScreen(new Stage(new ScreenViewport()), soundInteractor);
-            case PREFERENCES -> new PreferencesScreen(new Stage(new ScreenViewport()), soundInteractor);
+            case MENU -> new MenuScreen(new Stage(new ScreenViewport()), audioInteractor);
+            case PREFERENCES -> new PreferencesScreen(new Stage(new ScreenViewport()), audioInteractor);
             case ENDGAME -> new EndScreen(new Stage(new ScreenViewport()), highScoreInteractor);
             case LOADING -> new LoadingScreen(new Stage(new ScreenViewport()));
             case LEVELSELECTION -> new LevelSelectionScreen(new Stage(new ScreenViewport()));

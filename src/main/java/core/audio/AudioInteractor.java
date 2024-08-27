@@ -1,12 +1,12 @@
-package core.music;
+package core.audio;
 
 import desktop.preferences.PreferencesOrchestrator;
 
-public class SoundInteractor {
-    private final SoundControl soundControl;
+public class AudioInteractor {
+    private final AudioControl soundControl;
     private final PreferencesOrchestrator preferencesOrchestrator;
 
-    public SoundInteractor(SoundControl soundControl, PreferencesOrchestrator preferencesOrchestrator) {
+    public AudioInteractor(AudioControl soundControl, PreferencesOrchestrator preferencesOrchestrator) {
         this.soundControl = soundControl;
         this.preferencesOrchestrator = preferencesOrchestrator;
     }

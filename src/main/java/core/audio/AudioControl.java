@@ -1,6 +1,6 @@
-package core.music;
+package core.audio;
 
-public interface SoundControl {
+public interface AudioControl {
     void playSound(String soundPath);
     void stopAllSounds();
     void setSoundsVolume(float volume);
