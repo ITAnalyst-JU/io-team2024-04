@@ -57,9 +57,8 @@ public class AbstractLevel {
         contactListener = new LevelContactListener();
         contactListener.setPlayerDead(true); // TODO: change this !!!
 
-        player = new Player(new Sprite(new Texture("player/player.png")), entitySize, world, contactListener);
-        player.setPosition(playerBeginPosition, false);
-        List<AbstractEntity> entities = new ArrayList<>();
+        player = new Player(new Sprite(new Texture("player/player.png")), world, contactListener, entitySize, playerBeginPosition);
+        List<BodyEntity> entities = new ArrayList<>();
         entities.add(player);
         loadEntities(entitySize, entities);
 
@@ -101,6 +100,10 @@ public class AbstractLevel {
             gameEnded = true;
             long timePassed = TimeUtils.timeSinceMillis(beginTime);
         }
+        if (contactListener.isCheckpointReached()) {
+            entityManager.saveState();
+            contactListener.setCheckpointReached(false);
+        }
     }
 
     public void dispose() {
@@ -110,18 +113,20 @@ public class AbstractLevel {
         // world.dispose();
     }
 
-    private void loadEntities(Vector2 baseSize, List<AbstractEntity> entities) {
+    private void loadEntities(Vector2 baseSize, List<BodyEntity> entities) {
         EntityFactory factory = new EntityFactory(baseSize, world);
         for (MapObject obj : map.getLayers().get("entities").getObjects()) {
-            entities.add(factory.getEntity(obj));
+            entities.add(factory.getAbstractEntity(obj));
+        }
+        for (MapObject obj : map.getLayers().get("bodyEntities").getObjects()) {
+            entities.add(factory.getBodyEntity(obj));
         }
     }
 
     public void loadMap() {
-
         for (MapLayer layer : map.getLayers()) {
             String layerName = layer.getName();
-            if (layerName.equals(Constants.LayerNames.Tiles) || layerName.equals(Constants.LayerNames.Entities) || layerName.equals("entities")) {//TODO: change this to constant list
+            if (! (layerName.equals(Constants.LayerNames.Collision) || layerName.equals(Constants.LayerNames.Finishing) || layerName.equals(Constants.LayerNames.Deadly))) {//TODO: change this to constant list
                 continue;
             }
             for (MapObject object : layer.getObjects()) {

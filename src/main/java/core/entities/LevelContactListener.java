@@ -8,6 +8,7 @@ public class LevelContactListener implements ContactListener, PlayerContactListe
 
     private boolean gameEnded;
     private boolean playerDead;
+    private boolean checkpointReached;
 
     private boolean playerContactWithTiles;
     private boolean playerMidairJumpLeft;
@@ -17,6 +18,7 @@ public class LevelContactListener implements ContactListener, PlayerContactListe
         playerDead = false;
         playerContactWithTiles = false;
         playerMidairJumpLeft = false;
+        checkpointReached = false;
     }
 
     @Override
@@ -43,6 +45,14 @@ public class LevelContactListener implements ContactListener, PlayerContactListe
         if (Constants.LayerNames.Collision.equals(fix2.getUserData())
                 || fix2.getUserData() instanceof Platform) {
             playerContactWithTiles = true;
+        }
+
+        if (! (fix2.getUserData() instanceof BodyEntity)) {
+            return;
+        }
+        BodyEntity fix2Body = (BodyEntity) fix2.getUserData();
+        if (Constants.LayerNames.Checkpoint.equals(fix2Body.getType())) {
+            checkpointReached = true;
         }
     }
 
@@ -99,5 +109,13 @@ public class LevelContactListener implements ContactListener, PlayerContactListe
             return true;
         }
         return false;
+    }
+
+    public boolean isCheckpointReached() {
+        return this.checkpointReached;
+    }
+
+    public void setCheckpointReached(boolean checkpointReached) {
+        this.checkpointReached = checkpointReached;
     }
 }

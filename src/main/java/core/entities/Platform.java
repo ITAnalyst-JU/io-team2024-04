@@ -9,8 +9,8 @@ public class Platform extends AbstractMovingEntity {
     // I don't think you should have a distinct class for every combination of properties an object might have.
     // We'd probably need about a dozen classes instead of a single one here.
 
-    public Platform(Sprite sprite, Vector2 size, World world, MovementDirection direction) {
-        super(sprite, size, world, direction);
+    public Platform(Sprite sprite, World world, MovementDirection direction, Vector2 size, Vector2 position) {
+        super(sprite, world, direction, size, position);
     }
 
 }

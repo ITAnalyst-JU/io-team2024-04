@@ -10,8 +10,8 @@ public abstract class AbstractMovingEntity extends AbstractEntity {
     private final float speed = 2f;
     private float minPosition = 0, maxPosition = 0;
 
-    public AbstractMovingEntity(Sprite sprite, Vector2 size, World world, Platform.MovementDirection direction) {
-        super(sprite, size, world, direction == MovementDirection.STATIC ? BodyDef.BodyType.StaticBody : BodyDef.BodyType.KinematicBody);
+    public AbstractMovingEntity(Sprite sprite, World world, Platform.MovementDirection direction, Vector2 size, Vector2 position) {
+        super(sprite, world, direction == MovementDirection.STATIC ? BodyDef.BodyType.StaticBody : BodyDef.BodyType.KinematicBody, size, position);
         this.direction = direction;
         switch (direction) {
             case HORIZONTAL:

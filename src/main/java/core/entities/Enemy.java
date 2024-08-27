@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class Enemy extends AbstractMovingEntity {
 
-    public Enemy(Sprite sprite, Vector2 size, World world, AbstractMovingEntity.MovementDirection direction) {
-        super(sprite, size, world, direction);
+    public Enemy(Sprite sprite, World world, AbstractMovingEntity.MovementDirection direction, Vector2 size, Vector2 position) {
+        super(sprite, world, direction, size, position);
     }
 }

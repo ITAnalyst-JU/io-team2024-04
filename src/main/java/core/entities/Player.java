@@ -18,8 +18,8 @@ public class Player extends AbstractEntity implements InputProcessor {
 
     private int sideKeyPressed = 0;
 
-    public Player(Sprite sprite, Vector2 size, World world, PlayerContactListener contactListener) {
-        super(sprite, size, world, BodyDef.BodyType.DynamicBody);
+    public Player(Sprite sprite, World world, PlayerContactListener contactListener, Vector2 size, Vector2 position) {
+        super(sprite, world, BodyDef.BodyType.DynamicBody, size, position);
         this.contactListener = contactListener;
     }
 

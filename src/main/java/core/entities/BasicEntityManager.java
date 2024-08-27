@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import java.util.List;
 
 public class BasicEntityManager implements EntityManager {
-    private List<AbstractEntity> entities;
+    private List<BodyEntity> entities;
 
     @Override
     public void update() {
@@ -22,7 +22,7 @@ public class BasicEntityManager implements EntityManager {
     }
 
     @Override
-    public void loadEntities(List<AbstractEntity> entities) {
+    public void loadEntities(List<BodyEntity> entities) {
         this.entities = entities;
     }
 
