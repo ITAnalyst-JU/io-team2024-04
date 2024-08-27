@@ -6,6 +6,6 @@ import java.sql.Time;
 import java.util.List;
 
 public interface HighScoreGateway {
-    HighScore addHighScore(int levelId, String username, Time time);
+    HighScore addHighScore(int levelId, String username, long time);
     List<HighScore> getBestScoresForLevel(int levelId, int limit);
 }

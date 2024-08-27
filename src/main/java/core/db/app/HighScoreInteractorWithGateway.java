@@ -12,7 +12,7 @@ public class HighScoreInteractorWithGateway implements HighScoreInteractor {
         this.gateway = gateway;
     }
 
-    public HighScore addHighScore(int levelId, String username, Time time) {
+    public HighScore addHighScore(int levelId, String username, long time) {
         return gateway.addHighScore(levelId, username, time);
     }
 

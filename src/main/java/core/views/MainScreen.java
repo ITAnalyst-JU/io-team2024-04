@@ -34,7 +34,7 @@ public class MainScreen extends AbstractScreen {
 
         if (level.isGameEnded()) {
             // TODO add dependent levelid and nickname
-            highScoreInteractor.addHighScore(1,"bob", new Time(level.getTimePassed()));
+            highScoreInteractor.addHighScore(1,"bob", (int) level.getTimePassed());
             this.notifyOrchestrator(ScreenEnum.ENDGAME);
         }
     }

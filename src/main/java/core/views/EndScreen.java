@@ -57,8 +57,17 @@ public class EndScreen extends UIScreen {
 
         for (HighScore score : highScores) {
             highScoreTable.add(new Label(score.getUsername(), skin)).pad(10);
-            highScoreTable.add(new Label(String.valueOf(score.getTime()), skin)).pad(10);
+            highScoreTable.add(new Label(formatTime(score.getTime()), skin)).pad(10);
             highScoreTable.row();
         }
+    }
+
+    // think if it should be in another class
+    private String formatTime(long milliseconds) {
+        long totalSeconds = milliseconds / 1000;
+        long seconds = totalSeconds % 60;
+        long minutes = totalSeconds / 60;
+        long millis = milliseconds % 1000;
+        return String.format("%02d:%02d:%03d", minutes, seconds, millis);
     }
 }

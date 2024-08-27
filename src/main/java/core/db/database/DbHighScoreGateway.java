@@ -17,7 +17,7 @@ public class DbHighScoreGateway implements HighScoreGateway {
         this.table = table;
     }
 
-    private HighScore createHighScore(int id, int levelId, String username, Time time) {
+    private HighScore createHighScore(int id, int levelId, String username, long time) {
         HighScore highScore = new HighScore(id, levelId, username, time);
         ids.put(highScore, id);
         return highScore;
@@ -29,7 +29,7 @@ public class DbHighScoreGateway implements HighScoreGateway {
         return list;
     }
 
-    public HighScore addHighScore(int levelId, String username, Time time) {
+    public HighScore addHighScore(int levelId, String username, long time) {
         int id = table.insertHighScore(levelId, username, time);
         return createHighScore(id, levelId, username, time);
     }
