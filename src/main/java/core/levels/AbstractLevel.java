@@ -65,7 +65,7 @@ public class AbstractLevel {
         world.setContactListener(contactListener);
         Gdx.input.setInputProcessor(player);
 
-        entityManager = new BasicEntityManager();
+        entityManager = new BasicEntityManager(contactListener);
         entityManager.loadEntities(entities);
         entityManager.saveState();
 

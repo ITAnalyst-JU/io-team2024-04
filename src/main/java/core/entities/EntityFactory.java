@@ -27,14 +27,19 @@ public class EntityFactory {
 
         String texturePath;
         if (objProperties.get("type").equals("platform")) {
-            texturePath = "entities/platform.png";
+            if (!objProperties.containsKey("lives")) {
+                texturePath = "entities/platform.png";
+            } else {
+                texturePath = "entities/platform2.png";
+            }
         } else if (objProperties.get("type").equals("enemy")) {
             texturePath = "entities/enemy.png";
         } else {
             throw new UnsupportedOperationException("Unknown object name: " + objProperties.get("type"));
         }
         Vector2 size = new Vector2(baseEntitySize);
-        if (objProperties.get("width") instanceof Integer) { //Instead of no key, map editor creates key with 0.0f, and casting created exceptions because Java
+        System.out.println(objProperties.get("width"));
+        if (objProperties.get("width") instanceof Integer) { // We have key with 0.0f instead of no key because Java or sth
             size.x *= (int) objProperties.get("width");
         }
 
@@ -55,6 +60,9 @@ public class EntityFactory {
         AbstractMovingEntity entity;
         if (objProperties.get("type").equals("platform")) {
             entity = new Platform(new Sprite(new Texture(texturePath)), world, movementDirection, size, position);
+            if (objProperties.containsKey("lives")) {
+                ((Platform)entity).setLife((int)objProperties.get("lives"));
+            }
         } else if (objProperties.get("type").equals("enemy")) {
             entity = new Enemy(new Sprite(new Texture(texturePath)), world, movementDirection, size, position);
         } else {

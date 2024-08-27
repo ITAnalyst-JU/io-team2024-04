@@ -4,6 +4,10 @@ import com.badlogic.gdx.physics.box2d.*;
 
 import core.utilities.Constants;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class LevelContactListener implements ContactListener, PlayerContactListener {
 
     private boolean gameEnded;
@@ -12,6 +16,16 @@ public class LevelContactListener implements ContactListener, PlayerContactListe
 
     private boolean playerContactWithTiles;
     private boolean playerMidairJumpLeft;
+
+    private final List<BodyEntity> bodiesToRemove = new ArrayList<>();
+
+    public List<BodyEntity> getBodiesToRemove() {
+        return Collections.unmodifiableList(bodiesToRemove);
+    }
+
+    public void clearBodiesToRemove() {
+        bodiesToRemove.clear();
+    }
 
     public LevelContactListener(){
         gameEnded = false;
@@ -53,6 +67,7 @@ public class LevelContactListener implements ContactListener, PlayerContactListe
         BodyEntity fix2Body = (BodyEntity) fix2.getUserData();
         if (Constants.LayerNames.Checkpoint.equals(fix2Body.getType())) {
             checkpointReached = true;
+            bodiesToRemove.add(fix2Body);
         }
     }
 
@@ -74,6 +89,16 @@ public class LevelContactListener implements ContactListener, PlayerContactListe
                 || fix2.getUserData() instanceof Platform) {
             playerContactWithTiles = false;
             playerMidairJumpLeft = true;
+        }
+
+        if (! (fix2.getUserData() instanceof BodyEntity)) {
+            return;
+        }
+        BodyEntity fix2Body = (BodyEntity) fix2.getUserData();
+        if ("platform".equals(fix2Body.getType())) {
+            if (fix2Body.damage()) {
+                bodiesToRemove.add(fix2Body);
+            }
         }
     }
 

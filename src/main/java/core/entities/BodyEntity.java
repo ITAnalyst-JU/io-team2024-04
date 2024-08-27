@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import core.utilities.Constants;
 
-import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.Map;
 
 public class BodyEntity {
@@ -58,7 +58,7 @@ public class BodyEntity {
     }
 
     public void saveState () {
-        state = new HashMap<>();
+        state = new TreeMap<>();
         state.put("position", new Vector2(body.getPosition()));
         state.put("velocity", new Vector2(body.getLinearVelocity()));
         state.put("gravity", body.getGravityScale());
@@ -85,5 +85,23 @@ public class BodyEntity {
 
     public void draw(Batch batch) {
         return;
+    }
+
+    public boolean damage() {
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return body.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (! (obj instanceof BodyEntity)) {
+            return false;
+        }
+        BodyEntity other = (BodyEntity) obj;
+        return body.equals(other.body);
     }
 }
