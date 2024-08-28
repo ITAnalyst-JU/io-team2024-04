@@ -2,18 +2,17 @@ package core.entities;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class MovingPlatform extends AbstractPlatform {
-
-    public MovementDirection direction = MovementDirection.STATIC;
-
+public abstract class AbstractMovingEntity extends AbstractEntity {
+    private final Platform.MovementDirection direction;
     private final float speed = 2f;
-
     private float minPosition = 0, maxPosition = 0;
 
-    public MovingPlatform(Sprite sprite, Vector2 size, World world) {
-        super(sprite, size, world);
+    public AbstractMovingEntity(Sprite sprite, World world, Platform.MovementDirection direction, Vector2 size, Vector2 position) {
+        super(sprite, world, direction == MovementDirection.STATIC ? BodyDef.BodyType.StaticBody : BodyDef.BodyType.KinematicBody, size, position);
+        this.direction = direction;
         switch (direction) {
             case HORIZONTAL:
                 body.setLinearVelocity(speed, 0);
@@ -22,11 +21,11 @@ public class MovingPlatform extends AbstractPlatform {
                 body.setLinearVelocity(0, speed);
                 break;
             case STATIC:
-                break;
+                body.setLinearVelocity(0, 0);
         }
     }
 
-    public static enum MovementDirection {
+    public enum MovementDirection {
         STATIC,
         VERTICAL,
         HORIZONTAL
@@ -46,8 +45,6 @@ public class MovingPlatform extends AbstractPlatform {
                 } else if (body.getPosition().x > maxPosition) {
                     body.setLinearVelocity(-speed, 0);
                 }
-                if(body.getLinearVelocity().x == 0)
-                    body.setLinearVelocity(speed, 0);
                 break;
             case VERTICAL:
                 if (body.getPosition().y < minPosition) {
@@ -55,13 +52,10 @@ public class MovingPlatform extends AbstractPlatform {
                 } else if (body.getPosition().y > maxPosition) {
                     body.setLinearVelocity(0, -speed);
                 }
-                if(body.getLinearVelocity().y == 0)
-                    body.setLinearVelocity(0, speed);
                 break;
             case STATIC:
                 break;
         }
         super.update();
     }
-
 }
