@@ -15,8 +15,14 @@ public class AudioInteractor {
         float initialMusicVolume = preferencesOrchestrator.getMusicVolume();
         soundControl.setMusicVolume(initialMusicVolume);
 
+        boolean musicEnabled = preferencesOrchestrator.isMusicEnabled();
+        soundControl.setMusicEnabled(musicEnabled);
+
         float initialSoundVolume = preferencesOrchestrator.getSoundVolume();
         soundControl.setSoundsVolume(initialSoundVolume);
+
+        boolean soundsEnabled = preferencesOrchestrator.isSoundEffectsEnabled();
+        soundControl.setSoundsEnabled(soundsEnabled);
     }
 
     public void playSoundEffect(String soundPath) {
@@ -29,7 +35,7 @@ public class AudioInteractor {
 
     public void setSoundsVolume(float volume) {
         soundControl.setSoundsVolume(volume);
-        preferencesOrchestrator.setSoundVolume(volume);  // Save to preferences
+        preferencesOrchestrator.setSoundVolume(volume);
     }
 
     public float getSoundsVolume() {
@@ -46,10 +52,28 @@ public class AudioInteractor {
 
     public void setMusicVolume(float volume) {
         soundControl.setMusicVolume(volume);
-        preferencesOrchestrator.setMusicVolume(volume);  // Save to preferences
+        preferencesOrchestrator.setMusicVolume(volume);
     }
 
     public float getMusicVolume() {
         return soundControl.getMusicVolume();
+    }
+
+    public boolean areSoundsEnabled() {
+        return soundControl.isSoundsEnabled();
+    }
+
+    public void setSoundsEnabled(boolean enabled) {
+        soundControl.setSoundsEnabled(enabled);
+        preferencesOrchestrator.setSoundEffectsEnabled(enabled);
+    }
+
+    public boolean isMusicEnabled() {
+        return soundControl.isMusicEnabled();
+    }
+
+    public void setMusicEnabled(boolean enabled) {
+        soundControl.setMusicEnabled(enabled);
+        preferencesOrchestrator.setMusicEnabled(enabled);
     }
 }

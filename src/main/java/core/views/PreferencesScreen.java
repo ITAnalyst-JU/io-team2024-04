@@ -13,9 +13,9 @@ public class PreferencesScreen extends UIScreen {
             audioInteractor.setMusicVolume(newVolume);
         });
 
-        addCheckbox("Enable Music", audioInteractor.getMusicVolume() > 0, () -> {
-            boolean isDisabled = getCheckboxState(0);
-            audioInteractor.setMusicVolume(isDisabled ? audioInteractor.getMusicVolume() : 0);
+        addCheckbox("Enable Music", audioInteractor.isMusicEnabled(), () -> {
+            boolean isEnabled = getCheckboxState(0);
+            audioInteractor.setMusicEnabled(isEnabled);
         });
 
         addSlider("Sound Effects Volume", 0, 1, 0.01f, audioInteractor.getSoundsVolume(), () -> {
@@ -23,9 +23,9 @@ public class PreferencesScreen extends UIScreen {
             audioInteractor.setSoundsVolume(newVolume);
         });
 
-        addCheckbox("Enable Sounds Effects", audioInteractor.getSoundsVolume() > 0, () -> {
+        addCheckbox("Enable Sounds Effects", audioInteractor.areSoundsEnabled(), () -> {
             boolean isEnabled = getCheckboxState(1);
-            audioInteractor.setSoundsVolume(isEnabled ? audioInteractor.getSoundsVolume() : 0);
+            audioInteractor.setSoundsEnabled(isEnabled);
         });
 
         addButton("Back to Menu", () -> notifyOrchestrator(ScreenEnum.MENU));
