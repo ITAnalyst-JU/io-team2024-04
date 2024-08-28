@@ -2,7 +2,6 @@ package core.db.app;
 
 import core.db.domain.HighScore;
 
-import java.sql.Time;
 import java.util.List;
 
 public class HighScoreInteractorWithGateway implements HighScoreInteractor {
@@ -12,7 +11,7 @@ public class HighScoreInteractorWithGateway implements HighScoreInteractor {
         this.gateway = gateway;
     }
 
-    public HighScore addHighScore(int levelId, String username, Time time) {
+    public HighScore addHighScore(int levelId, String username, long time) {
         return gateway.addHighScore(levelId, username, time);
     }
 

@@ -5,14 +5,17 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import core.levels.AbstractLevel;
+import core.db.app.HighScoreInteractor;
 
 public class MainScreen extends AbstractScreen {
 
     private final AbstractLevel level;
+    private final HighScoreInteractor highScoreInteractor;
 
-    public MainScreen(Stage stage, AbstractLevel level) {
+    public MainScreen(Stage stage, AbstractLevel level, HighScoreInteractor highscoreInteractor) {
         super(stage);
         this.level = level;
+        this.highScoreInteractor = highscoreInteractor;
     }
 
     @Override
@@ -28,7 +31,9 @@ public class MainScreen extends AbstractScreen {
         level.step();
 
         if (level.isGameEnded()) {
-            this.notifyOrchestrator(ScreenEnum.MENU);
+            // TODO add dependent levelid and nickname
+            highScoreInteractor.addHighScore(1,"bob", (int) level.getTimePassed());
+            this.notifyOrchestrator(ScreenEnum.ENDGAME);
         }
     }
 

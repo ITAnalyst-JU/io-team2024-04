@@ -3,16 +3,14 @@ package core.db.domain;
 import core.general.Observable;
 import core.general.Observer;
 
-import java.sql.Time;
-
 public class HighScore extends Observable<Observer<HighScore>> {
 
     private final int scoreId;
     private final int levelId;
     private String username;
-    private Time time;
+    private long time;
 
-    public HighScore(int scoreId, int levelId, String username, Time time) {
+    public HighScore(int scoreId, int levelId, String username, long time) {
         this.scoreId = scoreId;
         this.levelId = levelId;
         this.username = username;
@@ -31,11 +29,11 @@ public class HighScore extends Observable<Observer<HighScore>> {
         return username;
     }
 
-    public Time getTime() {
+    public long getTime() {
         return time;
     }
 
-    public void update(String username, Time time) {
+    public void update(String username, long time) {
         this.username = username;
         this.time = time;
         notifyObservers(observer -> observer.respondToEvent(this));
