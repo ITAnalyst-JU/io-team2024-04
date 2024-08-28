@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 public abstract class UIScreen extends AbstractScreen {
     protected Skin skin;
@@ -70,6 +71,30 @@ public abstract class UIScreen extends AbstractScreen {
 
         checkboxes.add(checkBox);
         table.add(checkBox).expandX().left().padBottom(10);
+        table.row();
+    }
+
+    protected void addTextFieldWithButton(String messageText, String buttonText, Consumer<TextField> action) {
+        Table inputTable = new Table();
+        inputTable.padBottom(10);
+
+        TextField nameField = new TextField("", skin);
+        nameField.setMessageText(messageText);
+
+        TextButton updateButton = new TextButton(buttonText, skin);
+        updateButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                action.accept(nameField);
+                stage.setKeyboardFocus(null);
+                Gdx.input.setOnscreenKeyboardVisible(false);
+            }
+        });
+
+        inputTable.add(nameField).width(300).padRight(10);
+        inputTable.add(updateButton);
+
+        table.add(inputTable);
         table.row();
     }
 
