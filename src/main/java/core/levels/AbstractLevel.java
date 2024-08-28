@@ -19,7 +19,6 @@ import com.badlogic.gdx.utils.TimeUtils;
 import core.entities.*;
 import core.utilities.Constants;
 import core.entities.LevelContactListener;
-import core.utilities.WorldContactListener;
 
 import java.util.ArrayList;
 import java.util.List;
