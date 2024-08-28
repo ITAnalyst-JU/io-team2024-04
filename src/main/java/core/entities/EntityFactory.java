@@ -9,9 +9,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import core.utilities.Constants;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class EntityFactory {
     private final Vector2 baseEntitySize;
     private final World world;
+
+    private final Map<Integer, ButtonAction> buttonsMap = new HashMap<>();
 
     public EntityFactory(Vector2 baseEntitySize, World world) {
         this.baseEntitySize = baseEntitySize;
@@ -32,13 +37,14 @@ public class EntityFactory {
             } else {
                 texturePath = "entities/platform2.png";
             }
+        } else if (objProperties.get("type").equals("block")) {
+            texturePath = "entities/platform.png";
         } else if (objProperties.get("type").equals("enemy")) {
             texturePath = "entities/enemy.png";
         } else {
             throw new UnsupportedOperationException("Unknown object name: " + objProperties.get("type"));
         }
         Vector2 size = new Vector2(baseEntitySize);
-        System.out.println(objProperties.get("width"));
         if (objProperties.get("width") instanceof Integer) { // We have key with 0.0f instead of no key because Java or sth
             size.x *= (int) objProperties.get("width");
         }
@@ -60,25 +66,33 @@ public class EntityFactory {
         AbstractMovingEntity entity;
         if (objProperties.get("type").equals("platform")) {
             entity = new Platform(new Sprite(new Texture(texturePath)), world, movementDirection, size, position);
-            if (objProperties.containsKey("lives")) {
-                ((Platform)entity).setLife((int)objProperties.get("lives"));
-            }
+        } else if (objProperties.get("type").equals("block")) {
+            entity = new Block(new Sprite(new Texture(texturePath)), world, movementDirection, size, position);
         } else if (objProperties.get("type").equals("enemy")) {
             entity = new Enemy(new Sprite(new Texture(texturePath)), world, movementDirection, size, position);
         } else {
             throw new UnsupportedOperationException("Unknown object name: " + objProperties.get("type"));
         }
+        if (objProperties.containsKey("lives")) {
+            (entity).setLife((int)objProperties.get("lives"));
+        }
 
         switch(movementDirection) {
             case HORIZONTAL:
-                entity.setMovementBounds(rectangle.getX() / Constants.Physics.Scale, (rectangle.getX() + rectangle.getWidth()) / Constants.Physics.Scale);
+                entity.setMovementBounds((rectangle.getX() + size.x / 2f) / Constants.Physics.Scale, (rectangle.getX() - size.x / 2f + rectangle.getWidth()) / Constants.Physics.Scale);
                 break;
             case VERTICAL:
-                entity.setMovementBounds(rectangle.getY() / Constants.Physics.Scale, (rectangle.getY() + rectangle.getHeight()) / Constants.Physics.Scale);
+                entity.setMovementBounds((rectangle.getY() + size.y / 2f) / Constants.Physics.Scale, (rectangle.getY() - size.y / 2f + rectangle.getHeight()) / Constants.Physics.Scale);
                 break;
             case STATIC:
                 break;
         }
+
+        if (objProperties.containsKey("number")) {
+            int number = (int)objProperties.get("number");
+            buttonsMap.put(number, (ButtonAction)entity);
+        }
+
         return entity;
     }
 
@@ -91,8 +105,19 @@ public class EntityFactory {
         Vector2 position = new Vector2();
         position.x = (rectangle.getX() + rectangle.getWidth()/2f);
         position.y = (rectangle.getY() + rectangle.getHeight()/2f);
-        BodyEntity entity = new BodyEntity(world, BodyDef.BodyType.StaticBody, size, position);
-        entity.setType((String)mapObject.getProperties().get("type")); //using casting to catch type errors
+        String type = (String)mapObject.getProperties().get("type");
+        BodyEntity entity;
+        if ("button".equals(type)) {
+            int number = (int)mapObject.getProperties().get("number");
+            entity = new Button(world, BodyDef.BodyType.StaticBody, size, position, number);
+        } else {
+            entity = new BodyEntity(world, BodyDef.BodyType.StaticBody, size, position);
+            entity.setType(type); //using casting to catch type errors
+        }
         return entity;
+    }
+
+    public Map<Integer, ButtonAction> getButtonsMap() {
+        return buttonsMap;
     }
 }

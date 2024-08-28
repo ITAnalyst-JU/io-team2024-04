@@ -10,13 +10,14 @@ import core.utilities.Constants;
 public class Player extends AbstractEntity implements InputProcessor {
     // Does not extend moving entity because movement is different.
 
-    // Change to constants in appropriate package?
-    private final float yVelocityLimit = 10f;
-    private final float xVelocityBase = 10f;
-
     private PlayerContactListener contactListener;
 
     private int sideKeyPressed = 0;
+
+    private boolean ladderContact = false;
+    private int ladderClimbing = 0;
+
+    private final Vector2 tempSpeed = new Vector2(); // for performance reasons
 
     public Player(Sprite sprite, World world, PlayerContactListener contactListener, Vector2 size, Vector2 position) {
         super(sprite, world, BodyDef.BodyType.DynamicBody, size, position);
@@ -24,8 +25,27 @@ public class Player extends AbstractEntity implements InputProcessor {
     }
 
     public void update() {
-        body.setLinearVelocity(sideKeyPressed * Constants.Physics.PlayerMoveSpeed, body.getLinearVelocity().y);
+        tempSpeed.x = sideKeyPressed * Constants.Physics.PlayerMoveSpeed;
+        tempSpeed.y = body.getLinearVelocity().y;
+        if (ladderContact) {
+            tempSpeed.y = ladderClimbing * Constants.Physics.PlayerJumpSpeed / 4f;
+        }
+        body.setLinearVelocity(tempSpeed);
         super.update();
+    }
+
+    public void ladderContactBegin() {
+        body.setGravityScale(0f);
+        this.ladderContact = true;
+    }
+
+    public void ladderContactEnd() {
+        body.setGravityScale(1f);
+        this.ladderContact = false;
+    }
+
+    public void reverseGravity() {
+        body.setGravityScale((-1f) * body.getGravityScale());
     }
 
     @Override
@@ -48,9 +68,15 @@ public class Player extends AbstractEntity implements InputProcessor {
                 this.sideKeyPressed++;
                 break;
             case Input.Keys.W:
-                if (contactListener.playerLegalJump()){
-                    body.setLinearVelocity(body.getLinearVelocity().x, Constants.Physics.PlayerJumpSpeed);
+                if (!ladderContact) {
+                    if (contactListener.playerLegalJump()) {
+                        body.setLinearVelocity(body.getLinearVelocity().x, Constants.Physics.PlayerJumpSpeed);
+                    }
                 }
+                ladderClimbing = 1;
+                break;
+            case Input.Keys.S:
+                ladderClimbing = -1;
                 break;
         }
         return true;
@@ -64,6 +90,12 @@ public class Player extends AbstractEntity implements InputProcessor {
                 break;
             case Input.Keys.D:
                 this.sideKeyPressed--;
+                break;
+            case Input.Keys.W:
+                ladderClimbing = 0;
+                break;
+            case Input.Keys.S:
+                ladderClimbing = 0;
                 break;
         }
         return true;

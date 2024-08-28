@@ -13,6 +13,7 @@ public final class Constants {
 
     public static final class LayerNames {
         public static final String Collision = "collision";
+        public static final String CollisionNoJump = "collisionNoJump";
         public static final String Tiles = "tiles";
         public static final String Finishing = "finish";
         public static final String Deadly = "deadly";

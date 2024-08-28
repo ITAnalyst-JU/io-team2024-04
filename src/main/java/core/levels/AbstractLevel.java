@@ -21,7 +21,9 @@ import core.utilities.Constants;
 import core.entities.LevelContactListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AbstractLevel {
     private TiledMap map;
@@ -35,15 +37,15 @@ public class AbstractLevel {
     private Player player;
     private long beginTime;
 
-    private final Vector2 playerBeginPosition;
     private final String mapName;
 
     private LevelContactListener contactListener;
 
     private boolean gameEnded;
 
-    public AbstractLevel(Vector2 playerBeginPosition, String mapName) {
-        this.playerBeginPosition = playerBeginPosition; // TODO: encode in map, like other entities
+    private Map<Integer, ButtonAction> buttonActions;
+
+    public AbstractLevel(String mapName) {
         this.mapName = mapName;
     }
 
@@ -57,6 +59,7 @@ public class AbstractLevel {
         contactListener = new LevelContactListener();
         contactListener.setPlayerDead(true); // TODO: change this !!!
 
+        Vector2 playerBeginPosition = ((RectangleMapObject)map.getLayers().get("player").getObjects().get(0)).getRectangle().getPosition(new Vector2());
         player = new Player(new Sprite(new Texture("player/player.png")), world, contactListener, entitySize, playerBeginPosition);
         List<BodyEntity> entities = new ArrayList<>();
         entities.add(player);
@@ -82,6 +85,27 @@ public class AbstractLevel {
         if (contactListener.isPlayerDead()) {
             contactListener.setPlayerDead(false);
             entityManager.recoverState();
+        }
+
+        if (contactListener.playerLadderEvent) {
+            contactListener.playerLadderEvent = false;
+            if (contactListener.playerLadderContact) {
+                player.ladderContactBegin();
+            } else {
+                player.ladderContactEnd();
+            }
+        }
+        if (contactListener.revreseGravity) {
+            contactListener.revreseGravity = false;
+            player.reverseGravity();
+        }
+        if (contactListener.button != 0) {
+            ButtonAction buttonAction = buttonActions.get(contactListener.button);
+            contactListener.button = 0;
+            boolean ifDelete = buttonAction.buttonAction();
+            if (ifDelete) {
+                entityManager.remove((BodyEntity)buttonAction);
+            }
         }
 
         entityManager.update();
@@ -125,12 +149,13 @@ public class AbstractLevel {
         for (MapObject obj : map.getLayers().get("bodyEntities").getObjects()) {
             entities.add(factory.getBodyEntity(obj));
         }
+        this.buttonActions = factory.getButtonsMap();
     }
 
     public void loadMap() {
         for (MapLayer layer : map.getLayers()) {
             String layerName = layer.getName();
-            if (! (layerName.equals(Constants.LayerNames.Collision) || layerName.equals(Constants.LayerNames.Finishing) || layerName.equals(Constants.LayerNames.Deadly))) {//TODO: change this to constant list
+            if (! (layerName.equals(Constants.LayerNames.Collision) || layerName.equals(Constants.LayerNames.Deadly) || layerName.equals(Constants.LayerNames.CollisionNoJump))) {//TODO: change this to constant list
                 continue;
             }
             for (MapObject object : layer.getObjects()) {

@@ -21,9 +21,7 @@ public class BasicEntityManager implements EntityManager {
     @Override
     public void update() {
         for (var entity : contactListener.getBodiesToRemove()) {
-            entities.remove(entity);
-            entitiesToDispose.add(entity);
-            entity.hide();
+            this.remove(entity);
         }
         contactListener.clearBodiesToRemove();
         for (var entity : entities) {
@@ -61,5 +59,12 @@ public class BasicEntityManager implements EntityManager {
         for (var entity : entities) {
             entity.recoverState();
         }
+    }
+
+    @Override
+    public void remove(BodyEntity entity) {
+        entities.remove(entity);
+        entitiesToDispose.add(entity);
+        entity.hide();
     }
 }

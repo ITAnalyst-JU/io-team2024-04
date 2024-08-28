@@ -59,6 +59,7 @@ public class BodyEntity {
 
     public void saveState () {
         state = new TreeMap<>();
+        //reflection could possibly be used, to get all fields of a class automatically
         state.put("position", new Vector2(body.getPosition()));
         state.put("velocity", new Vector2(body.getLinearVelocity()));
         state.put("gravity", body.getGravityScale());
@@ -85,10 +86,6 @@ public class BodyEntity {
 
     public void draw(Batch batch) {
         return;
-    }
-
-    public boolean damage() {
-        return false;
     }
 
     @Override

@@ -10,4 +10,5 @@ public interface EntityManager {
     void recoverState();
     void update();
     void render(Batch batch);
+    void remove(BodyEntity entity);
 }

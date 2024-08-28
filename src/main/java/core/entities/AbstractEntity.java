@@ -17,12 +17,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class AbstractEntity extends BodyEntity{
+
     protected final Sprite sprite;
+    protected int life;
 
     public AbstractEntity(Sprite sprite, World world, BodyDef.BodyType bodyType, Vector2 size, Vector2 position) {
         super(world, bodyType, size, position);
         this.sprite = sprite;
         sprite.setSize(size.x, size.y);
+        this.life = Integer.MAX_VALUE;
     }
 
     @Override
@@ -34,5 +37,26 @@ public abstract class AbstractEntity extends BodyEntity{
     @Override
     public void draw(Batch batch) {
         sprite.draw(batch);
+    }
+
+    @Override
+    public void saveState() {
+        super.saveState();
+        state.put("life", life);
+    }
+
+    @Override
+    public void recoverState() {
+        super.recoverState();
+        life = (int)state.get("life");
+    }
+
+    public void setLife(int life) {
+        this.life = life;
+    }
+
+    public boolean damage() {
+        life--;
+        return (life == 0);
     }
 }

@@ -17,6 +17,13 @@ public class LevelContactListener implements ContactListener, PlayerContactListe
     private boolean playerContactWithTiles;
     private boolean playerMidairJumpLeft;
 
+    public boolean playerLadderContact;
+    public boolean playerLadderEvent;
+
+    public boolean revreseGravity = false;
+
+    public int button = 0;
+
     private final List<BodyEntity> bodiesToRemove = new ArrayList<>();
 
     public List<BodyEntity> getBodiesToRemove() {
@@ -33,6 +40,8 @@ public class LevelContactListener implements ContactListener, PlayerContactListe
         playerContactWithTiles = false;
         playerMidairJumpLeft = false;
         checkpointReached = false;
+        playerLadderContact = false;
+        playerLadderEvent = false;
     }
 
     @Override
@@ -49,10 +58,6 @@ public class LevelContactListener implements ContactListener, PlayerContactListe
     }
 
     private void playerContactBegin(Fixture playerFix, Fixture fix2) {
-        if (Constants.LayerNames.Finishing.equals(fix2.getUserData())) {
-            gameEnded = true;
-            return;
-        }
         if (Constants.LayerNames.Deadly.equals(fix2.getUserData()) || fix2.getUserData() instanceof Enemy) {
             playerDead = true;
         }
@@ -65,9 +70,27 @@ public class LevelContactListener implements ContactListener, PlayerContactListe
             return;
         }
         BodyEntity fix2Body = (BodyEntity) fix2.getUserData();
+        if (Constants.LayerNames.Finishing.equals(fix2Body.getType())) {
+            gameEnded = true;
+        }
         if (Constants.LayerNames.Checkpoint.equals(fix2Body.getType())) {
             checkpointReached = true;
             bodiesToRemove.add(fix2Body);
+        }
+        if ("ladder".equals(fix2Body.getType())) {
+            playerLadderContact = true;
+            playerLadderEvent = true;
+        }
+        if ("gravity".equals(fix2Body.getType())) {
+            revreseGravity = true;
+        }
+        if ("platform".equals(fix2Body.getType())) {
+            if (((Platform)fix2Body).damage()) {
+                bodiesToRemove.add(fix2Body);
+            }
+        }
+        if ("button".equals(fix2Body.getType())) {
+            this.button = ((Button)fix2Body).getNumber();
         }
     }
 
@@ -96,15 +119,18 @@ public class LevelContactListener implements ContactListener, PlayerContactListe
         }
         BodyEntity fix2Body = (BodyEntity) fix2.getUserData();
         if ("platform".equals(fix2Body.getType())) {
-            if (fix2Body.damage()) {
+            if (((Platform)fix2Body).damage()) {
                 bodiesToRemove.add(fix2Body);
             }
+        }
+        if ("ladder".equals(fix2Body.getType())) {
+            playerLadderContact = false;
+            playerLadderEvent = true;
         }
     }
 
     @Override
     public void preSolve(Contact contact, Manifold manifold) {
-
     }
 
     @Override
