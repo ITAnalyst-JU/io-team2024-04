@@ -9,6 +9,7 @@ public class MenuScreen extends UIScreen {
     public MenuScreen(Stage stage, AudioInteractor audioInteractor) {
         super(stage);
 
+        // TODO: probably should be in show() method
         audioInteractor.loadPreferences();
         audioInteractor.playBackgroundMusic("music/epic_free_music.mp3", true);
 

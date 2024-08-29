@@ -6,8 +6,8 @@ import com.badlogic.gdx.Gdx;
 import java.util.HashMap;
 import java.util.Map;
 
-import static desktop.constants.PreferencesConstants.DEFAULT_SOUND_ENABLED;
-import static desktop.constants.PreferencesConstants.DEFAULT_SOUND_VOLUME;
+import static core.utilities.PreferencesConstants.DEFAULT_SOUND_ENABLED;
+import static core.utilities.PreferencesConstants.DEFAULT_SOUND_VOLUME;
 
 public class SoundManager {
     private Map<String, Sound> loadedSounds = new HashMap<>();

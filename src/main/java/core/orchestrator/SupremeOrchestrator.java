@@ -11,13 +11,13 @@ public class SupremeOrchestrator extends Game implements Observer<DomainEventEnu
     private final ILevelOrchestrator levelOrchestrator;
     private final IScreenOrchestrator screenOrchestrator;
 
-
     public SupremeOrchestrator(ILevelOrchestrator levelOrchestrator, IScreenOrchestrator screenOrchestrator) {
         this.levelOrchestrator = levelOrchestrator;
         this.screenOrchestrator = screenOrchestrator;
         ((ScreenOrchestrator) screenOrchestrator).addObserver(this);
     }
 
+    // TODO: think if load preferences should be here
     @Override
     public void create() {
         this.setScreen(screenOrchestrator.getScreen(ScreenEnum.LOADING));
@@ -31,8 +31,6 @@ public class SupremeOrchestrator extends Game implements Observer<DomainEventEnu
     private void notifyScreenOrchestratorLevelLoaded(AbstractLevel level) {
         this.screenOrchestrator.respondToLoadedLevel(level);
     }
-
-
 
     @Override
     public void respondToEvent(DomainEventEnum param) {

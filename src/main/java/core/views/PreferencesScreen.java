@@ -2,10 +2,12 @@ package core.views;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import core.audio.AudioInteractor;
+import core.preferences.IPreferencesInteractor;
+import core.window.WindowInteractor;
 
 public class PreferencesScreen extends UIScreen {
 
-    public PreferencesScreen(Stage stage, AudioInteractor audioInteractor) {
+    public PreferencesScreen(Stage stage, AudioInteractor audioInteractor, WindowInteractor windowInteractor) {
         super(stage);
 
         addSlider("Music Volume", 0, 1, 0.01f, audioInteractor.getMusicVolume(), () -> {
