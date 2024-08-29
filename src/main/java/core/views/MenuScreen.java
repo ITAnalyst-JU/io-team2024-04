@@ -3,6 +3,7 @@ package core.views;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+
 import core.audio.AudioInteractor;
 
 public class MenuScreen extends UIScreen {
@@ -10,32 +11,39 @@ public class MenuScreen extends UIScreen {
         super(stage);
 
         audioInteractor.loadPreferences();
-        audioInteractor.playBackgroundMusic("music/epic_free_music.mp3", true);
+        audioInteractor.playBackgroundMusic("audio/music/epic_free_music.mp3", true);
 
-        Label titleLabel = new Label("Gradle Demon Adventures", skin, "default");
-        table.top().padTop(50);
-        table.add(titleLabel).expandX().padBottom(50);
+        setBackgroundImage("ui/background/gradle.jpg");
+
+        Table greyBackground = new Table();
+        greyBackground.setBackground(skin.getDrawable("round-gray"));
+        Label welcomeLabel = createLabel("Wake the fuck up, Anon! Your build.gradle needs fixing!");
+        greyBackground.add(welcomeLabel);
+        table.add(greyBackground).expandX().padBottom(20).center();
         table.row();
 
-        Label welcomeLabel = new Label("Wake the fuck up, Anon! Your build.gradle needs fixing!", skin);
-        table.add(welcomeLabel).expandX().padBottom(10);
+        table.add(createButton("Start game", () -> notifyOrchestrator(ScreenEnum.LEVELSELECTION))).expandX().padBottom(10);
+        table.row();
+        table.add(createButton("Preferences", () -> notifyOrchestrator(ScreenEnum.PREFERENCES))).expandX().padBottom(10);
+        table.row();
+        table.add(createButton("Custom action", () -> System.out.println("Gdzie jest Nero"))).expandX().padBottom(10);
+        table.row();
+        table.add(createButton("Exit", Gdx.app::exit)).expandX().padBottom(10);
         table.row();
 
-        addButton("Start game", () -> notifyOrchestrator(ScreenEnum.LEVELSELECTION));
-        addButton("Preferences", () -> notifyOrchestrator(ScreenEnum.PREFERENCES));
-        addButton("Custom action", () -> System.out.println("Gdzie jest Nero"));
-        addButton("Exit", Gdx.app::exit);
+        TextField nameField = createTextField("Enter your name here");
+        TextButton updateButton = createButton("Update", () -> {
+            String name = nameField.getText();
+            if (name.isEmpty()) {
+                name = "Anon";
+            }
+            welcomeLabel.setText("Wake the fuck up, " + name + "! Your build.gradle needs fixing!");
+        });
 
-        addTextFieldWithButton(
-                "Enter your name here",
-                "Update",
-                textField -> {
-                    String name = textField.getText();
-                    if (name.isEmpty()) {
-                        name = "Anon";
-                    }
-                    welcomeLabel.setText("Wake the fuck up, " + name + "! Your build.gradle needs fixing!");
-                }
-        );
+        Table inputTable = new Table();
+        inputTable.add(nameField).width(300).padRight(10);
+        inputTable.add(updateButton);
+        table.add(inputTable).padBottom(10);
+        table.row();
     }
 }
