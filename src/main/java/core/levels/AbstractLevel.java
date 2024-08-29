@@ -17,32 +17,24 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import core.entities.*;
-import core.utilities.Constants;
-import core.entities.LevelContactListener;
+import core.general.Constants;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class AbstractLevel {
     private TiledMap map;
-
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
-
     private World world;
     private EntityManager entityManager;
-
     private Player player;
     private long beginTime;
-
     private final String mapName;
+    public boolean gameEnded = false;
 
     private LevelContactListener contactListener;
-
-    private boolean gameEnded;
-
     private Map<Integer, ButtonAction> buttonActions;
 
     public AbstractLevel(String mapName) {
@@ -57,10 +49,9 @@ public class AbstractLevel {
 
         loadMap();
         contactListener = new LevelContactListener();
-        contactListener.setPlayerDead(true); // TODO: change this !!!
 
         Vector2 playerBeginPosition = ((RectangleMapObject)map.getLayers().get("player").getObjects().get(0)).getRectangle().getPosition(new Vector2());
-        player = new Player(new Sprite(new Texture("player/player.png")), world, contactListener, entitySize, playerBeginPosition);
+        player = new Player(new Sprite(new Texture("player/player.png")), world, entitySize, playerBeginPosition);
         List<BodyEntity> entities = new ArrayList<>();
         entities.add(player);
         loadEntities(entitySize, entities);
@@ -68,45 +59,18 @@ public class AbstractLevel {
         world.setContactListener(contactListener);
         Gdx.input.setInputProcessor(player);
 
-        entityManager = new BasicEntityManager(contactListener);
+        entityManager = new BasicEntityManager();
         entityManager.loadEntities(entities);
         entityManager.saveState();
 
         renderer = new OrthogonalTiledMapRenderer(map);
         camera = new OrthographicCamera();
 
-        gameEnded = false;
         beginTime = TimeUtils.millis();
     }
 
     public void step() {
         world.step(Gdx.graphics.getDeltaTime(), 6, 2);
-
-        if (contactListener.isPlayerDead()) {
-            contactListener.setPlayerDead(false);
-            entityManager.recoverState();
-        }
-
-        if (contactListener.playerLadderEvent) {
-            contactListener.playerLadderEvent = false;
-            if (contactListener.playerLadderContact) {
-                player.ladderContactBegin();
-            } else {
-                player.ladderContactEnd();
-            }
-        }
-        if (contactListener.revreseGravity) {
-            contactListener.revreseGravity = false;
-            player.reverseGravity();
-        }
-        if (contactListener.button != 0) {
-            ButtonAction buttonAction = buttonActions.get(contactListener.button);
-            contactListener.button = 0;
-            boolean ifDelete = buttonAction.buttonAction();
-            if (ifDelete) {
-                entityManager.remove((BodyEntity)buttonAction);
-            }
-        }
 
         entityManager.update();
 
@@ -120,14 +84,63 @@ public class AbstractLevel {
         entityManager.render(batch);
         batch.end();
 
-        if (contactListener.isGameEnded()) {
-            gameEnded = true;
-            long timePassed = TimeUtils.timeSinceMillis(beginTime);
+        handleCollisionEvents();
+    }
+
+    private void handleCollisionEvents() {
+        List<LevelContactListener.Event> events = contactListener.getEvents();
+        for (var event : events) {
+            switch (event.type) {
+                case LevelContactListener.Event.Type.Finish:
+                    gameEnded = true;
+                    break;
+                case LevelContactListener.Event.Type.Checkpoint:
+                    entityManager.remove((BodyEntity)event.object);
+                    entityManager.saveState();
+                    break;
+                case LevelContactListener.Event.Type.Platform:
+                    Platform platform = (Platform)event.object;
+                    if (platform.isUserDamageable()) {
+                        boolean destroyed = platform.damage();
+                        if (destroyed) {
+                            entityManager.remove(platform);
+                        }
+                    }
+                    break;
+                case LevelContactListener.Event.Type.Death:
+                    entityManager.recoverState();
+                    break;
+                case LevelContactListener.Event.Type.GravityReverse:
+                    player.reverseGravity();
+                    break;
+                case LevelContactListener.Event.Type.Button:
+                    Button button = (Button)event.object;
+                    int num = button.getNumber();
+                    ButtonAction buttonAction = buttonActions.get(num);
+                    boolean destroyed = buttonAction.buttonAction();
+                    if (destroyed) {
+                        entityManager.remove((BodyEntity)buttonAction);
+                    }
+                    entityManager.remove(button);
+                    break;
+                case LevelContactListener.Event.Type.CollisionJumpContactBegin:
+                    player.jumpContactBegin();
+                    break;
+                case LevelContactListener.Event.Type.CollisionJumpContactEnd:
+                    player.jumpContactEnd();
+                    break;
+                case LevelContactListener.Event.Type.LadderContactBegin:
+                    player.ladderContactBegin();
+                    break;
+                case LevelContactListener.Event.Type.LadderContactEnd:
+                    player.ladderContactEnd();
+                    break;
+                case LevelContactListener.Event.Type.Trampoline:
+                    player.trampolineContact();
+                    break;
+            }
         }
-        if (contactListener.isCheckpointReached()) {
-            entityManager.saveState();
-            contactListener.setCheckpointReached(false);
-        }
+        events.clear();
     }
 
     public long getTimePassed() {
@@ -135,10 +148,9 @@ public class AbstractLevel {
     }
 
     public void dispose() {
-        // TODO: this sequence breaks game, free resources properly
-        // renderer.dispose();
-        // map.dispose();
-        // world.dispose();
+        world.dispose();
+        renderer.dispose();
+        map.dispose();
     }
 
     private void loadEntities(Vector2 baseSize, List<BodyEntity> entities) {
