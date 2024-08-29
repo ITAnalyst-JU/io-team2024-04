@@ -21,6 +21,7 @@ public class LevelContactListener implements ContactListener {
             CollisionJumpContactEnd,
             LadderContactBegin,
             LadderContactEnd,
+            Trampoline,
         }
         Type type;
         Object object;
@@ -84,6 +85,9 @@ public class LevelContactListener implements ContactListener {
         }
         if ("button".equals(fix2Body.getType())) {
             events.add(new Event(Event.Type.Button, fix2Body));
+        }
+        if ("trampoline".equals(fix2Body.getType())) {
+            events.add(new Event(Event.Type.Trampoline, null));
         }
     }
 

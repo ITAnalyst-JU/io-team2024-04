@@ -53,6 +53,12 @@ public class Player extends AbstractEntity implements InputProcessor {
         body.setGravityScale((-1f) * body.getGravityScale());
     }
 
+    public void trampolineContact() {
+        tempSpeed.x = body.getLinearVelocity().x;
+        tempSpeed.y = 2 * Constants.Physics.PlayerMoveSpeed;
+        body.setLinearVelocity(tempSpeed);
+    }
+
     @Override
     public void hide() {
         throw new UnsupportedOperationException("Player is immortal and cannot be killed.");

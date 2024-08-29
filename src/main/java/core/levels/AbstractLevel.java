@@ -134,6 +134,9 @@ public class AbstractLevel {
                 case LevelContactListener.Event.Type.LadderContactEnd:
                     player.ladderContactEnd();
                     break;
+                case LevelContactListener.Event.Type.Trampoline:
+                    player.trampolineContact();
+                    break;
             }
         }
         events.clear();
