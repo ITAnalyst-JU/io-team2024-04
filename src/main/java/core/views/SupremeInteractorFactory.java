@@ -1,4 +1,4 @@
-package core.orchestrator;
+package core.views;
 
 import core.audio.AudioInteractor;
 import core.audio.AudioManager;
@@ -6,20 +6,18 @@ import core.db.app.HighScoreInteractor;
 import core.db.app.HighScoreInteractorWithGateway;
 import core.db.database.DbHighScoreGateway;
 import core.db.sqldb.SqlDbFactory;
-import core.preferences.PreferencesInteractorFactory;
+import core.preferences.InternalPreferencesInteractorFactory;
 import core.window.WindowInteractor;
 
-public class SupremeSurroundingsInteractorFactory {
+public class SupremeInteractorFactory {
     HighScoreInteractor highScoreInteractor;
-    PreferencesInteractorFactory preferencesInteractorFactory;
+    InternalPreferencesInteractorFactory internalPreferencesInteractorFactory;
     AudioInteractor audioInteractor;
-    WindowInteractor windowInteractor;
-    public SupremeSurroundingsInteractorFactory(PreferencesInteractorFactory preferencesInteractorFactory) {
-        this.preferencesInteractorFactory = preferencesInteractorFactory;
+    public SupremeInteractorFactory(InternalPreferencesInteractorFactory internalPreferencesInteractorFactory) {
+        this.internalPreferencesInteractorFactory = internalPreferencesInteractorFactory;
     }
 
-    // NOTE: lazy evaluation
-    // also our enemy singleton pattern - maybe just leave it
+    // NOTE: also our enemy singleton pattern
 
     public HighScoreInteractor getHighScoreInteractor() {
         if (highScoreInteractor == null) {
@@ -30,16 +28,13 @@ public class SupremeSurroundingsInteractorFactory {
 
     public AudioInteractor getAudioInteractor() {
         if (audioInteractor == null) {
-            audioInteractor = new AudioInteractor(new AudioManager(), preferencesInteractorFactory.getPreferencesInteractor());
+            audioInteractor = new AudioInteractor(new AudioManager(), internalPreferencesInteractorFactory.getPreferencesInteractor());
         }
         return audioInteractor;
     }
 
     public WindowInteractor getWindowInteractor() {
-        if (windowInteractor == null) {
-            windowInteractor = new WindowInteractor(preferencesInteractorFactory.getPreferencesInteractor());
-        }
-        return windowInteractor;
+        return new WindowInteractor(internalPreferencesInteractorFactory.getPreferencesInteractor());
     }
 
 }

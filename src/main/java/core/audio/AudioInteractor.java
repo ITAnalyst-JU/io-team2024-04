@@ -1,27 +1,27 @@
 package core.audio;
 
-import core.preferences.IAudioPreferencesInteractor;
+import core.preferences.IInternalAudioPreferencesInteractor;
 
 public class AudioInteractor {
     private final AudioControl soundControl;
-    private final IAudioPreferencesInteractor preferencesInteractor;
+    private final IInternalAudioPreferencesInteractor internalPreferencesInteractor;
 
-    public AudioInteractor(AudioControl soundControl, IAudioPreferencesInteractor preferencesInteractor) {
+    public AudioInteractor(AudioControl soundControl, IInternalAudioPreferencesInteractor internalPreferencesInteractor) {
         this.soundControl = soundControl;
-        this.preferencesInteractor = preferencesInteractor;
+        this.internalPreferencesInteractor = internalPreferencesInteractor;
     }
 
     public void loadPreferences() {
-        float initialMusicVolume = preferencesInteractor.getMusicVolume();
+        float initialMusicVolume = internalPreferencesInteractor.getMusicVolume();
         soundControl.setMusicVolume(initialMusicVolume);
 
-        boolean musicEnabled = preferencesInteractor.isMusicEnabled();
+        boolean musicEnabled = internalPreferencesInteractor.isMusicEnabled();
         soundControl.setMusicEnabled(musicEnabled);
 
-        float initialSoundVolume = preferencesInteractor.getSoundVolume();
+        float initialSoundVolume = internalPreferencesInteractor.getSoundVolume();
         soundControl.setSoundsVolume(initialSoundVolume);
 
-        boolean soundsEnabled = preferencesInteractor.isSoundEffectsEnabled();
+        boolean soundsEnabled = internalPreferencesInteractor.isSoundEffectsEnabled();
         soundControl.setSoundsEnabled(soundsEnabled);
     }
 
@@ -35,7 +35,7 @@ public class AudioInteractor {
 
     public void setSoundsVolume(float volume) {
         soundControl.setSoundsVolume(volume);
-        preferencesInteractor.setSoundVolume(volume);
+        internalPreferencesInteractor.setSoundVolume(volume);
     }
 
     public float getSoundsVolume() {
@@ -52,7 +52,7 @@ public class AudioInteractor {
 
     public void setMusicVolume(float volume) {
         soundControl.setMusicVolume(volume);
-        preferencesInteractor.setMusicVolume(volume);
+        internalPreferencesInteractor.setMusicVolume(volume);
     }
 
     public float getMusicVolume() {
@@ -65,7 +65,7 @@ public class AudioInteractor {
 
     public void setSoundsEnabled(boolean enabled) {
         soundControl.setSoundsEnabled(enabled);
-        preferencesInteractor.setSoundEffectsEnabled(enabled);
+        internalPreferencesInteractor.setSoundEffectsEnabled(enabled);
     }
 
     public boolean isMusicEnabled() {
@@ -74,6 +74,6 @@ public class AudioInteractor {
 
     public void setMusicEnabled(boolean enabled) {
         soundControl.setMusicEnabled(enabled);
-        preferencesInteractor.setMusicEnabled(enabled);
+        internalPreferencesInteractor.setMusicEnabled(enabled);
     }
 }

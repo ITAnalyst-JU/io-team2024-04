@@ -1,6 +1,6 @@
 package core.preferences;
 
-public interface IAudioPreferencesInteractor {
+public interface IInternalAudioPreferencesInteractor {
     float getMusicVolume();
     void setMusicVolume(float volume);
     boolean isMusicEnabled();

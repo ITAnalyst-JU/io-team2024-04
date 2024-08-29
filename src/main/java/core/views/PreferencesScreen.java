@@ -2,7 +2,6 @@ package core.views;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import core.audio.AudioInteractor;
-import core.preferences.IPreferencesInteractor;
 import core.window.WindowInteractor;
 
 public class PreferencesScreen extends UIScreen {
@@ -28,6 +27,11 @@ public class PreferencesScreen extends UIScreen {
         addCheckbox("Enable Sounds Effects", audioInteractor.areSoundsEnabled(), () -> {
             boolean isEnabled = getCheckboxState(1);
             audioInteractor.setSoundsEnabled(isEnabled);
+        });
+
+        addCheckbox("Fullscreen", windowInteractor.isFullscreen(), () -> {
+            boolean isEnabled = getCheckboxState(2);
+            windowInteractor.setFullscreen(isEnabled);
         });
 
         addButton("Back to Menu", () -> notifyOrchestrator(ScreenEnum.MENU));

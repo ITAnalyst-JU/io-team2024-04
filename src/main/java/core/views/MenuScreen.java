@@ -4,13 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import core.audio.AudioInteractor;
+import core.window.WindowInteractor;
 
 public class MenuScreen extends UIScreen {
-    public MenuScreen(Stage stage, AudioInteractor audioInteractor) {
+    public MenuScreen(Stage stage, AudioInteractor audioInteractor, WindowInteractor windowInteractor) {
         super(stage);
 
         // TODO: probably should be in show() method
         audioInteractor.loadPreferences();
+        windowInteractor.loadPreferences();
         audioInteractor.playBackgroundMusic("music/epic_free_music.mp3", true);
 
         Label titleLabel = new Label("Gradle Demon Adventures", skin, "default");

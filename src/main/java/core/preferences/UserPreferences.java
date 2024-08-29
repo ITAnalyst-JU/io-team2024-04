@@ -10,10 +10,17 @@ import static core.utilities.PreferencesConstants.*;
 // NOTE: UNTESTABLE with UTs
 
 public class UserPreferences {
+
+    private static final String PREFS_NAME = "gradle.demon.adventures.preferences";
     private static final String PREFS_MUSIC_VOLUME = "volume";
     private static final String PREFS_MUSIC_ENABLED = "music.enabled";
     private static final String PREFS_SOUND_ENABLED = "sound.enabled";
     private static final String PREFS_SOUND_VOL = "sound";
+
+    private static final String PREFS_FULLSCREEN_ENABLED = "fullscreen.enabled";
+    private static final String PREFS_WINDOW_WIDTH = "window.width";
+    private static final String PREFS_WINDOW_HEIGHT = "window.height";
+    private static final String PREFS_FPS = "fps";
     
     private Preferences getPreferences() {
         return Gdx.app.getPreferences(PREFS_NAME);
@@ -54,4 +61,37 @@ public class UserPreferences {
         this.getPreferences().putFloat(PREFS_SOUND_VOL, volume);
         this.getPreferences().flush();
     }
+
+    public boolean isFullscreen() {
+        return this.getPreferences().getBoolean(PREFS_FULLSCREEN_ENABLED, DEFAULT_FULLSCREEN_ENABLED);
+    }
+
+    public void setFullscreen(boolean enabled) {
+        this.getPreferences().putBoolean(PREFS_FULLSCREEN_ENABLED, enabled);
+        this.getPreferences().flush();
+    }
+
+    public int getWindowWidth() {
+        return this.getPreferences().getInteger(PREFS_WINDOW_WIDTH, DEFAULT_WINDOW_WIDTH);
+    }
+
+    public int getWindowHeight() {
+        return this.getPreferences().getInteger(PREFS_WINDOW_HEIGHT, DEFAULT_WINDOW_HEIGHT);
+    }
+
+    public void setWindowSize(int width, int height) {
+        this.getPreferences().putInteger(PREFS_WINDOW_WIDTH, width);
+        this.getPreferences().putInteger(PREFS_WINDOW_HEIGHT, height);
+        this.getPreferences().flush();
+    }
+
+    public int getFps() {
+        return this.getPreferences().getInteger(PREFS_FPS, DEFAULT_FPS);
+    }
+
+    public void setFps(int fps) {
+        this.getPreferences().putInteger(PREFS_FPS, fps);
+        this.getPreferences().flush();
+    }
+
 }

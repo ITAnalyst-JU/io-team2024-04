@@ -17,7 +17,6 @@ public class SupremeOrchestrator extends Game implements Observer<DomainEventEnu
         ((ScreenOrchestrator) screenOrchestrator).addObserver(this);
     }
 
-    // TODO: think if load preferences should be here
     @Override
     public void create() {
         this.setScreen(screenOrchestrator.getScreen(ScreenEnum.LOADING));
