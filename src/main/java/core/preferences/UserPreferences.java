@@ -3,7 +3,7 @@ package core.preferences;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
-import static core.utilities.PreferencesConstants.*;
+import static core.general.PreferencesConstants.*;
 
 // TODO: think about having this in home directory, is it good idea?
 // TODO: integration test

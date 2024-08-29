@@ -3,8 +3,8 @@ package core.audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 
-import static core.utilities.PreferencesConstants.DEFAULT_MUSIC_ENABLED;
-import static core.utilities.PreferencesConstants.DEFAULT_MUSIC_VOLUME;
+import static core.general.PreferencesConstants.DEFAULT_MUSIC_ENABLED;
+import static core.general.PreferencesConstants.DEFAULT_MUSIC_VOLUME;
 
 public class AudioManager implements AudioControl {
     private final SoundManager soundManager = new SoundManager();

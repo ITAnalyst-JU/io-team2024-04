@@ -1,4 +1,4 @@
-package core.utilities;
+package core.general;
 
 public class PreferencesConstants {
     public static final float DEFAULT_MUSIC_VOLUME = 0.5f;
