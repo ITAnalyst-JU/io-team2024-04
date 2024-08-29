@@ -121,6 +121,7 @@ public class AbstractLevel {
                     if (destroyed) {
                         entityManager.remove((BodyEntity)buttonAction);
                     }
+                    entityManager.remove(button);
                     break;
                 case LevelContactListener.Event.Type.CollisionJumpContactBegin:
                     player.jumpContactBegin();
@@ -147,10 +148,9 @@ public class AbstractLevel {
     }
 
     public void dispose() {
-        // TODO: this sequence breaks game, free resources properly
-        // renderer.dispose();
-        // map.dispose();
-        // world.dispose();
+        world.dispose();
+        renderer.dispose();
+        map.dispose();
     }
 
     private void loadEntities(Vector2 baseSize, List<BodyEntity> entities) {
