@@ -497,9 +497,10 @@
   </object>
   <object id="57" x="1304" y="5728">
    <properties>
+    <property name="isUserDamageable" type="bool" value="false"/>
     <property name="lives" type="int" value="1"/>
     <property name="number" type="int" value="1"/>
-    <property name="type" value="block"/>
+    <property name="type" value="platform"/>
    </properties>
    <point/>
   </object>
@@ -509,7 +510,7 @@
    <property name="number" type="int" value="1"/>
    <property name="type" value="button"/>
   </properties>
-  <object id="22" x="480" y="5968" width="92" height="16">
+  <object id="22" x="480" y="5968" width="88" height="12">
    <properties>
     <property name="type" value="checkpoint"/>
    </properties>

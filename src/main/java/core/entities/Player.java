@@ -5,23 +5,20 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import core.utilities.Constants;
+import core.general.Constants;
 
 public class Player extends AbstractEntity implements InputProcessor {
     // Does not extend moving entity because movement is different.
 
-    private PlayerContactListener contactListener;
-
     private int sideKeyPressed = 0;
-
+    private int jumpsLeft = 0;
     private boolean ladderContact = false;
     private int ladderClimbing = 0;
 
     private final Vector2 tempSpeed = new Vector2(); // for performance reasons
 
-    public Player(Sprite sprite, World world, PlayerContactListener contactListener, Vector2 size, Vector2 position) {
+    public Player(Sprite sprite, World world, Vector2 size, Vector2 position) {
         super(sprite, world, BodyDef.BodyType.DynamicBody, size, position);
-        this.contactListener = contactListener;
     }
 
     public void update() {
@@ -32,6 +29,14 @@ public class Player extends AbstractEntity implements InputProcessor {
         }
         body.setLinearVelocity(tempSpeed);
         super.update();
+    }
+
+    public void jumpContactBegin() {
+        jumpsLeft = Integer.MAX_VALUE;
+    }
+
+    public void jumpContactEnd() {
+        jumpsLeft = 1;
     }
 
     public void ladderContactBegin() {
@@ -69,7 +74,8 @@ public class Player extends AbstractEntity implements InputProcessor {
                 break;
             case Input.Keys.W:
                 if (!ladderContact) {
-                    if (contactListener.playerLegalJump()) {
+                    if (jumpsLeft > 0) {
+                        jumpsLeft--;
                         body.setLinearVelocity(body.getLinearVelocity().x, Constants.Physics.PlayerJumpSpeed);
                     }
                 }

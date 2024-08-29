@@ -7,7 +7,7 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import core.utilities.Constants;
+import core.general.Constants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,15 +30,19 @@ public class EntityFactory {
         RectangleMapObject obj = (RectangleMapObject) mapObject;
         var objProperties = obj.getProperties();
 
+        boolean userDamagable = false;
+        if ((objProperties.containsKey("isUserDamageable") && (boolean)objProperties.get("isUserDamageable"))
+                || (!objProperties.containsKey("isUserDamageable") && objProperties.containsKey("lives"))) {
+            userDamagable = true;
+        }
+
         String texturePath;
         if (objProperties.get("type").equals("platform")) {
-            if (!objProperties.containsKey("lives")) {
+            if (!userDamagable) {
                 texturePath = "entities/platform.png";
             } else {
                 texturePath = "entities/platform2.png";
             }
-        } else if (objProperties.get("type").equals("block")) {
-            texturePath = "entities/platform.png";
         } else if (objProperties.get("type").equals("enemy")) {
             texturePath = "entities/enemy.png";
         } else {
@@ -65,9 +69,8 @@ public class EntityFactory {
 
         AbstractMovingEntity entity;
         if (objProperties.get("type").equals("platform")) {
-            entity = new Platform(new Sprite(new Texture(texturePath)), world, movementDirection, size, position);
-        } else if (objProperties.get("type").equals("block")) {
-            entity = new Block(new Sprite(new Texture(texturePath)), world, movementDirection, size, position);
+
+            entity = new Platform(new Sprite(new Texture(texturePath)), world, movementDirection, size, position, userDamagable);
         } else if (objProperties.get("type").equals("enemy")) {
             entity = new Enemy(new Sprite(new Texture(texturePath)), world, movementDirection, size, position);
         } else {
