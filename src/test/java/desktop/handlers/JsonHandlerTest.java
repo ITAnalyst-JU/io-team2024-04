@@ -5,17 +5,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static utils.TestUtils.discardSysOut;
 
 public class JsonHandlerTest {
     @Test
     public void testSerialize() {
         var objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
-        var jsonHandler = new JsonHandler<DummyRecord>(objectMapper, DummyRecord.class);
+        var jsonHandler = new JsonHandler<>(objectMapper, DummyRecord.class);
         var dummyRecord = new DummyRecord("dummy", 1, true);
         var serialized = jsonHandler.serialize(dummyRecord);
 
@@ -44,12 +41,7 @@ public class JsonHandlerTest {
 
     @Test
     public void testDeserializeError() {
-        System.setErr(new PrintStream(new OutputStream() {
-            @Override
-            public void write(int b) throws IOException {
-
-            }
-        }));
+        discardSysOut();
 
         var objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
         var jsonHandler = new JsonHandler<>(objectMapper, DummyRecord.class);

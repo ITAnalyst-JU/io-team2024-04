@@ -31,8 +31,6 @@ public class SupremeOrchestrator extends Game implements Observer<DomainEventEnu
         this.screenOrchestrator.respondToLoadedLevel(level);
     }
 
-
-
     @Override
     public void respondToEvent(DomainEventEnum param) {
         switch (param) {

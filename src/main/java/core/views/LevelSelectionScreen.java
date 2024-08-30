@@ -14,16 +14,22 @@ public class LevelSelectionScreen extends UIScreen {
     public LevelSelectionScreen(Stage stage) {
         super(stage);
 
-        Label titleLabel = new Label("Gradle Demon Adventures", skin, "default");
-        table.top().padTop(50);
+        Label titleLabel = createLabel("Gradle Demon Adventures");
+
+        table.center();
         table.add(titleLabel).expandX().padBottom(50);
         table.row();
 
-        addButton("P = NP", () -> System.out.println("Not for you"));
-        addButton("Mario", () -> {
+        table.add(createButton("P = NP", () -> System.out.println("Not for you"))).expandX().padBottom(10);
+        table.row();
+
+        table.add(createButton("Mario", () -> {
             nextLevel = LevelEnum.LEVEL_1;
             notifyOrchestrator(ScreenEnum.GAME);
-        });
-        addButton("Back to Menu", () -> notifyOrchestrator(ScreenEnum.MENU));
+        })).expandX().padBottom(10);
+        table.row();
+
+        table.add(createButton("Back to Menu", () -> notifyOrchestrator(ScreenEnum.MENU))).expandX().padTop(20);
+        table.row();
     }
 }
