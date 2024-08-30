@@ -10,21 +10,17 @@ import core.preferences.InternalPreferencesInteractorFactory;
 import core.window.WindowInteractor;
 
 public class SupremeInteractorFactory {
-    HighScoreInteractor highScoreInteractor;
     InternalPreferencesInteractorFactory internalPreferencesInteractorFactory;
     AudioInteractor audioInteractor;
     public SupremeInteractorFactory(InternalPreferencesInteractorFactory internalPreferencesInteractorFactory) {
         this.internalPreferencesInteractorFactory = internalPreferencesInteractorFactory;
     }
 
-    // NOTE: also our enemy singleton pattern
-
     public HighScoreInteractor getHighScoreInteractor() {
-        if (highScoreInteractor == null) {
-            highScoreInteractor = new HighScoreInteractorWithGateway(new DbHighScoreGateway(SqlDbFactory.highScoreTable()));
-        }
-        return highScoreInteractor;
+        return new HighScoreInteractorWithGateway(new DbHighScoreGateway(SqlDbFactory.highScoreTable()));
     }
+
+    // NOTE: also our enemy singleton pattern
 
     public AudioInteractor getAudioInteractor() {
         if (audioInteractor == null) {
