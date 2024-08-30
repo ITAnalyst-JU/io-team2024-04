@@ -10,14 +10,14 @@ public class ButtonTest {
     private final Vector2 zeroVector = new Vector2(0, 0);
 
     @Test
-    public void ButtonNumberPropertyTest() {
+    public void testButtonNumberProperty() {
         final int number = 17;
         Button button = new Button(new World(new Vector2(0, 0), true), BodyDef.BodyType.StaticBody, zeroVector, zeroVector, number);
         assertThat(button.getNumber()).isEqualTo(number);
     }
 
     @Test
-    public void ButtonTypePropertyTest() {
+    public void testTypeProperty() {
         Button button = new Button(new World(new Vector2(0, 0), true), BodyDef.BodyType.StaticBody, zeroVector, zeroVector, 0);
         assertThat(button.getType()).isEqualTo("button");
     }

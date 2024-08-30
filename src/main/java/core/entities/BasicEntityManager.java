@@ -12,10 +12,6 @@ public class BasicEntityManager implements EntityManager {
 
     private final List<BodyOnlyEntity> entitiesToDispose = new ArrayList<>();
 
-    public BasicEntityManager() {
-
-    }
-
     @Override
     public void update() {
         for (var entity : entities) {
