@@ -2,15 +2,7 @@ package core.views;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import core.db.app.HighScoreInteractor;
-import core.db.app.HighScoreInteractorWithGateway;
-import core.db.database.DbHighScoreGateway;
-import core.db.sqldb.SqlDbFactory;
 import core.levels.LevelManager;
-import core.audio.AudioManager;
-import core.audio.AudioInteractor;
-import desktop.preferences.LocalPreferences;
-import desktop.preferences.PreferencesOrchestrator;
 
 public class ScreenAbstractFactory {
     // TODO: maybe we can make this on request or throw it to supremeInteractorFactory ;)
@@ -32,6 +24,6 @@ public class ScreenAbstractFactory {
     }
 
     public MainScreen createMainScreen(LevelManager level) {
-        return new MainScreen(new Stage(new ScreenViewport()), level, highScoreInteractor);
+        return new MainScreen(new Stage(new ScreenViewport()), level, this.supremeInteractorFactory.getHighScoreInteractor());
     }
 }

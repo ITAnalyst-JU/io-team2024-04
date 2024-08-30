@@ -23,7 +23,6 @@ public class DesktopLauncher {
     public static void main(String[] arg) {
         new Lwjgl3Application(
                 new SupremeOrchestrator(
-                        new LevelOrchestrator(new LevelAbstractFactory(), new HashMap<>()),
                         new ScreenOrchestrator(
                                 new ScreenAbstractFactory(
                                         new SupremeInteractorFactory(
