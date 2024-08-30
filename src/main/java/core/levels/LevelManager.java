@@ -41,6 +41,7 @@ public class LevelManager {
         timeCounter = TimeUtils.millis();
     }
 
+    // Untestable. Dependancies on untestable libgdx parts, like camera.position .
     public void step() {
         world.step(Gdx.graphics.getDeltaTime(), 6, 2);
 

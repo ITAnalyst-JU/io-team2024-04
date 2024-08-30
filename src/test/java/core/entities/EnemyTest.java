@@ -10,7 +10,7 @@ public class EnemyTest {
     private final Vector2 zeroVector = new Vector2(0, 0);
 
     @Test
-    public void EnemyTypePropertyTest() {
+    public void testTypeProperty() {
         Enemy platform = new Enemy(new Sprite(), new World(new Vector2(0, 0), true), SpriteMovingEntity.MovementDirection.STATIC, zeroVector, zeroVector);
         assertThat(platform.getType()).isEqualTo("enemy");
     }

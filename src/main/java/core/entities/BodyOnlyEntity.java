@@ -50,10 +50,13 @@ public class BodyOnlyEntity {
         return position;
     }
 
-    public void setPosition(Vector2 position, boolean preserveVelocity) {
+    public void setPosition(Vector2 positionToHave, boolean preserveVelocity) {
         if (!preserveVelocity) {
             body.setLinearVelocity(0, 0);
         }
+        Vector2 position = new Vector2(positionToHave);
+        position.x /= Constants.Physics.Scale;
+        position.y /= Constants.Physics.Scale;
         body.setTransform(position, 0);
     }
 
