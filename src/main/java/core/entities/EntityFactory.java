@@ -23,7 +23,7 @@ public class EntityFactory {
         this.world = world;
     }
 
-    public AbstractEntity getAbstractEntity(MapObject mapObject) {
+    public SpriteEntity getAbstractEntity(MapObject mapObject) {
         if (! (mapObject instanceof RectangleMapObject)) {
             throw new UnsupportedOperationException("We only produce from rectangles");
         }
@@ -54,20 +54,20 @@ public class EntityFactory {
         }
 
         Rectangle rectangle = obj.getRectangle();
-        AbstractMovingEntity.MovementDirection movementDirection;
+        SpriteMovingEntity.MovementDirection movementDirection;
         if (rectangle.getHeight() == 0 && rectangle.getWidth() == 0) { // A point
-            movementDirection = AbstractMovingEntity.MovementDirection.STATIC;
+            movementDirection = SpriteMovingEntity.MovementDirection.STATIC;
         } else if (rectangle.getHeight() > rectangle.getWidth()) { // vertical
-            movementDirection = AbstractMovingEntity.MovementDirection.VERTICAL;
+            movementDirection = SpriteMovingEntity.MovementDirection.VERTICAL;
         } else { // horizontal
-            movementDirection = AbstractMovingEntity.MovementDirection.HORIZONTAL;
+            movementDirection = SpriteMovingEntity.MovementDirection.HORIZONTAL;
         }
 
         Vector2 position = new Vector2();
         position.x = (rectangle.getX() + rectangle.getWidth()/2f);
         position.y = (rectangle.getY() + rectangle.getHeight()/2f);
 
-        AbstractMovingEntity entity;
+        SpriteMovingEntity entity;
         if (objProperties.get("type").equals("platform")) {
 
             entity = new Platform(new Sprite(new Texture(texturePath)), world, movementDirection, size, position, userDamagable);
@@ -99,7 +99,7 @@ public class EntityFactory {
         return entity;
     }
 
-    public BodyEntity getBodyEntity (MapObject mapObject) {
+    public BodyOnlyEntity getBodyEntity (MapObject mapObject) {
         if (! (mapObject instanceof RectangleMapObject)) {
             throw new UnsupportedOperationException("We only produce from rectangles");
         }
@@ -109,12 +109,12 @@ public class EntityFactory {
         position.x = (rectangle.getX() + rectangle.getWidth()/2f);
         position.y = (rectangle.getY() + rectangle.getHeight()/2f);
         String type = (String)mapObject.getProperties().get("type");
-        BodyEntity entity;
+        BodyOnlyEntity entity;
         if ("button".equals(type)) {
             int number = (int)mapObject.getProperties().get("number");
             entity = new Button(world, BodyDef.BodyType.StaticBody, size, position, number);
         } else {
-            entity = new BodyEntity(world, BodyDef.BodyType.StaticBody, size, position);
+            entity = new BodyOnlyEntity(world, BodyDef.BodyType.StaticBody, size, position);
             entity.setType(type); //using casting to catch type errors
         }
         return entity;

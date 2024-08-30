@@ -8,13 +8,13 @@ import core.general.Constants;
 import java.util.TreeMap;
 import java.util.Map;
 
-public class BodyEntity {
+public class BodyOnlyEntity {
     protected Body body;
     protected String type;
 
     protected Map<String, Object> state;
 
-    BodyEntity(World world, BodyDef.BodyType bodyType, Vector2 size, Vector2 position) {
+    BodyOnlyEntity(World world, BodyDef.BodyType bodyType, Vector2 size, Vector2 position) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = bodyType;
         bodyDef.fixedRotation = true;
@@ -95,10 +95,10 @@ public class BodyEntity {
 
     @Override
     public boolean equals(Object obj) {
-        if (! (obj instanceof BodyEntity)) {
+        if (! (obj instanceof BodyOnlyEntity)) {
             return false;
         }
-        BodyEntity other = (BodyEntity) obj;
+        BodyOnlyEntity other = (BodyOnlyEntity) obj;
         return body.equals(other.body);
     }
 }

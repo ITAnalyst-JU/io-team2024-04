@@ -64,10 +64,10 @@ public class LevelContactListener implements ContactListener {
             events.add(new Event(Event.Type.CollisionJumpContactBegin, null));
         }
 
-        if (! (fix2.getUserData() instanceof BodyEntity)) {
+        if (! (fix2.getUserData() instanceof BodyOnlyEntity)) {
             return;
         }
-        BodyEntity fix2Body = (BodyEntity) fix2.getUserData();
+        BodyOnlyEntity fix2Body = (BodyOnlyEntity) fix2.getUserData();
         if (Constants.LayerNames.Finishing.equals(fix2Body.getType())) {
             events.add(new Event(Event.Type.Finish, null));
         }
@@ -110,10 +110,10 @@ public class LevelContactListener implements ContactListener {
             events.add(new Event(Event.Type.CollisionJumpContactEnd, null));
         }
 
-        if (! (fix2.getUserData() instanceof BodyEntity)) {
+        if (! (fix2.getUserData() instanceof BodyOnlyEntity)) {
             return;
         }
-        BodyEntity fix2Body = (BodyEntity) fix2.getUserData();
+        BodyOnlyEntity fix2Body = (BodyOnlyEntity) fix2.getUserData();
         if ("platform".equals(fix2Body.getType())) {
             events.add(new Event(Event.Type.Platform, fix2Body));
         }

@@ -34,7 +34,7 @@ public class LevelFactory {
         Vector2 entitySize;
         private LevelContactListener contactListener;
         private Player player;
-        private List<BodyEntity> entities;
+        private List<BodyOnlyEntity> entities;
         private EntityManager entityManager;
         private OrthogonalTiledMapRenderer renderer;
         private OrthographicCamera camera;

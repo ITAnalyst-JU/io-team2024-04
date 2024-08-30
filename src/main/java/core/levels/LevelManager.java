@@ -68,7 +68,7 @@ public class LevelManager {
                     gameEnded = true;
                     break;
                 case LevelContactListener.Event.Type.Checkpoint:
-                    entityManager.remove((BodyEntity)event.object);
+                    entityManager.remove((BodyOnlyEntity)event.object);
                     entityManager.saveState();
                     break;
                 case LevelContactListener.Event.Type.Platform:
@@ -92,7 +92,7 @@ public class LevelManager {
                     ButtonAction buttonAction = buttonActions.get(num);
                     boolean destroyed = buttonAction.buttonAction();
                     if (destroyed) {
-                        entityManager.remove((BodyEntity)buttonAction);
+                        entityManager.remove((BodyOnlyEntity)buttonAction);
                     }
                     entityManager.remove(button);
                     break;

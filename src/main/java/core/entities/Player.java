@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import core.general.Constants;
 
-public class Player extends AbstractEntity implements InputProcessor {
+public class Player extends SpriteEntity implements InputProcessor {
     // Does not extend moving entity because movement is different.
 
     private int sideKeyPressed = 0;

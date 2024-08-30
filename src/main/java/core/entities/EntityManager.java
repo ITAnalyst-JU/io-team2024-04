@@ -5,10 +5,10 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import java.util.List;
 
 public interface EntityManager {
-    void loadEntities(List<BodyEntity> entities);
+    void loadEntities(List<BodyOnlyEntity> entities);
     void saveState();
     void recoverState();
     void update();
     void render(Batch batch);
-    void remove(BodyEntity entity);
+    void remove(BodyOnlyEntity entity);
 }

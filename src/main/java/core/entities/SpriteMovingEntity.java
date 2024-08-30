@@ -5,12 +5,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 
-public abstract class AbstractMovingEntity extends AbstractEntity {
+public abstract class SpriteMovingEntity extends SpriteEntity {
     private final Platform.MovementDirection direction;
     private final float speed = 2f;
     private float minPosition = 0, maxPosition = 0;
 
-    public AbstractMovingEntity(Sprite sprite, World world, Platform.MovementDirection direction, Vector2 size, Vector2 position) {
+    public SpriteMovingEntity(Sprite sprite, World world, Platform.MovementDirection direction, Vector2 size, Vector2 position) {
         super(sprite, world, direction == MovementDirection.STATIC ? BodyDef.BodyType.StaticBody : BodyDef.BodyType.KinematicBody, size, position);
         this.direction = direction;
         switch (direction) {
