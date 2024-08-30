@@ -19,6 +19,7 @@ public class ScreenAbstractFactory {
             case ENDGAME -> new EndScreen(new Stage(new ScreenViewport()), this.supremeInteractorFactory.getHighScoreInteractor());
             case LOADING -> new LoadingScreen(new Stage(new ScreenViewport()));
             case LEVELSELECTION -> new LevelSelectionScreen(new Stage(new ScreenViewport()));
+            case LEADERBOARD -> new LeaderboardScreen(new Stage(new ScreenViewport()), this.supremeInteractorFactory.getHighScoreInteractor());
             default -> throw new IllegalArgumentException("Invalid screen state: " + screenEnum);
         };
     }

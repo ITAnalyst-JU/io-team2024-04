@@ -39,31 +39,6 @@ public class EndScreen extends UIScreen {
     public void show() {
         super.show();
         // TODO pass parameters depending on which level
-        generateHighScoresTable(1, 5);
-    }
-
-    // TODO move it to UIScreen
-    private void generateHighScoresTable(int levelid, int limit) {
-        highScoreTable.clear();
-
-        highScoreTable.add(createLabel("Nick")).pad(10);
-        highScoreTable.add(createLabel("Time")).pad(10);
-        highScoreTable.row();
-
-        List<HighScore> highScores = highScoreInteractor.getBestScoresForLevel(levelid, limit);
-
-        for (HighScore score : highScores) {
-            highScoreTable.add(createLabel(score.getUsername())).pad(10);
-            highScoreTable.add(createLabel(formatTime(score.getTime()))).pad(10);
-            highScoreTable.row();
-        }
-    }
-
-    private String formatTime(long milliseconds) {
-        long totalSeconds = milliseconds / 1000;
-        long seconds = totalSeconds % 60;
-        long minutes = totalSeconds / 60;
-        long millis = milliseconds % 1000;
-        return String.format("%02d:%02d:%03d", minutes, seconds, millis);
+        generateHighScoresTable(highScoreTable,highScoreInteractor,1, 5);
     }
 }

@@ -8,7 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import core.db.app.HighScoreInteractor;
+import core.db.domain.HighScore;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public abstract class UIScreen extends AbstractScreen {
@@ -80,6 +83,31 @@ public abstract class UIScreen extends AbstractScreen {
         backgroundImage.setZIndex(0);
         stage.addActor(backgroundImage);
     }
+
+    protected void generateHighScoresTable(Table highScoreTable, HighScoreInteractor highScoreInteractor, int levelId, int limit) {
+        highScoreTable.clear();
+
+        highScoreTable.add(createLabel("Nick")).pad(10);
+        highScoreTable.add(createLabel("Time")).pad(10);
+        highScoreTable.row();
+
+        List<HighScore> highScores = highScoreInteractor.getBestScoresForLevel(levelId, limit);
+
+        for (HighScore score : highScores) {
+            highScoreTable.add(createLabel(score.getUsername())).pad(10);
+            highScoreTable.add(createLabel(formatTime(score.getTime()))).pad(10);
+            highScoreTable.row();
+        }
+    }
+
+    protected String formatTime(long milliseconds) {
+        long totalSeconds = milliseconds / 1000;
+        long seconds = totalSeconds % 60;
+        long minutes = totalSeconds / 60;
+        long millis = milliseconds % 1000;
+        return String.format("%02d:%02d:%03d", minutes, seconds, millis);
+    }
+
 
     @Override
     public void show() {

@@ -6,5 +6,6 @@ public enum ScreenEnum {
     GAME,
     ENDGAME,
     LOADING,
-    LEVELSELECTION
+    LEVELSELECTION,
+    LEADERBOARD
 }
