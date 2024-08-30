@@ -17,7 +17,7 @@ public class EndScreen extends UIScreen {
         super(stage);
         this.highScoreInteractor = highScoreInteractor;
 
-        setBackgroundImage("ui/background/pref.jpg");
+        setBackgroundImage("ui/background/triangles.png");
 
         Label titleLabel = createLabel("Congratulations, you completed the level!");
         table.top().padTop(50);
