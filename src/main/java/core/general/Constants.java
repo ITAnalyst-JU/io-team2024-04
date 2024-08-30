@@ -25,6 +25,7 @@ public final class Constants {
         public static final String Prefix = "map/";
         public static final String[] List = new String[]{
                 "map.tmx",
+                "map2.tmx",
         };
     }
 
