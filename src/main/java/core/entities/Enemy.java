@@ -8,5 +8,6 @@ public class Enemy extends SpriteMovingEntity {
 
     public Enemy(Sprite sprite, World world, SpriteMovingEntity.MovementDirection direction, Vector2 size, Vector2 position) {
         super(sprite, world, direction, size, position);
+        this.type = "enemy";
     }
 }

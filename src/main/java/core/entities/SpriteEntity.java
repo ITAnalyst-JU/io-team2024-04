@@ -45,6 +45,9 @@ public abstract class SpriteEntity extends BodyOnlyEntity {
         this.life = life;
     }
 
+    // Why is damage here, not in BodyOnlyEntity?
+    // Well, what's the point of damaging something you can't see? It either disappears on contact, or it doesn't.
+    // We aren't fighting ghosts.
     public boolean damage() {
         life--;
         return (life == 0);
