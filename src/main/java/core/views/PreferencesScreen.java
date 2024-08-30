@@ -1,6 +1,7 @@
 package core.views;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
+
 import core.audio.AudioInteractor;
 import core.window.WindowInteractor;
 
@@ -9,31 +10,28 @@ public class PreferencesScreen extends UIScreen {
     public PreferencesScreen(Stage stage, AudioInteractor audioInteractor, WindowInteractor windowInteractor) {
         super(stage);
 
-        addSlider("Music Volume", 0, 1, 0.01f, audioInteractor.getMusicVolume(), () -> {
-            float newVolume = getSliderValue(0);
-            audioInteractor.setMusicVolume(newVolume);
-        });
+        setBackgroundImage("ui/background/triangles.png");
 
-        addCheckbox("Enable Music", audioInteractor.isMusicEnabled(), () -> {
-            boolean isEnabled = getCheckboxState(0);
-            audioInteractor.setMusicEnabled(isEnabled);
-        });
+        table.add(createLabel("Music Volume")).expandX().padBottom(10);
+        table.row();
+        table.add(createSlider(0, 1, 0.01f, audioInteractor.getMusicVolume(), newVolume -> audioInteractor.setMusicVolume(newVolume))).expandX().padBottom(10);
+        table.row();
 
-        addSlider("Sound Effects Volume", 0, 1, 0.01f, audioInteractor.getSoundsVolume(), () -> {
-            float newVolume = getSliderValue(1);
-            audioInteractor.setSoundsVolume(newVolume);
-        });
+        table.add(createCheckbox("Enable Music", audioInteractor.isMusicEnabled(), isEnabled -> audioInteractor.setMusicEnabled(isEnabled))).expandX().padBottom(10);
+        table.row();
 
-        addCheckbox("Enable Sounds Effects", audioInteractor.areSoundsEnabled(), () -> {
-            boolean isEnabled = getCheckboxState(1);
-            audioInteractor.setSoundsEnabled(isEnabled);
-        });
+        table.add(createLabel("Sound Effects Volume")).expandX().padBottom(10);
+        table.row();
+        table.add(createSlider(0, 1, 0.01f, audioInteractor.getSoundsVolume(), newVolume -> audioInteractor.setSoundsVolume(newVolume))).expandX().padBottom(10);
+        table.row();
 
-        addCheckbox("Fullscreen", windowInteractor.isFullscreen(), () -> {
-            boolean isEnabled = getCheckboxState(2);
-            windowInteractor.setFullscreen(isEnabled);
-        });
-
-        addButton("Back to Menu", () -> notifyOrchestrator(ScreenEnum.MENU));
+        table.add(createCheckbox("Enable Sounds Effects", audioInteractor.areSoundsEnabled(), isEnabled -> audioInteractor.setSoundsEnabled(isEnabled))).expandX().padBottom(10);
+        table.row();
+      
+        table.add(createCheckbox("Fullscreen", windowInteractor.isFullscreen(), isEnabled -> windowInteractor.setFullscreen(isEnabled))).expandX().padBottom(10);
+        table.row();
+      
+        table.add(createButton("Back to Menu", () -> notifyOrchestrator(ScreenEnum.MENU))).expandX().padTop(20);
+        table.row();
     }
 }

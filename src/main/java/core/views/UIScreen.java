@@ -1,20 +1,18 @@
 package core.views;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-import java.util.ArrayList;
 import java.util.function.Consumer;
 
 public abstract class UIScreen extends AbstractScreen {
     protected Skin skin;
-    protected ArrayList<TextButton> buttons;
-    protected ArrayList<Slider> sliders;
-    protected ArrayList<CheckBox> checkboxes;
     protected BitmapFont font;
     protected Table table;
 
@@ -25,105 +23,79 @@ public abstract class UIScreen extends AbstractScreen {
     }
 
     private void initializeUIComponents() {
-        skin = new Skin(Gdx.files.internal("skin/star-soldier-ui.json"));
+        skin = new Skin(Gdx.files.internal("ui/skin/plain-james-ui.json"));
         font = new BitmapFont();
-        buttons = new ArrayList<>();
-        sliders = new ArrayList<>();
-        checkboxes = new ArrayList<>();
         table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
     }
 
-    protected void addButton(String text, Runnable action) {
+    protected TextButton createButton(String text, Runnable action) {
         TextButton button = new TextButton(text, skin);
-        addClickListener(button, action);
-        buttons.add(button);
-        table.add(button).expandX().padBottom(10);
-        table.row();
-    }
-
-    protected void addSlider(String labelText, float min, float max, float stepSize, float initialValue, Runnable action) {
-        Label label = new Label(labelText, skin);
-        table.add(label).expandX().left().padBottom(10);
-
-        Slider slider = new Slider(min, max, stepSize, false, skin);
-        slider.setValue(initialValue);
-        slider.addListener(event -> {
-            action.run();
-            return false;
-        });
-
-        sliders.add(slider);
-        table.add(slider).expandX().fillX().padBottom(10);
-        table.row();
-    }
-
-    protected void addCheckbox(String labelText, boolean initialState, Runnable action) {
-        CheckBox checkBox = new CheckBox(labelText, skin);
-        checkBox.setChecked(initialState);
-        checkBox.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                action.run();
-            }
-        });
-
-        checkboxes.add(checkBox);
-        table.add(checkBox).expandX().left().padBottom(10);
-        table.row();
-    }
-
-    protected void addTextFieldWithButton(String messageText, String buttonText, Consumer<TextField> action) {
-        Table inputTable = new Table();
-        inputTable.padBottom(10);
-
-        TextField nameField = new TextField("", skin);
-        nameField.setMessageText(messageText);
-
-        TextButton updateButton = new TextButton(buttonText, skin);
-        updateButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                action.accept(nameField);
-                stage.setKeyboardFocus(null);
-                Gdx.input.setOnscreenKeyboardVisible(false);
-            }
-        });
-
-        inputTable.add(nameField).width(300).padRight(10);
-        inputTable.add(updateButton);
-
-        table.add(inputTable);
-        table.row();
-    }
-
-    protected float getSliderValue(int index) {
-        return sliders.get(index).getValue();
-    }
-
-    protected boolean getCheckboxState(int index) {
-        return checkboxes.get(index).isChecked();
-    }
-
-    private void addClickListener(TextButton button, Runnable action) {
         button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 action.run();
             }
         });
+        return button;
+    }
+
+    protected Slider createSlider(float min, float max, float stepSize, float initialValue, Consumer<Float> onChange) {
+        Slider slider = new Slider(min, max, stepSize, false, skin);
+        slider.setValue(initialValue);
+        slider.addListener(event -> {
+            onChange.accept(slider.getValue());
+            return false;
+        });
+        return slider;
+    }
+
+    protected CheckBox createCheckbox(String labelText, boolean initialState, Consumer<Boolean> onChange) {
+        CheckBox checkBox = new CheckBox(labelText, skin);
+        checkBox.setChecked(initialState);
+        checkBox.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                onChange.accept(checkBox.isChecked());
+            }
+        });
+        return checkBox;
+    }
+
+    protected Label createLabel(String text) {
+        return new Label(text, skin);
+    }
+
+    protected TextField createTextField(String messageText) {
+        TextField textField = new TextField("", skin);
+        textField.setMessageText(messageText);
+        return textField;
+    }
+
+    protected void setBackgroundImage(String imagePath) {
+        Texture backgroundTexture = new Texture(Gdx.files.internal(imagePath));
+        Image backgroundImage = new Image(backgroundTexture);
+        backgroundImage.setSize(stage.getWidth(), stage.getHeight());
+        backgroundImage.setZIndex(0);
+        stage.addActor(backgroundImage);
     }
 
     @Override
     public void show() {
         super.show();
         Gdx.input.setInputProcessor(stage);
+        table.setZIndex(1);
     }
 
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
+        for (Actor actor : stage.getActors()) {
+            if (actor instanceof Image) {
+                actor.setSize(width, height);
+            }
+        }
     }
 
     @Override
