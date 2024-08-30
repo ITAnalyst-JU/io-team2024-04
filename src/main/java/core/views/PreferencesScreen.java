@@ -3,10 +3,11 @@ package core.views;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import core.audio.AudioInteractor;
+import core.window.WindowInteractor;
 
 public class PreferencesScreen extends UIScreen {
 
-    public PreferencesScreen(Stage stage, AudioInteractor audioInteractor) {
+    public PreferencesScreen(Stage stage, AudioInteractor audioInteractor, WindowInteractor windowInteractor) {
         super(stage);
 
         setBackgroundImage("ui/background/triangles.png");
@@ -26,7 +27,10 @@ public class PreferencesScreen extends UIScreen {
 
         table.add(createCheckbox("Enable Sounds Effects", audioInteractor.areSoundsEnabled(), isEnabled -> audioInteractor.setSoundsEnabled(isEnabled))).expandX().padBottom(10);
         table.row();
-
+      
+        table.add(createCheckbox("Fullscreen", windowInteractor.isFullscreen(), isEnabled -> windowInteractor.setFullscreen(isEnabled))).expandX().padBottom(10);
+        table.row();
+      
         table.add(createButton("Back to Menu", () -> notifyOrchestrator(ScreenEnum.MENU))).expandX().padTop(20);
         table.row();
     }

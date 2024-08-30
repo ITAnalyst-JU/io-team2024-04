@@ -1,4 +1,4 @@
-package core.utilities;
+package core.general;
 
 import com.badlogic.gdx.math.Vector2;
 

@@ -12,18 +12,12 @@ public class BasicEntityManager implements EntityManager {
 
     private final List<BodyEntity> entitiesToDispose = new ArrayList<>();
 
-    private LevelContactListener contactListener;
+    public BasicEntityManager() {
 
-    public BasicEntityManager(LevelContactListener contactListener) {
-        this.contactListener = contactListener;
     }
 
     @Override
     public void update() {
-        for (var entity : contactListener.getBodiesToRemove()) {
-            this.remove(entity);
-        }
-        contactListener.clearBodiesToRemove();
         for (var entity : entities) {
             entity.update();
         }

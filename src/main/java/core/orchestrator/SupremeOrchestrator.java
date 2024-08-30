@@ -11,7 +11,6 @@ public class SupremeOrchestrator extends Game implements Observer<DomainEventEnu
     private final ILevelOrchestrator levelOrchestrator;
     private final IScreenOrchestrator screenOrchestrator;
 
-
     public SupremeOrchestrator(ILevelOrchestrator levelOrchestrator, IScreenOrchestrator screenOrchestrator) {
         this.levelOrchestrator = levelOrchestrator;
         this.screenOrchestrator = screenOrchestrator;
@@ -31,8 +30,6 @@ public class SupremeOrchestrator extends Game implements Observer<DomainEventEnu
     private void notifyScreenOrchestratorLevelLoaded(AbstractLevel level) {
         this.screenOrchestrator.respondToLoadedLevel(level);
     }
-
-
 
     @Override
     public void respondToEvent(DomainEventEnum param) {
