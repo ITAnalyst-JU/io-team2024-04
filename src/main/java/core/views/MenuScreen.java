@@ -10,6 +10,7 @@ import core.window.WindowInteractor;
 public class MenuScreen extends UIScreen {
     public MenuScreen(Stage stage, AudioInteractor audioInteractor, WindowInteractor windowInteractor) {
         super(stage);
+        setBackgroundImage("ui/background/gradle.jpg");
 
         // TODO: probably should be in show() method
         audioInteractor.loadPreferences();
