@@ -27,10 +27,10 @@ public class ConfigFactoryTest {
         configFactory.applyDesktopConfig(lwjgl3ApplicationConfiguration);
 
         verify(fileHandler, times(1)).createFile("config/config.json");
-        verify(jsonHandler, times(1)).serialize(new ConfigRecord(60, "Gradle Demon Adventures", 1280, 720, true, "icons/icon.png"));
+        verify(jsonHandler, times(1)).serialize(new ConfigRecord(60, "Gradle Demon Adventures", 800, 600, true, "icons/icon.png"));
         verify(lwjgl3ApplicationConfiguration, times(1)).setForegroundFPS(60);
         verify(lwjgl3ApplicationConfiguration, times(1)).setTitle("Gradle Demon Adventures");
-        verify(lwjgl3ApplicationConfiguration, times(1)).setWindowedMode(1280, 720);
+        verify(lwjgl3ApplicationConfiguration, times(1)).setWindowedMode(800, 600);
         verify(lwjgl3ApplicationConfiguration, times(1)).useVsync(true);
         verify(lwjgl3ApplicationConfiguration, times(1)).setWindowIcon("icons/icon.png");
     }
