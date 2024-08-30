@@ -48,6 +48,8 @@ public class EntityFactory {
         } else {
             throw new UnsupportedOperationException("Unknown object name: " + objProperties.get("type"));
         }
+        Texture texture = new Texture(texturePath); // TODO: use asset manager
+
         Vector2 size = new Vector2(baseEntitySize);
         if (objProperties.get("width") instanceof Integer) { // We have key with 0.0f instead of no key because Java or sth
             size.x *= (int) objProperties.get("width");
@@ -69,10 +71,9 @@ public class EntityFactory {
 
         SpriteMovingEntity entity;
         if (objProperties.get("type").equals("platform")) {
-
-            entity = new Platform(new Sprite(new Texture(texturePath)), world, movementDirection, size, position, userDamagable);
+            entity = new Platform(new Sprite(texture), world, movementDirection, size, position, userDamagable);
         } else if (objProperties.get("type").equals("enemy")) {
-            entity = new Enemy(new Sprite(new Texture(texturePath)), world, movementDirection, size, position);
+            entity = new Enemy(new Sprite(texture), world, movementDirection, size, position);
         } else {
             throw new UnsupportedOperationException("Unknown object name: " + objProperties.get("type"));
         }
