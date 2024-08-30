@@ -1,6 +1,7 @@
 package core.general;
 
 import com.badlogic.gdx.math.Vector2;
+import core.preferences.WindowMode;
 
 public final class Constants {
     public static final class Physics {
@@ -39,20 +40,16 @@ public final class Constants {
         public static final int DEFAULT_WINDOW_WIDTH = 1280;
         public static final int DEFAULT_WINDOW_HEIGHT = 720;
         public static final int DEFAULT_FPS = 60;
+
+        public static final boolean DEFAULT_VSYNC = true;
+
+        public static final String DEFAULT_USER_NAME = "Anon";
         public static final WindowMode[] WINDOW_MODES = {
                 new WindowMode(800, 600),
                 new WindowMode(1280, 720),
                 new WindowMode(1920, 1080),
         };
 
-        public static final int[] FPS_OPTIONS = {30, 60, 120, 165};
-
-        public record WindowMode(
-                int width,
-                int height
-        ) {
-        }
-
-
+        public static final Integer[] FPS_OPTIONS = {15, 30, 60, 120};
     }
 }

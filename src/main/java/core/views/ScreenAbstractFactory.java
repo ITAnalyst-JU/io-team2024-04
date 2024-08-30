@@ -9,7 +9,6 @@ public class ScreenAbstractFactory {
     SupremeInteractorFactory supremeInteractorFactory;
     public ScreenAbstractFactory(SupremeInteractorFactory supremeInteractorFactory) {
         this.supremeInteractorFactory = supremeInteractorFactory;
-
     }
 
     public AbstractScreen createScreen(ScreenEnum screenEnum) {

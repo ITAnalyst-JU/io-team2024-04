@@ -20,7 +20,7 @@ public class SupremeInteractorFactory {
         return new HighScoreInteractorWithGateway(new DbHighScoreGateway(SqlDbFactory.highScoreTable()));
     }
 
-    // NOTE: also our enemy singleton pattern
+    // NOTE: our enemy singleton pattern
 
     public AudioInteractor getAudioInteractor() {
         if (audioInteractor == null) {

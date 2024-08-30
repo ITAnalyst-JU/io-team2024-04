@@ -9,4 +9,7 @@ public interface IInternalWindowPreferencesInteractor {
 
     void setFps(int fps);
     int getFps();
+
+    void setVSync(boolean enabled);
+    boolean isVSync();
 }

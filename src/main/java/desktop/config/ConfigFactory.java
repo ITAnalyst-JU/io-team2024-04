@@ -10,6 +10,7 @@ import static desktop.constants.ConfigConstants.*;
 import static desktop.constants.ErrorCodes.CONFIG_DESERIALIZATION_ERROR;
 
 // NOTE: cannot use Gdx.*, context is not initialized
+// NOTE: only for developers
 
 public class ConfigFactory {
     private final FileHandler fileHandler;

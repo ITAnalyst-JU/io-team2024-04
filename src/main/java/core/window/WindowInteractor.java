@@ -1,6 +1,7 @@
 package core.window;
 
 import core.preferences.IInternalWindowPreferencesInteractor;
+import core.preferences.WindowMode;
 
 public class WindowInteractor {
     private final IInternalWindowPreferencesInteractor internalWindowPreferencesInteractor;
@@ -9,29 +10,39 @@ public class WindowInteractor {
         this.internalWindowPreferencesInteractor = internalWindowPreferencesInteractor;
     }
 
+    public boolean isFullscreen() {
+        return internalWindowPreferencesInteractor.isFullscreen();
+    }
+
     // TODO: implement interactor methods
     public void setFullscreen(boolean enabled) {
         internalWindowPreferencesInteractor.setFullscreen(enabled);
     }
-    public boolean isFullscreen() {
-        return internalWindowPreferencesInteractor.isFullscreen();
+
+    public WindowMode getWindowMode() {
+        return new WindowMode(internalWindowPreferencesInteractor.getWindowWidth(), internalWindowPreferencesInteractor.getWindowHeight());
     }
-    public void setWindowSize(int width, int height) {
-        internalWindowPreferencesInteractor.setWindowSize(width, height);
+
+    public void setWindowMode(WindowMode windowMode) {
+        internalWindowPreferencesInteractor.setWindowSize(windowMode.width(), windowMode.height());
     }
-    public int getWindowWidth() {
-        return internalWindowPreferencesInteractor.getWindowWidth();
-    }
-    public int getWindowHeight() {
-        return internalWindowPreferencesInteractor.getWindowHeight();
+
+    public int getFps() {
+        return internalWindowPreferencesInteractor.getFps();
     }
 
     public void setFps(int fps) {
         internalWindowPreferencesInteractor.setFps(fps);
     }
-    public int getFps() {
-        return internalWindowPreferencesInteractor.getFps();
+
+    public void setVSync(boolean enabled) {
+        internalWindowPreferencesInteractor.setVSync(enabled);
     }
+
+    public boolean isVSync() {
+        return internalWindowPreferencesInteractor.isVSync();
+    }
+
     public void loadPreferences() {
         boolean isFullscreen = internalWindowPreferencesInteractor.isFullscreen();
         internalWindowPreferencesInteractor.setFullscreen(isFullscreen);

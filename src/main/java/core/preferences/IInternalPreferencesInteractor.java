@@ -1,4 +1,4 @@
 package core.preferences;
 
-// NOTE: I believe open-closed principle
-public interface IInternalPreferencesInteractor extends IInternalAudioPreferencesInteractor, IInternalWindowPreferencesInteractor { }
+// NOTE: I believe interface segregation principle
+public interface IInternalPreferencesInteractor extends IInternalAudioPreferencesInteractor, IInternalWindowPreferencesInteractor, IInternalUserPreferencesInteractor { }

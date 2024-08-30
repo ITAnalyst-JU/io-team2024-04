@@ -86,4 +86,25 @@ public class InternalPreferencesInteractor implements IInternalPreferencesIntera
     public int getFps() {
         return userPreferences.getFps();
     }
+
+    @Override
+    public void setVSync(boolean enabled) {
+        userPreferences.setVSync(enabled);
+        Gdx.graphics.setVSync(enabled);
+    }
+
+    @Override
+    public boolean isVSync() {
+        return userPreferences.isVSync();
+    }
+
+    @Override
+    public void setUserName(String name) {
+        userPreferences.setUserName(name);
+    }
+
+    @Override
+    public String getUserName() {
+        return userPreferences.getUserName();
+    }
 }

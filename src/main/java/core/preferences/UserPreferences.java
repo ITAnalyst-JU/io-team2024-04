@@ -21,6 +21,9 @@ public class UserPreferences {
     private static final String PREFS_WINDOW_WIDTH = "window.width";
     private static final String PREFS_WINDOW_HEIGHT = "window.height";
     private static final String PREFS_FPS = "fps";
+    private static final String PREFS_VSYNC = "vsync";
+
+    private static final String PREFS_USER_NAME = "user.name";
     
     private Preferences getPreferences() {
         return Gdx.app.getPreferences(PREFS_NAME);
@@ -94,4 +97,22 @@ public class UserPreferences {
         this.getPreferences().flush();
     }
 
+    public void setVSync(boolean enabled) {
+        this.getPreferences().putBoolean(PREFS_VSYNC, enabled);
+        this.getPreferences().flush();
+    }
+
+    public boolean isVSync() {
+        return this.getPreferences().getBoolean(PREFS_VSYNC, DEFAULT_VSYNC);
+    }
+
+    public String getUserName() {
+        // TODO: maybe we can rand it
+        return this.getPreferences().getString(PREFS_USER_NAME, DEFAULT_USER_NAME);
+    }
+
+    public void setUserName(String name) {
+        this.getPreferences().putString(PREFS_USER_NAME, name);
+        this.getPreferences().flush();
+    }
 }
