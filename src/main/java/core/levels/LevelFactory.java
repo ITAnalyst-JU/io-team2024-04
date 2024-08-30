@@ -1,6 +1,7 @@
 package core.levels;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -62,8 +63,10 @@ public class LevelFactory {
             entities.add(player);
             loadEntities();
 
+            UserInputController inputProcessor = new UserInputController();
+            inputProcessor.addObserver(player);
             world.setContactListener(contactListener);
-            Gdx.input.setInputProcessor(player);
+            Gdx.input.setInputProcessor(inputProcessor);
 
             entityManager = new BasicEntityManager();
             entityManager.loadEntities(entities);

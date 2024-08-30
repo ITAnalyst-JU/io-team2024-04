@@ -1,13 +1,13 @@
 package core.entities;
 
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import core.general.Constants;
+import core.general.Observer;
 
-public class Player extends SpriteEntity implements InputProcessor {
+public class Player extends SpriteEntity implements Observer<UserControlsEnum> {
     // Does not extend moving entity because movement is different.
 
     private int sideKeyPressed = 0;
@@ -19,6 +19,7 @@ public class Player extends SpriteEntity implements InputProcessor {
 
     public Player(Sprite sprite, World world, Vector2 size, Vector2 position) {
         super(sprite, world, BodyDef.BodyType.DynamicBody, size, position);
+        this.type = "player";
     }
 
     public void update() {
@@ -70,15 +71,17 @@ public class Player extends SpriteEntity implements InputProcessor {
     }
 
     @Override
-    public boolean keyDown(int keyNo) {
-        switch (keyNo) {
-            case Input.Keys.A:
+    public void respondToEvent(UserControlsEnum event) {
+        switch (event) {
+            case A_down:
+            case D_up:
                 this.sideKeyPressed--;
                 break;
-            case Input.Keys.D:
+            case A_up:
+            case D_down:
                 this.sideKeyPressed++;
                 break;
-            case Input.Keys.W:
+            case W_down:
                 if (!ladderContact) {
                     if (jumpsLeft > 0) {
                         jumpsLeft--;
@@ -87,73 +90,16 @@ public class Player extends SpriteEntity implements InputProcessor {
                 }
                 ladderClimbing = 1;
                 break;
-            case Input.Keys.S:
+            case S_down:
                 ladderClimbing = -1;
                 break;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean keyUp(int keyNo) {
-        switch (keyNo) {
-            case Input.Keys.A:
-                this.sideKeyPressed++;
-                break;
-            case Input.Keys.D:
-                this.sideKeyPressed--;
-                break;
-            case Input.Keys.W:
+            case W_up:
+            case S_up:
                 ladderClimbing = 0;
                 break;
-            case Input.Keys.S:
-                ladderClimbing = 0;
+
+            default:
                 break;
         }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "player";
-    }
-
-    // We don't use other methods right now.
-    // They have to be here because Java doesn't support multiple inheritance.
-    // Also, LibGDX doesn't adhere to interface segregation principle.
-
-    @Override
-    public boolean keyTyped(char c) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int i, int i1, int i2, int i3) {
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int i, int i1, int i2, int i3) {
-        return false;
-    }
-
-    @Override
-    public boolean touchCancelled(int i, int i1, int i2, int i3) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int i, int i1, int i2) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int i, int i1) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(float v, float v1) {
-        return false;
     }
 }
