@@ -29,6 +29,12 @@ public class LevelSelectionScreen extends UIScreen {
         })).expandX().padBottom(10);
         table.row();
 
+        table.add(createButton("Mario 2", () -> {
+            nextLevel = LevelEnum.LEVEL_2;
+            notifyOrchestrator(ScreenEnum.GAME);
+        })).expandX().padBottom(10);
+        table.row();
+
         table.add(createButton("Back to Menu", () -> notifyOrchestrator(ScreenEnum.MENU))).expandX().padTop(20);
         table.row();
     }
