@@ -2,20 +2,19 @@ package core.orchestrator;
 
 import com.badlogic.gdx.Game;
 import core.general.Observer;
-import core.levels.AbstractLevel;
-import core.levels.ILevelOrchestrator;
+import core.levels.LevelFactory;
+import core.levels.LevelManager;
 import core.levels.LevelEnum;
 import core.views.*;
 
 public class SupremeOrchestrator extends Game implements Observer<DomainEventEnum> {
-    private final ILevelOrchestrator levelOrchestrator;
     private final IScreenOrchestrator screenOrchestrator;
+    private final LevelFactory levelFactory;
 
-
-    public SupremeOrchestrator(ILevelOrchestrator levelOrchestrator, IScreenOrchestrator screenOrchestrator) {
-        this.levelOrchestrator = levelOrchestrator;
+    public SupremeOrchestrator(IScreenOrchestrator screenOrchestrator, LevelFactory levelFactory) {
         this.screenOrchestrator = screenOrchestrator;
         ((ScreenOrchestrator) screenOrchestrator).addObserver(this);
+        this.levelFactory = levelFactory;
     }
 
     @Override
@@ -28,7 +27,7 @@ public class SupremeOrchestrator extends Game implements Observer<DomainEventEnu
         super.dispose();
     }
 
-    private void notifyScreenOrchestratorLevelLoaded(AbstractLevel level) {
+    private void notifyScreenOrchestratorLevelLoaded(LevelManager level) {
         this.screenOrchestrator.respondToLoadedLevel(level);
     }
 
@@ -42,7 +41,7 @@ public class SupremeOrchestrator extends Game implements Observer<DomainEventEnu
                 break;
             case NEEDLEVEL:
                 LevelEnum nextLevelEnum = this.screenOrchestrator.getNextLevel();
-                AbstractLevel nextLevel = this.levelOrchestrator.getLevel(nextLevelEnum);
+                LevelManager nextLevel = levelFactory.createLevel(nextLevelEnum);
                 this.notifyScreenOrchestratorLevelLoaded(nextLevel);
                 this.setScreen(screenOrchestrator.getScreen(ScreenEnum.GAME));
                 break;

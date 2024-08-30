@@ -4,15 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-import core.levels.AbstractLevel;
+import core.levels.LevelManager;
 import core.db.app.HighScoreInteractor;
 
 public class MainScreen extends AbstractScreen {
 
-    private final AbstractLevel level;
+    private final LevelManager level;
     private final HighScoreInteractor highScoreInteractor;
 
-    public MainScreen(Stage stage, AbstractLevel level, HighScoreInteractor highscoreInteractor) {
+    public MainScreen(Stage stage, LevelManager level, HighScoreInteractor highscoreInteractor) {
         super(stage);
         this.level = level;
         this.highScoreInteractor = highscoreInteractor;

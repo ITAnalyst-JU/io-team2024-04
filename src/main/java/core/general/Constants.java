@@ -20,4 +20,11 @@ public final class Constants {
         public static final String Entities = "entities";
         public static final String Checkpoint = "checkpoint";
     }
+
+    public static final class LevelNames {
+        public static final String Prefix = "map/";
+        public static final String[] List = new String[]{
+                "map.tmx"
+        };
+    }
 }

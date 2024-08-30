@@ -4,8 +4,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import core.levels.LevelAbstractFactory;
-import core.levels.LevelOrchestrator;
+import core.levels.LevelFactory;
 import core.orchestrator.SupremeOrchestrator;
 import core.views.ScreenAbstractFactory;
 import core.views.ScreenOrchestrator;
@@ -21,8 +20,8 @@ public class DesktopLauncher {
     public static void main(String[] arg) {
         new Lwjgl3Application(
                 new SupremeOrchestrator(
-                        new LevelOrchestrator(new LevelAbstractFactory(), new HashMap<>()),
-                        new ScreenOrchestrator(new ScreenAbstractFactory(), new HashMap<>())),
+                        new ScreenOrchestrator(new ScreenAbstractFactory(), new HashMap<>()),
+                        new LevelFactory()),
                 new ConfigFactory(
                         new FileHandler(),
                         new JsonHandler<>(new ObjectMapper()

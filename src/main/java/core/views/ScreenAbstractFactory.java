@@ -6,7 +6,7 @@ import core.db.app.HighScoreInteractor;
 import core.db.app.HighScoreInteractorWithGateway;
 import core.db.database.DbHighScoreGateway;
 import core.db.sqldb.SqlDbFactory;
-import core.levels.AbstractLevel;
+import core.levels.LevelManager;
 import core.audio.AudioManager;
 import core.audio.AudioInteractor;
 import desktop.preferences.LocalPreferences;
@@ -33,7 +33,7 @@ public class ScreenAbstractFactory {
         };
     }
 
-    public MainScreen createMainScreen(AbstractLevel level) {
+    public MainScreen createMainScreen(LevelManager level) {
         return new MainScreen(new Stage(new ScreenViewport()), level, highScoreInteractor);
     }
 }
