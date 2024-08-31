@@ -14,6 +14,7 @@ public class BodyOnlyEntity {
 
     protected Map<String, Object> state;
 
+    // Impossible to inject dependence on Body class.
     BodyOnlyEntity(World world, BodyDef.BodyType bodyType, Vector2 size, Vector2 position) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = bodyType;

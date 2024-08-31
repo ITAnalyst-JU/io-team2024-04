@@ -1,12 +1,13 @@
 package core.entities;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import core.general.Constants;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.mockito.Mockito;
 
 public class BodyOnlyEntityTest {
     private static final Vector2 zeroVector = new Vector2(0, 0);
@@ -18,38 +19,61 @@ public class BodyOnlyEntityTest {
     private static class DummyObject{}
 
     @Test
+    public void testSetPositionBasic() {
+        TestClass testClass = new TestClass();
+
+        testClass.setPosition(new Vector2(21, 15), false);
+        var res = testClass.getPosition();
+
+        Assertions.assertThat(res).isEqualTo(new Vector2(21, 15));
+    }
+
+    @Test
+    public void testSetPositionPreservesVelocity() {
+        TestClass testClass = new TestClass();
+        testClass.body.setLinearVelocity(2, 9);
+        testClass.setPosition(new Vector2(21, 15), true);
+        var res = testClass.body.getLinearVelocity();
+
+        Assertions.assertThat(res).isEqualTo(new Vector2(2, 9));
+    }
+
+    @Test
+    public void testSetPositionDoesNotPreserveVelocityy() {
+        TestClass testClass = new TestClass();
+        testClass.body.setLinearVelocity(2, 9);
+        testClass.setPosition(new Vector2(21, 15), false);
+        var res = testClass.body.getLinearVelocity();
+
+        Assertions.assertThat(res).isEqualTo(zeroVector);
+    }
+
+    @Test
     public void testSetPositionDoesNotChangeGivenVector() {
         TestClass testClass = new TestClass();
         Vector2 position = new Vector2(2, 14);
         testClass.setPosition(position, false);
-        assertThat(position).isEqualTo(new Vector2(2, 14));
+        Assertions.assertThat(position).isEqualTo(new Vector2(2, 14));
     }
 
     @Test
     public void testBodyOnlyEntityDefaultType() {
         TestClass testClass = new TestClass();
-        assertThat(testClass.getType()).isEqualTo("default");
+        Assertions.assertThat(testClass.getType()).isEqualTo("default");
     }
 
     @Test
     public void testChangeType() {
         TestClass testClass = new TestClass();
         testClass.setType("newType");
-        assertThat(testClass.getType()).isEqualTo("newType");
-    }
-
-    @Test
-    public void testPositionChanging() {
-        TestClass testClass = new TestClass();
-        testClass.setPosition(new Vector2(21, 15), false);
-        assertThat(testClass.getPosition()).isEqualTo(new Vector2(21, 15));
+        Assertions.assertThat(testClass.getType()).isEqualTo("newType");
     }
 
     @Test
     public void testHide() {
         TestClass testClass = new TestClass();
         testClass.hide();
-        assertThat(testClass.getPosition()).isEqualTo(Constants.Physics.DeletedLocation);
+        Assertions.assertThat(testClass.getPosition()).isEqualTo(Constants.Physics.DeletedLocation);
     }
 
     @Test
@@ -60,7 +84,7 @@ public class BodyOnlyEntityTest {
         testClass.saveState();
         testClass.setPosition(new Vector2(0, 0), false);
         testClass.recoverState();
-        assertThat(testClass.getPosition()).isEqualTo(position);
+        Assertions.assertThat(testClass.getPosition()).isEqualTo(position);
     }
 
     // This test is extremely shady, as it uses private fields of the class
@@ -72,7 +96,81 @@ public class BodyOnlyEntityTest {
         testClass.body.setGravityScale(0.5f);
         testClass.body.setLinearVelocity(24, 8);
         testClass.recoverState();
-        assertThat(testClass.body.getGravityScale()).isEqualTo(1);
-        assertThat(testClass.body.getLinearVelocity()).isEqualTo(new Vector2(2, 9));
+        Assertions.assertThat(testClass.body.getGravityScale()).isEqualTo(1);
+        Assertions.assertThat(testClass.body.getLinearVelocity()).isEqualTo(new Vector2(2, 9));
+    }
+
+    @Test
+    public void testDispose() {
+        TestClass testClass = new TestClass();
+        testClass.dispose();
+        Assertions.assertThat(testClass.body.getWorld().getBodyCount()).isEqualTo(0);
+    }
+
+    @Test
+    public void testUpdate() {
+        TestClass testClass = new TestClass();
+        testClass.body = Mockito.spy(testClass.body);
+        testClass.update();
+        Mockito.verifyNoInteractions(testClass.body);
+    }
+
+    @Test
+    public void testDraw() {
+        TestClass testClass = new TestClass();
+        var batch = Mockito.mock(Batch.class);
+        testClass.draw(batch);
+        Mockito.verifyNoInteractions(batch);
+    }
+
+    @Test
+    public void testHashCode() {
+        TestClass testClass = new TestClass();
+        TestClass testClass2 = new TestClass();
+
+        var hash = testClass.hashCode();
+        var hash2 = testClass2.hashCode();
+
+        Assertions.assertThat(hash).isNotEqualTo(hash2);
+    }
+
+    @Test
+    public void testEqualsNull() {
+        TestClass testClass = new TestClass();
+        TestClass testClass2 = null;
+
+        var res = testClass.equals(testClass2);
+
+        Assertions.assertThat(res).isFalse();
+    }
+
+    @Test
+    public void testEqualsDifferentClass() {
+        TestClass testClass = new TestClass();
+        DummyObject dummyObject = new DummyObject();
+
+        var res = testClass.equals(dummyObject);
+
+        Assertions.assertThat(res).isFalse();
+    }
+
+    @Test
+    public void testEqualsFalse() {
+        TestClass testClass = new TestClass();
+        Object object = new Object();
+
+        var res = testClass.equals(object);
+
+        Assertions.assertThat(res).isFalse();
+    }
+
+    @Test
+    public void testEqualsTrue() {
+        TestClass testClass = new TestClass();
+        TestClass testClass2 = testClass;
+
+        var res = testClass.equals(testClass2);
+
+        Assertions.assertThat(res).isTrue();
     }
 }
