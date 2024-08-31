@@ -14,22 +14,23 @@ import java.util.List;
 import java.util.Map;
 
 public class LevelManager {
-    private TiledMap map;
-    private OrthogonalTiledMapRenderer renderer;
-    private OrthographicCamera camera;
-    private World world;
-    private EntityManager entityManager;
-    private Player player;
-    private LevelContactListener contactListener;
-    private Map<Integer, ButtonAction> buttonActions;
-    private UserInputController inputController;
+    private final TiledMap map;
+    private final OrthogonalTiledMapRenderer renderer;
+    private final OrthographicCamera camera;
+    private final World world;
+    private final EntityManager entityManager;
+    private final Player player;
+    private final LevelContactListener contactListener;
+    private final Map<Integer, ButtonAction> buttonActions;
+    private final UserInputController inputController;
+    private final int levelNumber;
 
     private long totalTime = 0;
     private long beginTime;
     public boolean gameEnded = false;
 
     // Do we need to have so many things? Unfortunately it seems yes.
-    public LevelManager(TiledMap map, OrthogonalTiledMapRenderer renderer, OrthographicCamera camera, World world, EntityManager entityManager, Player player, LevelContactListener contactListener, Map<Integer, ButtonAction> buttonActions, UserInputController inputController) {
+    public LevelManager(TiledMap map, OrthogonalTiledMapRenderer renderer, OrthographicCamera camera, World world, EntityManager entityManager, Player player, LevelContactListener contactListener, Map<Integer, ButtonAction> buttonActions, UserInputController inputController, int levelNumber) {
         this.map = map;
         this.renderer = renderer;
         this.camera = camera;
@@ -39,6 +40,7 @@ public class LevelManager {
         this.contactListener = contactListener;
         this.buttonActions = buttonActions;
         this.inputController = inputController;
+        this.levelNumber = levelNumber;
     }
 
     public void create() {
@@ -154,5 +156,9 @@ public class LevelManager {
     
     public UserInputController getInputController() {
         return inputController;
+    }
+
+    public int getLevelNumber() {
+        return levelNumber;
     }
 }

@@ -26,7 +26,7 @@ public class BodyOnlyEntity {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = polygonShape;
         fixtureDef.density = 1f;
-        fixtureDef.friction = 10f;
+        fixtureDef.friction = Constants.Physics.Friction;
         fixtureDef.restitution = 0;
         Fixture fixture = body.createFixture(fixtureDef);
         fixture.setUserData(this);

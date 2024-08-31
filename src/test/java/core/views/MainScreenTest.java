@@ -53,12 +53,13 @@ public class MainScreenTest {
         var mainScreen = new MainScreen(stage, level, highScoreInteractor);
         Mockito.when(level.isGameEnded()).thenReturn(true);
         Mockito.when(level.getTimePassed()).thenReturn(17L);
+        Mockito.when(level.getLevelNumber()).thenReturn(3);
         Gdx.gl = Mockito.mock(GL20.class);
 
         mainScreen.render(0.0f);
         Mockito.verify(level).isGameEnded();
         Mockito.verify(level).getTimePassed();
-        Mockito.verify(highScoreInteractor).addHighScore(Mockito.anyInt(), Mockito.anyString(), Mockito.eq(17L));
+        Mockito.verify(highScoreInteractor).addHighScore(Mockito.eq(3), Mockito.anyString(), Mockito.eq(17L));
     }
 
     @Test
@@ -69,6 +70,7 @@ public class MainScreenTest {
         var mainScreen = new MainScreen(stage, level, highScoreInteractor);
         Mockito.when(level.isGameEnded()).thenReturn(true);
         Mockito.when(level.getTimePassed()).thenReturn(17L);
+        Mockito.when(level.getLevelNumber()).thenReturn(0);
         Gdx.gl = Mockito.mock(GL20.class);
         var observer = (Observer<ScreenEnum>) Mockito.mock(Observer.class);
         mainScreen.addObserver(observer);

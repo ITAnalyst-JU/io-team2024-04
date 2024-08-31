@@ -91,7 +91,7 @@ public class LevelFactory {
             renderer = new OrthogonalTiledMapRenderer(map);
             camera = new OrthographicCamera();
 
-            return new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputProcessor);
+            return new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputProcessor, levelNumber);
 
         }
 

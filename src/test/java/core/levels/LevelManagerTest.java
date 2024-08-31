@@ -30,7 +30,7 @@ public class LevelManagerTest {
         var contactListener = Mockito.mock(LevelContactListener.class);
         var buttonActions = (Map<Integer, ButtonAction>)Mockito.mock(Map.class);
         var inputController = Mockito.mock(UserInputController.class);
-        var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController);
+        var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController, 0);
 
         levelManager.create();
 
@@ -49,7 +49,7 @@ public class LevelManagerTest {
         var contactListener = Mockito.mock(LevelContactListener.class);
         var buttonActions = (Map<Integer, ButtonAction>) Mockito.mock(Map.class);
         var inputController = Mockito.mock(UserInputController.class);
-        var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController);
+        var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController, 0);
 
         Gdx.input = Mockito.mock(Input.class);
 
@@ -72,7 +72,7 @@ public class LevelManagerTest {
         var contactListener = Mockito.mock(LevelContactListener.class);
         var buttonActions = (Map<Integer, ButtonAction>)Mockito.mock(Map.class);
         var inputController = Mockito.mock(UserInputController.class);
-        var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController);
+        var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController, 0);
 
         levelManager.create();
         levelManager.dispose();
@@ -95,7 +95,7 @@ public class LevelManagerTest {
         var contactListener = Mockito.mock(LevelContactListener.class);
         var buttonActions = (Map<Integer, ButtonAction>) Mockito.mock(Map.class);
         var inputController = Mockito.mock(UserInputController.class);
-        var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController);
+        var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController, 0);
 
         Gdx.input = Mockito.mock(Input.class);
 
@@ -105,5 +105,28 @@ public class LevelManagerTest {
         var gottenInputController = levelManager.getInputController();
 
         Assertions.assertEquals(inputController, gottenInputController);
+    }
+
+    @Test
+    public void testLevelNumber() {
+        var map = Mockito.mock(TiledMap.class);
+        var renderer = Mockito.mock(OrthogonalTiledMapRenderer.class);
+        var camera = Mockito.mock(OrthographicCamera.class);
+        var world = Mockito.mock(World.class);
+        var entityManager = Mockito.mock(EntityManager.class);
+        var player = Mockito.mock(Player.class);
+        var contactListener = Mockito.mock(LevelContactListener.class);
+        var buttonActions = (Map<Integer, ButtonAction>) Mockito.mock(Map.class);
+        var inputController = Mockito.mock(UserInputController.class);
+        var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController, 7);
+
+        Gdx.input = Mockito.mock(Input.class);
+
+        levelManager.create();
+        levelManager.resume();
+        levelManager.pause();
+        var gottenLevelNumber = levelManager.getLevelNumber();
+
+        Assertions.assertEquals(7, gottenLevelNumber);
     }
 }
