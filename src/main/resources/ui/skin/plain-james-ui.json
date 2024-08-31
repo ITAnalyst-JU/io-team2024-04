@@ -169,7 +169,11 @@ com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
 		font: font
 		fontColor: black
 		scrollStyle: default
-		listStyle: default
+		listStyle: default,
+		background: round-gray,
+		backgroundDisabled: round-dark-gray
+		backgroundOpen: round-light-gray
+		backgroundOver: round-light-gray
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
