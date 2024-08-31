@@ -3,6 +3,8 @@ package core.general;
 import com.badlogic.gdx.math.Vector2;
 import core.preferences.WindowMode;
 
+import java.awt.*;
+
 public final class Constants {
     public static final class Physics {
         public static final float Scale = 16f;
@@ -49,8 +51,9 @@ public final class Constants {
                 new WindowMode(800, 600),
                 new WindowMode(1280, 720),
                 new WindowMode(1920, 1080),
+                new WindowMode(2560, 1440),
         };
 
-        public static final Integer[] FPS_OPTIONS = {15, 30, 60, 120};
+        public static final Integer[] FPS_OPTIONS = {60};
     }
 }
