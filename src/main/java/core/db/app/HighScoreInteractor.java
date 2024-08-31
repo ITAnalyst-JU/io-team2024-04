@@ -7,4 +7,5 @@ import java.util.List;
 public interface HighScoreInteractor {
     HighScore addHighScore(int levelId, String username, long time);
     List<HighScore> getBestScoresForLevel(int levelId, int limit);
+    HighScore getBestScoreForUserAndLevel(int levelId, String username);
 }

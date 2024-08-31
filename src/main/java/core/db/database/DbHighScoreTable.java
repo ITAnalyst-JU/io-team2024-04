@@ -10,5 +10,5 @@ public interface DbHighScoreTable {
     void readHighScores(HighScoreListBuilder builder);
     int insertHighScore(int levelId, String username, long time);
     List<HighScore> selectBestScoresForLevel(int levelId, int limit);
-
+    HighScore selectBestScoreForUserAndLevel(int levelId, String username);
 }

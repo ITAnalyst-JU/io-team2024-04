@@ -1,7 +1,7 @@
 package core.views;
 
 import core.audio.AudioInteractor;
-import core.audio.AudioManager;
+import core.audio.AudioManagerFactory;
 import core.db.app.HighScoreInteractor;
 import core.db.app.HighScoreInteractorWithGateway;
 import core.db.database.DbHighScoreGateway;
@@ -11,7 +11,6 @@ import core.window.WindowInteractor;
 
 public class SupremeInteractorFactory {
     InternalPreferencesInteractorFactory internalPreferencesInteractorFactory;
-    AudioInteractor audioInteractor;
     public SupremeInteractorFactory(InternalPreferencesInteractorFactory internalPreferencesInteractorFactory) {
         this.internalPreferencesInteractorFactory = internalPreferencesInteractorFactory;
     }
@@ -20,13 +19,8 @@ public class SupremeInteractorFactory {
         return new HighScoreInteractorWithGateway(new DbHighScoreGateway(SqlDbFactory.highScoreTable()));
     }
 
-    // NOTE: our enemy singleton pattern
-
     public AudioInteractor getAudioInteractor() {
-        if (audioInteractor == null) {
-            audioInteractor = new AudioInteractor(new AudioManager(), internalPreferencesInteractorFactory.getPreferencesInteractor());
-        }
-        return audioInteractor;
+        return new AudioInteractor(AudioManagerFactory.getAudioManager(), internalPreferencesInteractorFactory.getPreferencesInteractor());
     }
 
     public WindowInteractor getWindowInteractor() {
