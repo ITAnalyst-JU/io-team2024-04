@@ -5,21 +5,22 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 
 import core.audio.AudioInteractor;
+import core.user.UserInteractor;
 import core.window.WindowInteractor;
 
 public class MenuScreen extends UIScreen {
-    public MenuScreen(Stage stage, AudioInteractor audioInteractor, WindowInteractor windowInteractor) {
+    public MenuScreen(Stage stage, AudioInteractor audioInteractor, WindowInteractor windowInteractor, UserInteractor userInteractor) {
         super(stage);
         setBackgroundImage("ui/background/gradle.jpg");
 
-        // TODO: probably should be in show() method
+        // TODO: probably should be in show() method or in LoadingScreen?
         audioInteractor.loadPreferences();
         windowInteractor.loadPreferences();
         audioInteractor.playBackgroundMusic("audio/music/epic_free_music.mp3", true);
 
         Table greyBackground = new Table();
         greyBackground.setBackground(skin.getDrawable("round-gray"));
-        Label welcomeLabel = createLabel("Wake the fuck up, Anon! Your build.gradle needs fixing!");
+        Label welcomeLabel = createLabel("Wake the fuck up, " + userInteractor.getUserName() + "! Your build.gradle needs fixing!");
         greyBackground.add(welcomeLabel);
         table.add(greyBackground).expandX().padBottom(20).center();
         table.row();
@@ -42,6 +43,7 @@ public class MenuScreen extends UIScreen {
                 name = "Anon";
             }
             welcomeLabel.setText("Wake the fuck up, " + name + "! Your build.gradle needs fixing!");
+            userInteractor.setUserName(name);
         });
 
         Table inputTable = new Table();

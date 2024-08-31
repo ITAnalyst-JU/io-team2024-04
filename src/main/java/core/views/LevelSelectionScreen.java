@@ -6,10 +6,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import core.levels.LevelEnum;
 import core.db.app.HighScoreInteractor;
 import core.db.domain.HighScore;
+import core.user.UserInteractor;
 
 public class LevelSelectionScreen extends UIScreen {
     private LevelEnum nextLevel;
     private final HighScoreInteractor highScoreInteractor;
+    private final UserInteractor userInteractor;
     private final Label userBestTimeLabel;
     private final Table topScoresTable;
     private final Table labelTable;
@@ -18,9 +20,10 @@ public class LevelSelectionScreen extends UIScreen {
         return nextLevel;
     }
 
-    public LevelSelectionScreen(Stage stage, HighScoreInteractor highScoreInteractor) {
+    public LevelSelectionScreen(Stage stage, HighScoreInteractor highScoreInteractor, UserInteractor userInteractor) {
         super(stage);
         this.highScoreInteractor = highScoreInteractor;
+        this.userInteractor = userInteractor;
 
         setBackgroundImage("ui/background/triangles.png");
 
@@ -75,7 +78,7 @@ public class LevelSelectionScreen extends UIScreen {
     }
 
     private void handleHover(LevelEnum level, String label) {
-        HighScore userBestScore = highScoreInteractor.getBestScoreForUserAndLevel(level.getLevelNumber(), "sigma"); // TODO get username from preferences
+        HighScore userBestScore = highScoreInteractor.getBestScoreForUserAndLevel(level.getLevelNumber(), userInteractor.getUserName());
 
         labelTable.setVisible(true);
         if (userBestScore != null) {
