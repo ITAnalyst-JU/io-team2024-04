@@ -12,7 +12,7 @@ public final class Constants {
         public static final float PlayerJumpSpeed = 10f;
         public static final float PlayerMoveSpeed = 10f;
         public static final Vector2 DeletedLocation = new Vector2(-100, -100);
-        public static final float Friction = 10f;
+        public static final float Friction = 17f;
     }
 
     public static final class LayerNames {
@@ -54,6 +54,6 @@ public final class Constants {
                 new WindowMode(2560, 1440),
         };
 
-        public static final Integer[] FPS_OPTIONS = {60};
+        public static final Integer[] FPS_OPTIONS = {60, 120};
     }
 }
