@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -84,6 +85,28 @@ public abstract class UIScreen extends AbstractScreen {
         stage.addActor(backgroundImage);
     }
 
+    protected TextButton createButtonWithHover(String label, Runnable onClickAction, Runnable onHoverEnterAction, Runnable onHoverExitAction) {
+        TextButton button = createButton(label, onClickAction);
+
+        button.addListener(new InputListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                if (onHoverEnterAction != null) {
+                    onHoverEnterAction.run();
+                }
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                if (onHoverExitAction != null) {
+                    onHoverExitAction.run();
+                }
+            }
+        });
+
+        return button;
+    }
+
     protected void generateHighScoresTable(Table highScoreTable, HighScoreInteractor highScoreInteractor, int levelId, int limit) {
         highScoreTable.clear();
 
@@ -92,6 +115,12 @@ public abstract class UIScreen extends AbstractScreen {
         highScoreTable.row();
 
         List<HighScore> highScores = highScoreInteractor.getBestScoresForLevel(levelId, limit);
+
+        if (highScores.isEmpty()) {
+            highScoreTable.clear();
+            highScoreTable.add(createLabel("No scores available yet")).expandX().padTop(10);
+            return;
+        }
 
         for (HighScore score : highScores) {
             highScoreTable.add(createLabel(score.getUsername())).pad(10);

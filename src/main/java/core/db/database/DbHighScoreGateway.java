@@ -36,5 +36,9 @@ public class DbHighScoreGateway implements HighScoreGateway {
     public List<HighScore> getBestScoresForLevel(int levelId, int limit) {
         return table.selectBestScoresForLevel(levelId, limit);
     }
+
+    public HighScore getBestScoreForUserAndLevel(int levelId, String username) {
+        return table.selectBestScoreForUserAndLevel(levelId, username);
+    }
 }
 

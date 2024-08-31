@@ -64,5 +64,24 @@ class SqlDbHighScoreTable implements DbHighScoreTable {
         });
         return highScores;
     }
+
+    public HighScore selectBestScoreForUserAndLevel(int levelId, String username) {
+        var statement = "SELECT * FROM high_scores WHERE level_id = ? AND username = ? ORDER BY time ASC LIMIT 1";
+        final HighScore[] highScore = {null};
+        engine.execute(statement, sql -> {
+            sql.setInt(1, levelId);
+            sql.setString(2, username);
+            ResultSet rs = sql.executeQuery();
+            if (rs.next()) {
+                highScore[0] = new HighScore(
+                        rs.getInt("id"),
+                        rs.getInt("level_id"),
+                        rs.getString("username"),
+                        rs.getLong("time")
+                );
+            }
+        });
+        return highScore[0];
+    }
 }
 

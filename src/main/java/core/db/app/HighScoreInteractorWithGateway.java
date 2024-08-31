@@ -18,4 +18,8 @@ public class HighScoreInteractorWithGateway implements HighScoreInteractor {
     public List<HighScore> getBestScoresForLevel(int levelId, int limit) {
         return gateway.getBestScoresForLevel(levelId, limit);
     }
+
+    public HighScore getBestScoreForUserAndLevel(int levelId, String username) {
+        return gateway.getBestScoreForUserAndLevel(levelId, username);
+    }
 }
