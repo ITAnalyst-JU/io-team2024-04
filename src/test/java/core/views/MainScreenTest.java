@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import core.db.app.HighScoreInteractor;
 import core.general.Observer;
+import core.general.UserControlsEnum;
+import core.general.UserInputController;
 import core.levels.LevelManager;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -18,8 +20,13 @@ public class MainScreenTest {
         var level = Mockito.mock(LevelManager.class);
         var highScoreInteractor = Mockito.mock(HighScoreInteractor.class);
         var mainScreen = new MainScreen(stage, level, highScoreInteractor);
+        var inputController = Mockito.mock(UserInputController.class);
+        Mockito.when(level.getInputController()).thenReturn(inputController);
+
         mainScreen.show();
-        Mockito.verify(level).create();
+
+        Mockito.verify(level).resume();
+        Mockito.verify(inputController).addObserver(mainScreen);
     }
 
     @Test
@@ -69,5 +76,45 @@ public class MainScreenTest {
         mainScreen.render(0.0f);
 
         Mockito.verify(observer).respondToEvent(ScreenEnum.ENDGAME);
+    }
+
+    @Test
+    public void testGamePause() {
+
+        var stage = Mockito.mock(Stage.class);
+        var level = Mockito.mock(LevelManager.class);
+        var highScoreInteractor = Mockito.mock(HighScoreInteractor.class);
+        var mainScreen = new MainScreen(stage, level, highScoreInteractor);
+        Mockito.when(level.isGameEnded()).thenReturn(false);
+        Gdx.gl = Mockito.mock(GL20.class);
+        var observer = (Observer<ScreenEnum>) Mockito.mock(Observer.class);
+        mainScreen.addObserver(observer);
+
+        mainScreen.respondToEvent(UserControlsEnum.Pause);
+        mainScreen.render(0.0f);
+
+        Mockito.verify(observer).respondToEvent(ScreenEnum.PAUSE);
+    }
+
+    @Test
+    public void testDispose() {
+        var stage = Mockito.mock(Stage.class);
+        var level = Mockito.mock(LevelManager.class);
+        var highScoreInteractor = Mockito.mock(HighScoreInteractor.class);
+        var mainScreen = new MainScreen(stage, level, highScoreInteractor);
+        Mockito.when(level.isGameEnded()).thenReturn(false);
+        var inputController = Mockito.mock(UserInputController.class);
+        Mockito.when(level.getInputController()).thenReturn(inputController);
+        Gdx.gl = Mockito.mock(GL20.class);
+
+        mainScreen.render(0.0f);
+        mainScreen.dispose();
+
+        Mockito.verify(level).step();
+        Mockito.verify(level).isGameEnded();
+        Mockito.verify(level).pause();
+        Mockito.verify(level).getInputController();
+        Mockito.verify(inputController).removeObserver(mainScreen);
+        Mockito.verifyNoMoreInteractions(level, inputController);
     }
 }

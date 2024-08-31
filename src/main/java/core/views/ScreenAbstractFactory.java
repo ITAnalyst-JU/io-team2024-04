@@ -19,6 +19,7 @@ public class ScreenAbstractFactory {
             case LOADING -> new LoadingScreen(new Stage(new ScreenViewport()));
             case LEVELSELECTION -> new LevelSelectionScreen(new Stage(new ScreenViewport()));
             case LEADERBOARD -> new LeaderboardScreen(new Stage(new ScreenViewport()), this.supremeInteractorFactory.getHighScoreInteractor());
+            case PAUSE -> new PauseScreen(new Stage(new ScreenViewport()));
             default -> throw new IllegalArgumentException("Invalid screen state: " + screenEnum);
         };
     }

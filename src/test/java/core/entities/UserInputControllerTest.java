@@ -2,6 +2,8 @@ package core.entities;
 
 import com.badlogic.gdx.Input;
 import core.general.Observer;
+import core.general.UserControlsEnum;
+import core.general.UserInputController;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 

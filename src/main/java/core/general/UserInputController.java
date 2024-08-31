@@ -1,11 +1,8 @@
-package core.entities;
+package core.general;
 
 import com.badlogic.gdx.Input;
-import core.general.BasicInputProcessor;
-import core.general.Observable;
-import core.general.Observer;
 
-public class UserInputController extends Observable<Observer<UserControlsEnum>> implements BasicInputProcessor {
+public class UserInputController extends Observable<Observer<UserControlsEnum>> implements InputController {
     @Override
     public boolean keyDown(int i) {
         UserControlsEnum action;
@@ -21,6 +18,9 @@ public class UserInputController extends Observable<Observer<UserControlsEnum>> 
                 break;
             case Input.Keys.S:
                 action = UserControlsEnum.S_down;
+                break;
+            case Input.Keys.ESCAPE:
+                action = UserControlsEnum.Pause;
                 break;
             default:
                 return false;

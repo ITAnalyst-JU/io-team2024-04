@@ -1,7 +1,6 @@
 package core.levels;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -17,18 +16,33 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import core.entities.*;
 import core.general.Constants;
+import core.general.UserInputController;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class LevelFactory {
+    private LevelManager savedManager;
 
     public LevelManager createLevel(LevelEnum levelNumber) {
-        return new TemporaryFactoryObject().createLevel(levelNumber.getLevelNumber());
+        savedManager = new TemporaryFactoryObject().createLevel(levelNumber.getLevelNumber());
+        savedManager.create();
+        return savedManager;
     }
 
-    private class TemporaryFactoryObject {
+    public LevelManager getSavedLevel() {
+        return savedManager;
+    }
+
+    public void clearSavedLevel() {
+        if (savedManager != null) {
+            savedManager.dispose();
+        }
+        savedManager = null;
+    }
+
+    private static class TemporaryFactoryObject {
 
         private TiledMap map;
         private World world;
@@ -40,6 +54,7 @@ public class LevelFactory {
         private OrthogonalTiledMapRenderer renderer;
         private OrthographicCamera camera;
         private Map<Integer, ButtonAction> buttonActions;
+        private UserInputController inputProcessor;
 
         private LevelManager createLevel(int levelNumber) { // 1-indexed
             String name;
@@ -63,7 +78,8 @@ public class LevelFactory {
             entities.add(player);
             loadEntities();
 
-            UserInputController inputProcessor = new UserInputController();
+            inputProcessor = new UserInputController();
+
             inputProcessor.addObserver(player);
             world.setContactListener(contactListener);
             Gdx.input.setInputProcessor(inputProcessor);
@@ -75,7 +91,7 @@ public class LevelFactory {
             renderer = new OrthogonalTiledMapRenderer(map);
             camera = new OrthographicCamera();
 
-            return new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions);
+            return new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputProcessor);
 
         }
 
