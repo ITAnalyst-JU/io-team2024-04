@@ -4,23 +4,32 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
+import core.general.UserControlsEnum;
+import core.general.Observer;
 import core.levels.LevelManager;
 import core.db.app.HighScoreInteractor;
+import core.user.UserInteractor;
 
-public class MainScreen extends AbstractScreen {
+import java.util.Objects;
+
+public class MainScreen extends AbstractScreen implements Observer<UserControlsEnum> {
 
     private final LevelManager level;
     private final HighScoreInteractor highScoreInteractor;
+    private final UserInteractor userInteractor;
+    private boolean pause = false;
 
-    public MainScreen(Stage stage, LevelManager level, HighScoreInteractor highscoreInteractor) {
+    public MainScreen(Stage stage, LevelManager level, HighScoreInteractor highscoreInteractor, UserInteractor userInteractor) {
         super(stage);
         this.level = level;
         this.highScoreInteractor = highscoreInteractor;
+        this.userInteractor = userInteractor;
     }
 
     @Override
     public void show() {
-        level.create();
+        level.getInputController().addObserver(this);
+        level.resume();
     }
 
     @Override
@@ -32,8 +41,12 @@ public class MainScreen extends AbstractScreen {
 
         if (level.isGameEnded()) {
             // TODO add dependent levelid and nickname
-            highScoreInteractor.addHighScore(1,"bob", level.getTimePassed());
+            highScoreInteractor.addHighScore(level.getLevelNumber(), userInteractor.getUserName(), (int) level.getTimePassed());
             this.notifyOrchestrator(ScreenEnum.ENDGAME);
+        }
+
+        if (pause) {
+            this.notifyOrchestrator(ScreenEnum.PAUSE);
         }
     }
 
@@ -59,6 +72,15 @@ public class MainScreen extends AbstractScreen {
 
     @Override
     public void dispose() {
-        level.dispose();
+        // Level might outlive the screen when pausing
+        level.pause();
+        level.getInputController().removeObserver(this);
+    }
+
+    @Override
+    public void respondToEvent(UserControlsEnum param) {
+        if (Objects.requireNonNull(param) == UserControlsEnum.Pause) {
+            pause = true;
+        }
     }
 }

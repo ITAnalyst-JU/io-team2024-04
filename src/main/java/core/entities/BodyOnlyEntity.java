@@ -14,6 +14,7 @@ public class BodyOnlyEntity {
 
     protected Map<String, Object> state;
 
+    // Impossible to inject dependence on Body class.
     BodyOnlyEntity(World world, BodyDef.BodyType bodyType, Vector2 size, Vector2 position) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = bodyType;
@@ -26,7 +27,7 @@ public class BodyOnlyEntity {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = polygonShape;
         fixtureDef.density = 1f;
-        fixtureDef.friction = 10f;
+        fixtureDef.friction = Constants.Physics.Friction;
         fixtureDef.restitution = 0;
         Fixture fixture = body.createFixture(fixtureDef);
         fixture.setUserData(this);

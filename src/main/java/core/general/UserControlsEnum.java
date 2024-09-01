@@ -1,4 +1,4 @@
-package core.entities;
+package core.general;
 
 public enum UserControlsEnum {
     A_down,
@@ -9,4 +9,5 @@ public enum UserControlsEnum {
     D_up,
     S_down,
     S_up,
+    Pause,
 }

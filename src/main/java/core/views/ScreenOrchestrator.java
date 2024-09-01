@@ -64,6 +64,8 @@ public class ScreenOrchestrator extends Observable<Observer<DomainEventEnum>> im
         this.nextScreenEnum = screenEnum;
         if (Objects.requireNonNull(screenEnum) == ScreenEnum.GAME) {
             notifyOrchestrator(DomainEventEnum.NEEDLEVEL);
+        } else if (Objects.requireNonNull(screenEnum) == ScreenEnum.RESUME_GAME) {
+            notifyOrchestrator(DomainEventEnum.RESUME_LEVEL);
         } else {
             notifyOrchestrator(DomainEventEnum.CHANGESCREEN);
         }

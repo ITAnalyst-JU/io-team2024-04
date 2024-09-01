@@ -7,6 +7,7 @@ import core.db.app.HighScoreInteractorWithGateway;
 import core.db.database.DbHighScoreGateway;
 import core.db.sqldb.SqlDbFactory;
 import core.preferences.InternalPreferencesInteractorFactory;
+import core.user.UserInteractor;
 import core.window.WindowInteractor;
 
 public class SupremeInteractorFactory {
@@ -27,4 +28,7 @@ public class SupremeInteractorFactory {
         return new WindowInteractor(internalPreferencesInteractorFactory.getPreferencesInteractor());
     }
 
+    public UserInteractor getUserInteractor() {
+        return new UserInteractor(internalPreferencesInteractorFactory.getPreferencesInteractor());
+    }
 }

@@ -53,4 +53,44 @@ public class AbstractScreenTest {
 
         Mockito.verify(observer).respondToEvent(screenEnum);
     }
+
+    @Test
+    public void testResize() {
+        var stage = Mockito.mock(com.badlogic.gdx.scenes.scene2d.Stage.class);
+
+        AbstractScreen abstractScreen = new AbstractScreen(stage);
+        abstractScreen.resize(0, 0);
+
+        Mockito.verifyNoInteractions(stage);
+    }
+
+    @Test
+    public void testPause() {
+        var stage = Mockito.mock(com.badlogic.gdx.scenes.scene2d.Stage.class);
+
+        AbstractScreen abstractScreen = new AbstractScreen(stage);
+        abstractScreen.pause();
+
+        Mockito.verifyNoInteractions(stage);
+    }
+
+    @Test
+    public void testResume() {
+        var stage = Mockito.mock(com.badlogic.gdx.scenes.scene2d.Stage.class);
+
+        AbstractScreen abstractScreen = new AbstractScreen(stage);
+        abstractScreen.resume();
+
+        Mockito.verifyNoInteractions(stage);
+    }
+
+    @Test
+    public void testHide() {
+        var stage = Mockito.mock(com.badlogic.gdx.scenes.scene2d.Stage.class);
+
+        AbstractScreen abstractScreen = new AbstractScreen(stage);
+        abstractScreen.hide();
+
+        Mockito.verifyNoInteractions(stage);
+    }
 }

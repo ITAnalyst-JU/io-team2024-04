@@ -35,13 +35,23 @@ public class SupremeOrchestrator extends Game implements Observer<DomainEventEnu
 
     @Override
     public void respondToEvent(DomainEventEnum param) {
+        LevelManager nextLevel;
         switch (param) {
             case CHANGESCREEN:
-                this.setScreen(screenOrchestrator.getScreen(screenOrchestrator.getNextScreenEnum()));
+                var nextScreen = screenOrchestrator.getNextScreenEnum();
+                if (nextScreen == ScreenEnum.MENU) {
+                    levelFactory.clearSavedLevel();
+                }
+                this.setScreen(screenOrchestrator.getScreen(nextScreen));
                 break;
             case NEEDLEVEL:
                 LevelEnum nextLevelEnum = this.screenOrchestrator.getNextLevel();
-                LevelManager nextLevel = levelFactory.createLevel(nextLevelEnum);
+                nextLevel = levelFactory.createLevel(nextLevelEnum);
+                this.notifyScreenOrchestratorLevelLoaded(nextLevel);
+                this.setScreen(screenOrchestrator.getScreen(ScreenEnum.GAME));
+                break;
+            case RESUME_LEVEL:
+                nextLevel = levelFactory.getSavedLevel();
                 this.notifyScreenOrchestratorLevelLoaded(nextLevel);
                 this.setScreen(screenOrchestrator.getScreen(ScreenEnum.GAME));
                 break;

@@ -8,25 +8,29 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import core.entities.*;
+import core.general.UserInputController;
 
 import java.util.List;
 import java.util.Map;
 
 public class LevelManager {
-    private TiledMap map;
-    private OrthogonalTiledMapRenderer renderer;
-    private OrthographicCamera camera;
-    private World world;
-    private EntityManager entityManager;
-    private Player player;
-    private LevelContactListener contactListener;
-    private Map<Integer, ButtonAction> buttonActions;
+    private final TiledMap map;
+    private final OrthogonalTiledMapRenderer renderer;
+    private final OrthographicCamera camera;
+    private final World world;
+    private final EntityManager entityManager;
+    private final Player player;
+    private final LevelContactListener contactListener;
+    private final Map<Integer, ButtonAction> buttonActions;
+    private final UserInputController inputController;
+    private final int levelNumber;
 
-    private long timeCounter;
+    private long totalTime = 0;
+    private long beginTime;
     public boolean gameEnded = false;
 
     // Do we need to have so many things? Unfortunately it seems yes.
-    public LevelManager(TiledMap map, OrthogonalTiledMapRenderer renderer, OrthographicCamera camera, World world, EntityManager entityManager, Player player, LevelContactListener contactListener, Map<Integer, ButtonAction> buttonActions) {
+    public LevelManager(TiledMap map, OrthogonalTiledMapRenderer renderer, OrthographicCamera camera, World world, EntityManager entityManager, Player player, LevelContactListener contactListener, Map<Integer, ButtonAction> buttonActions, UserInputController inputController, int levelNumber) {
         this.map = map;
         this.renderer = renderer;
         this.camera = camera;
@@ -35,10 +39,22 @@ public class LevelManager {
         this.player = player;
         this.contactListener = contactListener;
         this.buttonActions = buttonActions;
+        this.inputController = inputController;
+        this.levelNumber = levelNumber;
     }
 
     public void create() {
-        timeCounter = TimeUtils.millis();
+        // Nothing to do. Factory does everything. Possibly remove?
+    }
+
+    public void resume() {
+        Gdx.input.setInputProcessor(inputController);
+        player.resetControls();
+        beginTime = TimeUtils.millis();
+    }
+
+    public void pause() {
+        totalTime += TimeUtils.timeSinceMillis(beginTime);
     }
 
     // Untestable. Dependancies on untestable libgdx parts, like camera.position .
@@ -65,7 +81,7 @@ public class LevelManager {
         for (var event : events) {
             switch (event.type) {
                 case LevelContactListener.Event.Type.Finish:
-                    timeCounter = TimeUtils.timeSinceMillis(timeCounter);
+                    pause();
                     gameEnded = true;
                     break;
                 case LevelContactListener.Event.Type.Checkpoint:
@@ -117,9 +133,6 @@ public class LevelManager {
         events.clear();
     }
 
-    public long getTimePassed() {
-        return timeCounter;
-    }
 
     public void dispose() {
         world.dispose();
@@ -127,12 +140,25 @@ public class LevelManager {
         map.dispose();
     }
 
-    public boolean isGameEnded() {
-        return gameEnded;
-    }
 
     public void resize(int i, int i1) {
         camera.viewportWidth = (float)i/3;
         camera.viewportHeight = (float)i1/3;
+    }
+
+    public long getTimePassed() {
+        return totalTime;
+    }
+
+    public boolean isGameEnded() {
+        return gameEnded;
+    }
+    
+    public UserInputController getInputController() {
+        return inputController;
+    }
+
+    public int getLevelNumber() {
+        return levelNumber;
     }
 }

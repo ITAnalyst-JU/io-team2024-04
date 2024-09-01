@@ -5,7 +5,7 @@ import com.badlogic.gdx.InputProcessor;
 // Java will do anything to avoid multiple inheritance.
 // There exists Gdx.InputAdapter which is identical, but that is class, not an interface with defaults.
 // So here we are.
-public interface BasicInputProcessor extends InputProcessor {
+public interface InputController extends InputProcessor {
     @Override
     default boolean keyDown(int i) {
         return false;

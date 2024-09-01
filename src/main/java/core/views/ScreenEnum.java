@@ -7,5 +7,7 @@ public enum ScreenEnum {
     ENDGAME,
     LOADING,
     LEVELSELECTION,
-    LEADERBOARD
+    LEADERBOARD,
+    PAUSE,
+    RESUME_GAME
 }
