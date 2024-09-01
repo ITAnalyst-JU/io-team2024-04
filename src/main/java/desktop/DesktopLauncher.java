@@ -1,9 +1,11 @@
 package desktop;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import core.assets.SupremeAssetManager;
 import core.levels.LevelFactory;
 import core.orchestrator.SupremeOrchestrator;
 import core.preferences.InternalPreferencesInteractorFactory;

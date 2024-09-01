@@ -1,0 +1,15 @@
+loading_background.png
+size:2048,256
+repeat:none
+far-mountains
+bounds:2,2,320,240
+far-trees
+bounds:1290,2,320,240
+middle-mountains
+bounds:324,2,320,240
+myst
+bounds:646,2,320,240
+near-trees
+bounds:1612,2,320,240
+sky
+bounds:968,2,320,240

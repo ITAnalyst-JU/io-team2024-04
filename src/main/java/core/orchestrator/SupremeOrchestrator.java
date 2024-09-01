@@ -1,6 +1,7 @@
 package core.orchestrator;
 
 import com.badlogic.gdx.Game;
+import core.assets.IAssetManager;
 import core.general.Observer;
 import core.levels.LevelFactory;
 import core.levels.LevelManager;
@@ -10,6 +11,7 @@ import core.views.*;
 public class SupremeOrchestrator extends Game implements Observer<DomainEventEnum> {
     private final IScreenOrchestrator screenOrchestrator;
     private final LevelFactory levelFactory;
+
 
     public SupremeOrchestrator(IScreenOrchestrator screenOrchestrator, LevelFactory levelFactory) {
         this.screenOrchestrator = screenOrchestrator;
