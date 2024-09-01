@@ -17,7 +17,7 @@ public class MenuScreen extends UIScreen {
         // TODO: probably should be in show() method or in LoadingScreen?
         audioInteractor.loadPreferences();
         windowInteractor.loadPreferences();
-        audioInteractor.playBackgroundMusic("audio/music/epic_free_music.mp3", true);
+        audioInteractor.playBackgroundMusic(assetManagerFactory.getAssetManagerGetter().getMusic("audio/music/epic_background.mp3"), true);
 
         Table greyBackground = new Table();
         greyBackground.setBackground(skin.getDrawable("round-gray"));

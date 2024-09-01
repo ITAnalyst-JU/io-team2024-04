@@ -6,9 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import core.assets.AssetManagerFactory;
 import core.db.app.HighScoreInteractor;
-import core.db.domain.HighScore;
-
-import java.util.List;
 
 public class EndScreen extends UIScreen {
     private final HighScoreInteractor highScoreInteractor;
