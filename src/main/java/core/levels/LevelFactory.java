@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import core.assets.AssetManagerFactory;
+import core.assets.IAssetManagerGetter;
 import core.entities.*;
 import core.general.Constants;
 import core.general.UserInputController;
@@ -24,7 +25,7 @@ public class LevelFactory {
     private LevelManager savedManager;
 
     public LevelManager createLevel(LevelEnum levelNumber, AssetManagerFactory assetManagerFactory) {
-        savedManager = new TemporaryFactoryObject().createLevel(levelNumber.getLevelNumber(), assetManagerFactory);
+        savedManager = new TemporaryFactoryObject(assetManagerFactory).createLevel(levelNumber.getLevelNumber(), assetManagerFactory);
         savedManager.create();
         return savedManager;
     }
@@ -42,6 +43,8 @@ public class LevelFactory {
 
     private static class TemporaryFactoryObject {
 
+        private final IAssetManagerGetter assetManager;
+
         private TiledMap map;
         private World world;
         Vector2 entitySize;
@@ -54,6 +57,10 @@ public class LevelFactory {
         private Map<Integer, IEntity> buttonActions;
         private UserInputController inputProcessor;
 
+        TemporaryFactoryObject(AssetManagerFactory assetManagerFactory) {
+            assetManager = assetManagerFactory.getAssetManagerGetter();
+        }
+
         private LevelManager createLevel(int levelNumber, AssetManagerFactory assetManagerFactory) { // 1-indexed
             String name;
             try {
@@ -61,7 +68,7 @@ public class LevelFactory {
             } catch (Exception e) {
                 throw new IllegalArgumentException("LevelFactory: Map corresponding to level not found.");
             }
-            map = assetManagerFactory.getAssetManagerGetter().getMap(name); // TODO: move to a separate package
+            map = assetManagerFactory.getAssetManagerGetter().getMap(name);
 
             world = new World(Constants.Physics.Gravity, true);
             entitySize = new Vector2(((TiledMapTileLayer) map.getLayers().get(Constants.LayerNames.Tiles)).getTileHeight(),
@@ -70,7 +77,7 @@ public class LevelFactory {
             loadMap();
             contactListener = new LevelContactListener();
 
-            player = new EntityFactory(entitySize, world).getPlayer(map.getLayers().get("player").getObjects().get(0));
+            player = new EntityFactory(entitySize, world, assetManager).getPlayer(map.getLayers().get("player").getObjects().get(0));
             entities = new ArrayList<>();
             entities.add(player);
             loadEntities();
@@ -123,7 +130,7 @@ public class LevelFactory {
         }
 
         private void loadEntities() {
-            EntityFactory factory = new EntityFactory(entitySize, world);
+            EntityFactory factory = new EntityFactory(entitySize, world, assetManager);
             for (MapObject obj : map.getLayers().get("entities").getObjects()) {
                 entities.add(factory.getEntity(obj, true));
             }

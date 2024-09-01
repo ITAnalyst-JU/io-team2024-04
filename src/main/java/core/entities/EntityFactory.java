@@ -8,6 +8,8 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import core.assets.IAssetManager;
+import core.assets.IAssetManagerGetter;
 import core.entities.decorators.*;
 import core.general.Constants;
 
@@ -17,12 +19,14 @@ import java.util.Map;
 public class EntityFactory {
     private final Vector2 baseEntitySize;
     private final World world;
+    private final IAssetManagerGetter assetManager;
 
     private final Map<Integer, IEntity> buttonsMap = new HashMap<>();
 
-    public EntityFactory(Vector2 baseEntitySize, World world) {
+    public EntityFactory(Vector2 baseEntitySize, World world, IAssetManagerGetter assetManager) {
         this.baseEntitySize = baseEntitySize;
         this.world = world;
+        this.assetManager = assetManager;
     }
 
     public Map<Integer, IEntity> getButtonsMap() {
@@ -84,7 +88,7 @@ public class EntityFactory {
         } else {
             throw new UnsupportedOperationException("Unknown object name: " + type);
         }
-        Texture texture = new Texture(texturePath); // TODO: use asset manager
+        Texture texture = assetManager.getTexture(texturePath);
         entity = new SpriteDecorator(entity, new Sprite(texture), size);
 
         MovingDecorator.MovementDirection movementDirection;
@@ -123,7 +127,7 @@ public class EntityFactory {
             throw new UnsupportedOperationException("We only produce from rectangles");
         }
         IEntity entity = new BaseEntity(world, baseEntitySize, ((RectangleMapObject)mapObject).getRectangle().getPosition(new Vector2()));
-        Texture texture = new Texture("player/player.png");
+        Texture texture = assetManager.getTexture("player/player.png");
         entity = new SpriteDecorator(entity, new Sprite(texture), baseEntitySize);
 
         Player player = new Player(entity);
