@@ -8,22 +8,21 @@ import core.general.Constants;
 import java.util.TreeMap;
 import java.util.Map;
 
-public class BodyOnlyEntity {
-    protected Body body;
-    protected String type;
+public class BaseEntity implements IEntity {
+    Body body;
 
     protected Map<String, Object> state;
 
     // Impossible to inject dependence on Body class.
-    BodyOnlyEntity(World world, BodyDef.BodyType bodyType, Vector2 size, Vector2 position) {
+    BaseEntity(World world, Vector2 size, Vector2 position) {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = bodyType;
+        bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.fixedRotation = true;
         bodyDef.position.set(position.x / Constants.Physics.Scale, position.y / Constants.Physics.Scale);
         body = world.createBody(bodyDef);
         body.setLinearDamping(0);
         PolygonShape polygonShape = new PolygonShape();
-        polygonShape.setAsBox(size.x/ Constants.Physics.Scale / 2f, size.y / Constants.Physics.Scale / 2f);
+        polygonShape.setAsBox(size.x / Constants.Physics.Scale / 2f, size.y / Constants.Physics.Scale / 2f);
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = polygonShape;
         fixtureDef.density = 1f;
@@ -32,18 +31,14 @@ public class BodyOnlyEntity {
         Fixture fixture = body.createFixture(fixtureDef);
         fixture.setUserData(this);
         polygonShape.dispose();
-
-        type = "default";
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
+    @Override
     public String getType() {
-        return type;
+        return "default";
     }
 
+    @Override
     public Vector2 getPosition () {
         Vector2 position = body.getPosition();
         position.x *= Constants.Physics.Scale;
@@ -51,6 +46,7 @@ public class BodyOnlyEntity {
         return position;
     }
 
+    @Override
     public void setPosition(Vector2 positionToHave, boolean preserveVelocity) {
         if (!preserveVelocity) {
             body.setLinearVelocity(0, 0);
@@ -61,6 +57,7 @@ public class BodyOnlyEntity {
         body.setTransform(position, 0);
     }
 
+    @Override
     public void saveState () {
         state = new TreeMap<>();
         //reflection could possibly be used, to get all fields of a class automatically
@@ -69,25 +66,30 @@ public class BodyOnlyEntity {
         state.put("gravity", body.getGravityScale());
     }
 
+    @Override
     public void recoverState () {
         body.setTransform((Vector2)state.get("position"), 0);
         body.setLinearVelocity((Vector2)state.get("velocity"));
         body.setGravityScale((float)state.get("gravity"));
     }
 
+    @Override
     public void hide () {
         setPosition(Constants.Physics.DeletedLocation, false);
         body.setGravityScale(0);
     }
 
+    @Override
     public void dispose () {
         body.getWorld().destroyBody(body);
     }
 
+    @Override
     public void update() {
         return;
     }
 
+    @Override
     public void draw(Batch batch) {
         return;
     }
@@ -99,10 +101,35 @@ public class BodyOnlyEntity {
 
     @Override
     public boolean equals(Object obj) {
-        if (! (obj instanceof BodyOnlyEntity)) {
+        if (! (obj instanceof BaseEntity)) {
             return false;
         }
-        BodyOnlyEntity other = (BodyOnlyEntity) obj;
+        BaseEntity other = (BaseEntity) obj;
         return body.equals(other.body);
+    }
+
+    @Override
+    public Body getBody() {
+        return body;
+    }
+
+    @Override
+    public boolean getUserDamageable() {
+        return false;
+    }
+
+    @Override
+    public int getButtonNumber() {
+        return -1;
+    }
+
+    @Override
+    public boolean damage() {
+        return false;
+    }
+
+    @Override
+    public boolean buttonAction(IEntity baseInstance) {
+        return false;
     }
 }

@@ -2,14 +2,11 @@ package core.levels;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -50,11 +47,11 @@ public class LevelFactory {
         Vector2 entitySize;
         private LevelContactListener contactListener;
         private Player player;
-        private List<BodyOnlyEntity> entities;
+        private List<IEntity> entities;
         private EntityManager entityManager;
         private OrthogonalTiledMapRenderer renderer;
         private OrthographicCamera camera;
-        private Map<Integer, ButtonAction> buttonActions;
+        private Map<Integer, IEntity> buttonActions;
         private UserInputController inputProcessor;
 
         private LevelManager createLevel(int levelNumber, AssetManagerFactory assetManagerFactory) { // 1-indexed
@@ -73,8 +70,7 @@ public class LevelFactory {
             loadMap();
             contactListener = new LevelContactListener();
 
-            Vector2 playerBeginPosition = ((RectangleMapObject) map.getLayers().get("player").getObjects().get(0)).getRectangle().getPosition(new Vector2());
-            player = new Player(new Sprite(assetManagerFactory.getAssetManagerGetter().getTexture("player/player.png")), world, entitySize, playerBeginPosition);
+            player = new NewEntityFactory(entitySize, world).getPlayer(map.getLayers().get("player").getObjects().get(0));
             entities = new ArrayList<>();
             entities.add(player);
             loadEntities();
@@ -127,12 +123,12 @@ public class LevelFactory {
         }
 
         private void loadEntities() {
-            EntityFactory factory = new EntityFactory(entitySize, world);
+            NewEntityFactory factory = new NewEntityFactory(entitySize, world);
             for (MapObject obj : map.getLayers().get("entities").getObjects()) {
-                entities.add(factory.getAbstractEntity(obj));
+                entities.add(factory.getEntity(obj, true));
             }
             for (MapObject obj : map.getLayers().get("bodyEntities").getObjects()) {
-                entities.add(factory.getBodyEntity(obj));
+                entities.add(factory.getEntity(obj, false));
             }
             this.buttonActions = factory.getButtonsMap();
         }

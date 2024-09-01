@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Set;
 
 public class BasicEntityManager implements EntityManager {
-    private Set<BodyOnlyEntity> entities;
+    private Set<IEntity> entities;
 
-    private final List<BodyOnlyEntity> entitiesToDispose = new ArrayList<>();
+    private final List<IEntity> entitiesToDispose = new ArrayList<>();
 
     @Override
     public void update() {
@@ -27,7 +27,7 @@ public class BasicEntityManager implements EntityManager {
     }
 
     @Override
-    public void loadEntities(List<BodyOnlyEntity> entities) {
+    public void loadEntities(List<IEntity> entities) {
         this.entities = new HashSet<>(entities);
     }
 
@@ -52,7 +52,7 @@ public class BasicEntityManager implements EntityManager {
     }
 
     @Override
-    public void remove(BodyOnlyEntity entity) {
+    public void remove(IEntity entity) {
         entities.remove(entity);
         entitiesToDispose.add(entity);
         entity.hide();

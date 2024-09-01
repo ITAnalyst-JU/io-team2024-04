@@ -1,28 +1,30 @@
 package core.entities;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import core.entities.decorators.BaseEntityDecorator;
 import core.general.Constants;
 import core.general.Observer;
 import core.general.UserControlsEnum;
 
-public class Player extends SpriteEntity implements Observer<UserControlsEnum> {
-    // Does not extend moving entity because movement is different.
-
+public class Player extends BaseEntityDecorator implements Observer<UserControlsEnum> {
     private boolean keyA = false;
     private boolean keyD = false;
     private boolean keyW = false;
     private boolean keyS = false;
-
     private int jumpsLeft = 0;
     private boolean ladderContact = false;
-
     private final Vector2 tempSpeed = new Vector2(); // for performance reasons
 
-    public Player(Sprite sprite, World world, Vector2 size, Vector2 position) {
-        super(sprite, world, BodyDef.BodyType.DynamicBody, size, position);
-        this.type = "player";
+    public Player(IEntity wrapped) {
+        super(wrapped);
+        wrapped.getBody().setType(BodyDef.BodyType.DynamicBody);
+    }
+
+    @Override
+    public String getType() {
+        return "player";
     }
 
     public void resetControls() {
@@ -32,7 +34,9 @@ public class Player extends SpriteEntity implements Observer<UserControlsEnum> {
         keyS = false;
     }
 
+    @Override
     public void update() {
+        Body body = wrapped.getBody();
         tempSpeed.x = Constants.Physics.PlayerMoveSpeed * ((keyD ? 1 : 0) - (keyA ? 1 : 0));
         tempSpeed.y = body.getLinearVelocity().y;
         if (ladderContact) {
@@ -51,20 +55,22 @@ public class Player extends SpriteEntity implements Observer<UserControlsEnum> {
     }
 
     public void ladderContactBegin() {
-        body.setGravityScale(0f);
+        wrapped.getBody().setGravityScale(0f);
         this.ladderContact = true;
     }
 
     public void ladderContactEnd() {
-        body.setGravityScale(1f);
+        wrapped.getBody().setGravityScale(1f);
         this.ladderContact = false;
     }
 
     public void reverseGravity() {
+        Body body = wrapped.getBody();
         body.setGravityScale((-1f) * body.getGravityScale());
     }
 
     public void trampolineContact() {
+        Body body = wrapped.getBody();
         tempSpeed.x = body.getLinearVelocity().x;
         tempSpeed.y = 2 * Constants.Physics.PlayerMoveSpeed;
         body.setLinearVelocity(tempSpeed);
@@ -100,7 +106,7 @@ public class Player extends SpriteEntity implements Observer<UserControlsEnum> {
                 if (!ladderContact) {
                     if (jumpsLeft > 0) {
                         jumpsLeft--;
-                        body.setLinearVelocity(body.getLinearVelocity().x, Constants.Physics.PlayerJumpSpeed);
+                        wrapped.getBody().setLinearVelocity(wrapped.getBody().getLinearVelocity().x, Constants.Physics.PlayerJumpSpeed);
                     }
                 }
                 break;

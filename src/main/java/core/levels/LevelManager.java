@@ -21,7 +21,7 @@ public class LevelManager {
     private final EntityManager entityManager;
     private final Player player;
     private final LevelContactListener contactListener;
-    private final Map<Integer, ButtonAction> buttonActions;
+    private final Map<Integer, IEntity> buttonActions;
     private final UserInputController inputController;
     private final int levelNumber;
 
@@ -30,7 +30,7 @@ public class LevelManager {
     public boolean gameEnded = false;
 
     // Do we need to have so many things? Unfortunately it seems yes.
-    public LevelManager(TiledMap map, OrthogonalTiledMapRenderer renderer, OrthographicCamera camera, World world, EntityManager entityManager, Player player, LevelContactListener contactListener, Map<Integer, ButtonAction> buttonActions, UserInputController inputController, int levelNumber) {
+    public LevelManager(TiledMap map, OrthogonalTiledMapRenderer renderer, OrthographicCamera camera, World world, EntityManager entityManager, Player player, LevelContactListener contactListener, Map<Integer, IEntity> buttonActions, UserInputController inputController, int levelNumber) {
         this.map = map;
         this.renderer = renderer;
         this.camera = camera;
@@ -85,15 +85,14 @@ public class LevelManager {
                     gameEnded = true;
                     break;
                 case LevelContactListener.Event.Type.Checkpoint:
-                    entityManager.remove((BodyOnlyEntity)event.object);
+                    entityManager.remove(event.object);
                     entityManager.saveState();
                     break;
                 case LevelContactListener.Event.Type.Platform:
-                    Platform platform = (Platform)event.object;
-                    if (platform.isUserDamageable()) {
-                        boolean destroyed = platform.damage();
+                    if (event.object.getUserDamageable()) {
+                        boolean destroyed = event.object.damage();
                         if (destroyed) {
-                            entityManager.remove(platform);
+                            entityManager.remove(event.object);
                         }
                     }
                     break;
@@ -104,14 +103,13 @@ public class LevelManager {
                     player.reverseGravity();
                     break;
                 case LevelContactListener.Event.Type.Button:
-                    Button button = (Button)event.object;
-                    int num = button.getNumber();
-                    ButtonAction buttonAction = buttonActions.get(num);
-                    boolean destroyed = buttonAction.buttonAction();
+                    int num = event.object.getButtonNumber();
+                    IEntity buttonAction = buttonActions.get(num);
+                    boolean destroyed = buttonAction.buttonAction(buttonAction);
                     if (destroyed) {
-                        entityManager.remove((BodyOnlyEntity)buttonAction);
+                        entityManager.remove(buttonAction);
                     }
-                    entityManager.remove(button);
+                    entityManager.remove(event.object);
                     break;
                 case LevelContactListener.Event.Type.CollisionJumpContactBegin:
                     player.jumpContactBegin();

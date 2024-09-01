@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import core.entities.ButtonAction;
 import core.entities.EntityManager;
+import core.entities.IEntity;
 import core.entities.Player;
 import core.general.UserInputController;
 import org.junit.jupiter.api.Assertions;
@@ -28,7 +28,7 @@ public class LevelManagerTest {
         var entityManager = Mockito.mock(EntityManager.class);
         var player = Mockito.mock(Player.class);
         var contactListener = Mockito.mock(LevelContactListener.class);
-        var buttonActions = (Map<Integer, ButtonAction>)Mockito.mock(Map.class);
+        var buttonActions = (Map<Integer, IEntity>)Mockito.mock(Map.class);
         var inputController = Mockito.mock(UserInputController.class);
         var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController, 0);
 
@@ -47,7 +47,7 @@ public class LevelManagerTest {
         var entityManager = Mockito.mock(EntityManager.class);
         var player = Mockito.mock(Player.class);
         var contactListener = Mockito.mock(LevelContactListener.class);
-        var buttonActions = (Map<Integer, ButtonAction>) Mockito.mock(Map.class);
+        var buttonActions = (Map<Integer, IEntity>) Mockito.mock(Map.class);
         var inputController = Mockito.mock(UserInputController.class);
         var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController, 0);
 
@@ -70,7 +70,7 @@ public class LevelManagerTest {
         var entityManager = Mockito.mock(EntityManager.class);
         var player = Mockito.mock(Player.class);
         var contactListener = Mockito.mock(LevelContactListener.class);
-        var buttonActions = (Map<Integer, ButtonAction>)Mockito.mock(Map.class);
+        var buttonActions = (Map<Integer, IEntity>)Mockito.mock(Map.class);
         var inputController = Mockito.mock(UserInputController.class);
         var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController, 0);
 
@@ -93,7 +93,7 @@ public class LevelManagerTest {
         var entityManager = Mockito.mock(EntityManager.class);
         var player = Mockito.mock(Player.class);
         var contactListener = Mockito.mock(LevelContactListener.class);
-        var buttonActions = (Map<Integer, ButtonAction>) Mockito.mock(Map.class);
+        var buttonActions = (Map<Integer, IEntity>) Mockito.mock(Map.class);
         var inputController = Mockito.mock(UserInputController.class);
         var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController, 0);
 
@@ -116,7 +116,7 @@ public class LevelManagerTest {
         var entityManager = Mockito.mock(EntityManager.class);
         var player = Mockito.mock(Player.class);
         var contactListener = Mockito.mock(LevelContactListener.class);
-        var buttonActions = (Map<Integer, ButtonAction>) Mockito.mock(Map.class);
+        var buttonActions = (Map<Integer, IEntity>) Mockito.mock(Map.class);
         var inputController = Mockito.mock(UserInputController.class);
         var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController, 7);
 
