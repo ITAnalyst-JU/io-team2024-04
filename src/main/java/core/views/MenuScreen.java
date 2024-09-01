@@ -4,13 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 
+import core.assets.AssetManagerFactory;
 import core.audio.AudioInteractor;
 import core.user.UserInteractor;
 import core.window.WindowInteractor;
 
 public class MenuScreen extends UIScreen {
-    public MenuScreen(Stage stage, AudioInteractor audioInteractor, WindowInteractor windowInteractor, UserInteractor userInteractor) {
-        super(stage);
+    public MenuScreen(Stage stage, AssetManagerFactory assetManagerFactory, AudioInteractor audioInteractor, WindowInteractor windowInteractor, UserInteractor userInteractor) {
+        super(stage, assetManagerFactory);
         setBackgroundImage("ui/background/gradle.jpg");
 
         // TODO: probably should be in show() method or in LoadingScreen?

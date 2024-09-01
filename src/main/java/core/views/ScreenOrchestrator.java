@@ -1,6 +1,7 @@
 package core.views;
 
 import com.badlogic.gdx.Screen;
+import core.assets.AssetManagerFactory;
 import core.general.Observable;
 import core.general.Observer;
 import core.levels.LevelManager;
@@ -21,9 +22,9 @@ public class ScreenOrchestrator extends Observable<Observer<DomainEventEnum>> im
         this.nextScreenEnum = ScreenEnum.LOADING;
     }
 
-    public Screen getScreen(ScreenEnum screenEnum) {
+    public Screen getScreen(ScreenEnum screenEnum, AssetManagerFactory assetManagerFactory) {
         if (!screens.containsKey(screenEnum)) {
-            this.loadScreen(screenEnum);
+            this.loadScreen(screenEnum, assetManagerFactory);
         }
         return screens.get(screenEnum);
     }
@@ -33,19 +34,19 @@ public class ScreenOrchestrator extends Observable<Observer<DomainEventEnum>> im
     }
 
     @Override
-    public void respondToLoadedLevel(LevelManager level) {
-        this.loadMainScreen(level);
+    public void respondToLoadedLevel(LevelManager level, AssetManagerFactory assetManagerFactory) {
+        this.loadMainScreen(level, assetManagerFactory);
     }
 
-    private void loadMainScreen(LevelManager level) {
-        AbstractScreen screen = screenAbstractFactory.createMainScreen(level);
+    private void loadMainScreen(LevelManager level, AssetManagerFactory assetManagerFactory) {
+        AbstractScreen screen = screenAbstractFactory.createMainScreen(level, assetManagerFactory);
         screens.put(ScreenEnum.GAME, screen);
         screen.addObserver(this);
     }
 
-    private void loadScreen(ScreenEnum screenEnum) {
+    private void loadScreen(ScreenEnum screenEnum, AssetManagerFactory assetManagerFactory) {
         AbstractScreen screen;
-        screen = screenAbstractFactory.createScreen(screenEnum);
+        screen = screenAbstractFactory.createScreen(screenEnum, assetManagerFactory);
         screens.put(screenEnum, screen);
         screen.addObserver(this);
     }
@@ -75,6 +76,11 @@ public class ScreenOrchestrator extends Observable<Observer<DomainEventEnum>> im
         for (AbstractScreen screen : screens.values()) {
             screen.removeObserver(this);
         }
+    }
+    @Override
+    public void dispose() {
+        stopObservingScreens();
+        screens.clear();
     }
 
     @Override

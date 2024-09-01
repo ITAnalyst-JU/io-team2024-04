@@ -5,6 +5,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import core.assets.AssetManagerFactory;
 import core.assets.SupremeAssetManager;
 import core.levels.LevelFactory;
 import core.orchestrator.SupremeOrchestrator;
@@ -29,7 +30,8 @@ public class DesktopLauncher {
                                         new SupremeInteractorFactory(
                                                 new InternalPreferencesInteractorFactory())),
                                 new HashMap<>()),
-                        new LevelFactory()),
+                        new LevelFactory(),
+                        new AssetManagerFactory(new AssetManager())),
                 new ConfigFactory(
                         new FileHandler(),
                         new JsonHandler<>(new ObjectMapper()

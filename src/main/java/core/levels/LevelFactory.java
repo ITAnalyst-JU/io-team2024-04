@@ -14,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import core.assets.AssetManagerFactory;
 import core.entities.*;
 import core.general.Constants;
 import core.general.UserInputController;
@@ -25,8 +26,8 @@ import java.util.Map;
 public class LevelFactory {
     private LevelManager savedManager;
 
-    public LevelManager createLevel(LevelEnum levelNumber) {
-        savedManager = new TemporaryFactoryObject().createLevel(levelNumber.getLevelNumber());
+    public LevelManager createLevel(LevelEnum levelNumber, AssetManagerFactory assetManagerFactory) {
+        savedManager = new TemporaryFactoryObject().createLevel(levelNumber.getLevelNumber(), assetManagerFactory);
         savedManager.create();
         return savedManager;
     }
@@ -56,14 +57,14 @@ public class LevelFactory {
         private Map<Integer, ButtonAction> buttonActions;
         private UserInputController inputProcessor;
 
-        private LevelManager createLevel(int levelNumber) { // 1-indexed
+        private LevelManager createLevel(int levelNumber, AssetManagerFactory assetManagerFactory) { // 1-indexed
             String name;
             try {
                 name = Constants.LevelNames.Prefix + Constants.LevelNames.List[levelNumber - 1];
             } catch (Exception e) {
                 throw new IllegalArgumentException("LevelFactory: Map corresponding to level not found.");
             }
-            map = new TmxMapLoader().load(name); // TODO: move to a separate package
+            map = assetManagerFactory.getAssetManagerGetter().getMap(name); // TODO: move to a separate package
 
             world = new World(Constants.Physics.Gravity, true);
             entitySize = new Vector2(((TiledMapTileLayer) map.getLayers().get(Constants.LayerNames.Tiles)).getTileHeight(),
@@ -73,7 +74,7 @@ public class LevelFactory {
             contactListener = new LevelContactListener();
 
             Vector2 playerBeginPosition = ((RectangleMapObject) map.getLayers().get("player").getObjects().get(0)).getRectangle().getPosition(new Vector2());
-            player = new Player(new Sprite(new Texture("player/player.png")), world, entitySize, playerBeginPosition);
+            player = new Player(new Sprite(assetManagerFactory.getAssetManagerGetter().getTexture("player/player.png")), world, entitySize, playerBeginPosition);
             entities = new ArrayList<>();
             entities.add(player);
             loadEntities();

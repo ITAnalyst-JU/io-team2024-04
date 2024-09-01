@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import core.assets.AssetManagerFactory;
 import core.general.Observable;
 import core.general.Observer;
 
@@ -13,9 +14,11 @@ public class AbstractScreen extends Observable<Observer<ScreenEnum>> implements 
     // observer pattern used
     // dependency inversion principle applied ;)
     protected Stage stage;
+    protected AssetManagerFactory assetManagerFactory;
 
-    public AbstractScreen(Stage stage) {
+    public AbstractScreen(Stage stage, AssetManagerFactory assetManagerFactory) {
         this.stage = stage;
+        this.assetManagerFactory = assetManagerFactory;
     }
 
     void notifyOrchestrator(ScreenEnum screenEnum) {

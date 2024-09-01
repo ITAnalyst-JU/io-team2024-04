@@ -3,9 +3,12 @@ package core.assets;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.Map;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class SupremeAssetManager implements IAssetManager {
@@ -14,11 +17,17 @@ public class SupremeAssetManager implements IAssetManager {
 
     public SupremeAssetManager(AssetManager assetManager) {
         this.assetManager = assetManager;
+        assetManager.setLoader(TiledMap.class, new TmxMapLoader());
     }
 
     @Override
     public void dispose() {
         assetManager.dispose();
+    }
+
+    @Override
+    public Texture getTexture(String assetPath) {
+        return assetManager.get(assetPath, Texture.class);
     }
 
     @Override
@@ -47,8 +56,8 @@ public class SupremeAssetManager implements IAssetManager {
     }
 
     @Override
-    public Map getMap(String assetPath) {
-        return assetManager.get(assetPath, Map.class);
+    public TiledMap getMap(String assetPath) {
+        return assetManager.get(assetPath, TiledMap.class);
     }
 
     @Override
@@ -62,6 +71,14 @@ public class SupremeAssetManager implements IAssetManager {
     @Override
     public void loadImages() {
         for (String path : Paths.PATHS_IMAGES) {
+            assetManager.load(path, Texture.class);
+        }
+        assetManager.finishLoading();
+    }
+
+    @Override
+    public void loadAtlases() {
+        for (String path : Paths.PATHS_ATLASES) {
             assetManager.load(path, TextureAtlas.class);
         }
         assetManager.finishLoading();
@@ -102,7 +119,7 @@ public class SupremeAssetManager implements IAssetManager {
     @Override
     public void loadLevels() {
         for (String path : Paths.PATHS_LEVELS) {
-            assetManager.load(path, Map.class);
+            assetManager.load(path, TiledMap.class);
         }
         assetManager.finishLoading();
     }

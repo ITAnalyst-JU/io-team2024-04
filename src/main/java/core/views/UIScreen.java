@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import core.assets.AssetManagerFactory;
 import core.db.app.HighScoreInteractor;
 import core.db.domain.HighScore;
 
@@ -20,14 +21,14 @@ public abstract class UIScreen extends AbstractScreen {
     protected BitmapFont font;
     protected Table table;
 
-    public UIScreen(Stage stage) {
-        super(stage);
+    public UIScreen(Stage stage, AssetManagerFactory assetManagerFactory) {
+        super(stage, assetManagerFactory);
         initializeUIComponents();
         Gdx.input.setInputProcessor(super.stage);
     }
 
     private void initializeUIComponents() {
-        skin = new Skin(Gdx.files.internal("ui/skin/plain-james-ui.json"));
+        skin = assetManagerFactory.getAssetManagerGetter().getSkin("ui/skin/plain-james-ui.json");
         font = new BitmapFont();
         table = new Table();
         table.setFillParent(true);
@@ -78,7 +79,7 @@ public abstract class UIScreen extends AbstractScreen {
     }
 
     protected void setBackgroundImage(String imagePath) {
-        Texture backgroundTexture = new Texture(Gdx.files.internal(imagePath));
+        Texture backgroundTexture = assetManagerFactory.getAssetManagerGetter().getTexture(imagePath);
         Image backgroundImage = new Image(backgroundTexture);
         backgroundImage.setSize(stage.getWidth(), stage.getHeight());
         backgroundImage.setZIndex(0);

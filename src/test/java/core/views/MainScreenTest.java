@@ -22,7 +22,8 @@ public class MainScreenTest {
         var level = Mockito.mock(LevelManager.class);
         var highScoreInteractor = Mockito.mock(HighScoreInteractor.class);
         var userInteractor = Mockito.mock(UserInteractor.class);
-        var mainScreen = new MainScreen(stage, level, highScoreInteractor, userInteractor);
+        var assetManagerFactory = Mockito.mock(core.assets.AssetManagerFactory.class);
+        var mainScreen = new MainScreen(stage, assetManagerFactory, level, highScoreInteractor, userInteractor);
         var inputController = Mockito.mock(UserInputController.class);
         Mockito.when(level.getInputController()).thenReturn(inputController);
 
@@ -38,7 +39,8 @@ public class MainScreenTest {
         var level = Mockito.mock(LevelManager.class);
         var highScoreInteractor = Mockito.mock(HighScoreInteractor.class);
         var userInteractor = Mockito.mock(UserInteractor.class);
-        var mainScreen = new MainScreen(stage, level, highScoreInteractor, userInteractor);
+        var assetManagerFactory = Mockito.mock(core.assets.AssetManagerFactory.class);
+        var mainScreen = new MainScreen(stage, assetManagerFactory, level, highScoreInteractor, userInteractor);
         Mockito.when(level.isGameEnded()).thenReturn(false);
         Gdx.gl = Mockito.mock(GL20.class);
 
@@ -55,7 +57,8 @@ public class MainScreenTest {
         var level = Mockito.mock(LevelManager.class);
         var highScoreInteractor = Mockito.mock(HighScoreInteractor.class);
         var userInteractor = Mockito.mock(UserInteractor.class);
-        var mainScreen = new MainScreen(stage, level, highScoreInteractor, userInteractor);
+        var assetManagerFactory = Mockito.mock(core.assets.AssetManagerFactory.class);
+        var mainScreen = new MainScreen(stage, assetManagerFactory, level, highScoreInteractor, userInteractor);
         Mockito.when(level.isGameEnded()).thenReturn(true);
         Mockito.when(level.getTimePassed()).thenReturn(17L);
         Mockito.when(userInteractor.getUserName()).thenReturn("Player1");
@@ -75,7 +78,8 @@ public class MainScreenTest {
         var level = Mockito.mock(LevelManager.class);
         var highScoreInteractor = Mockito.mock(HighScoreInteractor.class);
         var userInteractor = Mockito.mock(UserInteractor.class);
-        var mainScreen = new MainScreen(stage, level, highScoreInteractor, userInteractor);
+        var assetManagerFactory = Mockito.mock(core.assets.AssetManagerFactory.class);
+        var mainScreen = new MainScreen(stage, assetManagerFactory, level, highScoreInteractor, userInteractor);
         Mockito.when(level.isGameEnded()).thenReturn(true);
         Mockito.when(level.getTimePassed()).thenReturn(17L);
         Mockito.when(level.getLevelNumber()).thenReturn(0);
@@ -94,7 +98,8 @@ public class MainScreenTest {
         var level = Mockito.mock(LevelManager.class);
         var highScoreInteractor = Mockito.mock(HighScoreInteractor.class);
         var userInteractor = Mockito.mock(UserInteractor.class);
-        var mainScreen = new MainScreen(stage, level, highScoreInteractor, userInteractor);
+        var assetManagerFactory = Mockito.mock(core.assets.AssetManagerFactory.class);
+        var mainScreen = new MainScreen(stage, assetManagerFactory, level, highScoreInteractor, userInteractor);
         Mockito.when(level.isGameEnded()).thenReturn(false);
         Gdx.gl = Mockito.mock(GL20.class);
         var observer = (Observer<ScreenEnum>) Mockito.mock(Observer.class);
@@ -112,7 +117,8 @@ public class MainScreenTest {
         var level = Mockito.mock(LevelManager.class);
         var highScoreInteractor = Mockito.mock(HighScoreInteractor.class);
         var userInteractor = Mockito.mock(UserInteractor.class);
-        var mainScreen = new MainScreen(stage, level, highScoreInteractor, userInteractor);
+        var assetManagerFactory = Mockito.mock(core.assets.AssetManagerFactory.class);
+        var mainScreen = new MainScreen(stage, assetManagerFactory, level, highScoreInteractor, userInteractor);
         Mockito.when(level.isGameEnded()).thenReturn(false);
         Gdx.gl = Mockito.mock(GL20.class);
         var observer = (Observer<ScreenEnum>) Mockito.mock(Observer.class);
@@ -131,7 +137,8 @@ public class MainScreenTest {
         var level = Mockito.mock(LevelManager.class);
         var highScoreInteractor = Mockito.mock(HighScoreInteractor.class);
         var userInteractor = Mockito.mock(UserInteractor.class);
-        var mainScreen = new MainScreen(stage, level, highScoreInteractor, userInteractor);
+        var assetManagerFactory = Mockito.mock(core.assets.AssetManagerFactory.class);
+        var mainScreen = new MainScreen(stage, assetManagerFactory, level, highScoreInteractor, userInteractor);
         Mockito.when(level.isGameEnded()).thenReturn(false);
         var inputController = Mockito.mock(UserInputController.class);
         Mockito.when(level.getInputController()).thenReturn(inputController);
@@ -154,7 +161,8 @@ public class MainScreenTest {
         var level = Mockito.mock(LevelManager.class);
         var highScoreInteractor = Mockito.mock(HighScoreInteractor.class);
         var userInteractor = Mockito.mock(UserInteractor.class);
-        var mainScreen = new MainScreen(stage, level, highScoreInteractor, userInteractor);
+        var assetManagerFactory = Mockito.mock(core.assets.AssetManagerFactory.class);
+        var mainScreen = new MainScreen(stage, assetManagerFactory, level, highScoreInteractor, userInteractor);
         Mockito.when(level.isGameEnded()).thenReturn(false);
         var inputController = Mockito.mock(UserInputController.class);
         Mockito.when(level.getInputController()).thenReturn(inputController);
@@ -177,7 +185,8 @@ public class MainScreenTest {
         var level = Mockito.mock(LevelManager.class);
         var highScoreInteractor = Mockito.mock(HighScoreInteractor.class);
         var userInteractor = Mockito.mock(UserInteractor.class);
-        var mainScreen = new MainScreen(stage, level, highScoreInteractor, userInteractor);
+        var assetManagerFactory = Mockito.mock(core.assets.AssetManagerFactory.class);
+        var mainScreen = new MainScreen(stage, assetManagerFactory, level, highScoreInteractor, userInteractor);
         var inputController = Mockito.mock(UserInputController.class);
         Mockito.when(level.getInputController()).thenReturn(inputController);
 
@@ -193,7 +202,8 @@ public class MainScreenTest {
         var level = Mockito.mock(LevelManager.class);
         var highScoreInteractor = Mockito.mock(HighScoreInteractor.class);
         var userInteractor = Mockito.mock(UserInteractor.class);
-        var mainScreen = new MainScreen(stage, level, highScoreInteractor, userInteractor);
+        var assetManagerFactory = Mockito.mock(core.assets.AssetManagerFactory.class);
+        var mainScreen = new MainScreen(stage, assetManagerFactory, level, highScoreInteractor, userInteractor);
         var inputController = Mockito.mock(UserInputController.class);
         Mockito.when(level.getInputController()).thenReturn(inputController);
 
@@ -208,7 +218,8 @@ public class MainScreenTest {
         var level = Mockito.mock(LevelManager.class);
         var highScoreInteractor = Mockito.mock(HighScoreInteractor.class);
         var userInteractor = Mockito.mock(UserInteractor.class);
-        var mainScreen = new MainScreen(stage, level, highScoreInteractor, userInteractor);
+        var assetManagerFactory = Mockito.mock(core.assets.AssetManagerFactory.class);
+        var mainScreen = new MainScreen(stage, assetManagerFactory, level, highScoreInteractor, userInteractor);
         var inputController = Mockito.mock(UserInputController.class);
         Mockito.when(level.getInputController()).thenReturn(inputController);
 

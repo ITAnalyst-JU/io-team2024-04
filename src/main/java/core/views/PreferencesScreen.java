@@ -2,6 +2,7 @@ package core.views;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
+import core.assets.AssetManagerFactory;
 import core.audio.AudioInteractor;
 import core.general.Constants;
 import core.preferences.WindowMode;
@@ -9,8 +10,8 @@ import core.window.WindowInteractor;
 
 public class PreferencesScreen extends UIScreen {
 
-    public PreferencesScreen(Stage stage, AudioInteractor audioInteractor, WindowInteractor windowInteractor) {
-        super(stage);
+    public PreferencesScreen(Stage stage, AssetManagerFactory assetManagerFactory, AudioInteractor audioInteractor, WindowInteractor windowInteractor) {
+        super(stage, assetManagerFactory);
 
         setBackgroundImage("ui/background/triangles.png");
 

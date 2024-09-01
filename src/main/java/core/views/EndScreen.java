@@ -4,17 +4,18 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
+import core.assets.AssetManagerFactory;
 import core.db.app.HighScoreInteractor;
 import core.db.domain.HighScore;
 
 import java.util.List;
 
 public class EndScreen extends UIScreen {
-    private HighScoreInteractor highScoreInteractor;
-    private Table highScoreTable;
+    private final HighScoreInteractor highScoreInteractor;
+    private final Table highScoreTable;
 
-    public EndScreen(Stage stage, HighScoreInteractor highScoreInteractor) {
-        super(stage);
+    public EndScreen(Stage stage, AssetManagerFactory assetManagerFactory, HighScoreInteractor highScoreInteractor) {
+        super(stage, assetManagerFactory);
         this.highScoreInteractor = highScoreInteractor;
 
         setBackgroundImage("ui/background/triangles.png");

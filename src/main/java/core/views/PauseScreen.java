@@ -3,12 +3,13 @@ package core.views;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import core.assets.AssetManagerFactory;
 
 public class PauseScreen extends UIScreen {
     private Table highScoreTable;
 
-    public PauseScreen(Stage stage) {
-        super(stage);
+    public PauseScreen(Stage stage, AssetManagerFactory assetManagerFactory) {
+        super(stage, assetManagerFactory);
         setBackgroundImage("ui/background/triangles.png");
 
         Label titleLabel = createLabel("Game is paused");
