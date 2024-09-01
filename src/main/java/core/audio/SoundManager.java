@@ -1,7 +1,6 @@
 package core.audio;
 
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.Gdx;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,18 +9,11 @@ import static core.general.Constants.Preferences.DEFAULT_SOUND_ENABLED;
 import static core.general.Constants.Preferences.DEFAULT_SOUND_VOLUME;
 
 public class SoundManager {
-    private Map<String, Sound> loadedSounds = new HashMap<>();
     private Map<Long, Sound> playingSounds = new HashMap<>();
     private float volume = DEFAULT_SOUND_VOLUME;
     private boolean isEnabled = DEFAULT_SOUND_ENABLED;
 
-    public void playSound(String soundPath) {
-        Sound sound = loadedSounds.get(soundPath);
-        if (sound == null) {
-            sound = Gdx.audio.newSound(Gdx.files.internal(soundPath));
-            loadedSounds.put(soundPath, sound);
-        }
-
+    public void playSound(Sound sound) {
         long soundId;
         if (!isEnabled)
             soundId = sound.play(0);
@@ -31,11 +23,11 @@ public class SoundManager {
     }
 
     public void stopAllSounds() {
-        for (Sound sound : loadedSounds.values()) {
+        for (Sound sound : playingSounds.values()) {
             sound.stop();
             sound.dispose();
         }
-        loadedSounds.clear();
+        playingSounds.clear();
     }
 
     public void setVolume(float volume) {

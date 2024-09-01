@@ -1,5 +1,7 @@
 package core.audio;
 
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import core.preferences.IInternalAudioPreferencesInteractor;
 
 public class AudioInteractor {
@@ -25,8 +27,8 @@ public class AudioInteractor {
         soundControl.setSoundsEnabled(soundsEnabled);
     }
 
-    public void playSoundEffect(String soundPath) {
-        soundControl.playSound(soundPath);
+    public void playSoundEffect(Sound sound) {
+        soundControl.playSound(sound);
     }
 
     public void stopAllSoundEffects() {
@@ -42,8 +44,8 @@ public class AudioInteractor {
         return soundControl.getSoundsVolume();
     }
 
-    public void playBackgroundMusic(String musicPath, boolean loop) {
-        soundControl.playMusic(musicPath, loop);
+    public void playBackgroundMusic(Music music, boolean loop) {
+        soundControl.playMusic(music, loop);
     }
 
     public void stopBackgroundMusic() {

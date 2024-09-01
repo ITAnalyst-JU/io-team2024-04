@@ -1,7 +1,7 @@
 package core.audio;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 
 import static core.general.Constants.Preferences.DEFAULT_MUSIC_ENABLED;
 import static core.general.Constants.Preferences.DEFAULT_MUSIC_VOLUME;
@@ -13,8 +13,8 @@ public class AudioManager implements AudioControl {
     private boolean isMusicEnabled = DEFAULT_MUSIC_ENABLED;
 
     @Override
-    public void playSound(String soundPath) {
-        soundManager.playSound(soundPath);
+    public void playSound(Sound sound) {
+        soundManager.playSound(sound);
     }
 
     @Override
@@ -43,12 +43,12 @@ public class AudioManager implements AudioControl {
     }
 
     @Override
-    public void playMusic(String musicPath, boolean loop) {
+    public void playMusic(Music music, boolean loop) {
         if (currentMusic != null) {
             currentMusic.stop();
             currentMusic.dispose();
         }
-        currentMusic = Gdx.audio.newMusic(Gdx.files.internal(musicPath));
+        currentMusic = music;
         currentMusic.setLooping(loop);
         if (!isMusicEnabled)
             currentMusic.setVolume(0);
