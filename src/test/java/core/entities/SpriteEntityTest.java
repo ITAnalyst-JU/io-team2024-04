@@ -65,9 +65,18 @@ public class SpriteEntityTest {
 
     @Test
     public void testUpdate() {
-        var sprite = (Sprite) Mockito.mock(Sprite.class);
+        var sprite = Mockito.mock(Sprite.class);
         TestClass testClass = new TestClass(sprite, new World(new Vector2(0, 0), true), BodyDef.BodyType.StaticBody, zeroVector, new Vector2(10, 10));
         testClass.update();
         verify(sprite, Mockito.times(1)).setPosition(10, 10);
+    }
+
+    @Test
+    public void testDraw() {
+        var sprite = Mockito.mock(Sprite.class);
+        var batch = Mockito.mock(com.badlogic.gdx.graphics.g2d.Batch.class);
+        TestClass testClass = new TestClass(sprite, new World(new Vector2(0, 0), true), BodyDef.BodyType.StaticBody, zeroVector, zeroVector);
+        testClass.draw(batch);
+        verify(sprite, Mockito.times(1)).draw(batch);
     }
 }

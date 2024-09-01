@@ -1,6 +1,7 @@
 package core.entities;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
@@ -15,8 +16,39 @@ public class BodyOnlyEntityTest {
         public TestClass() {
             super(new World(new Vector2(0, 0), true), BodyDef.BodyType.KinematicBody, zeroVector, zeroVector);
         }
+        public TestClass(World world, BodyDef.BodyType bodyType, Vector2 size, Vector2 position) {
+            super(world, bodyType, size, position);
+        }
     }
     private static class DummyObject{}
+
+    @Test
+    public void testGetPosition() {
+        Vector2 size = new Vector2(2, 3);
+        Vector2 position = new Vector2(5, 6);
+        TestClass testClass = new TestClass(new World(new Vector2(0, 0), true), BodyDef.BodyType.KinematicBody, size, position);
+
+        var res = testClass.getPosition();
+
+        Assertions.assertThat(res).isEqualTo(position);
+    }
+
+    @Test
+    public void testConstructorParameters() {
+        Vector2 size = new Vector2(2, 3);
+        Vector2 position = new Vector2(5, 6);
+
+        TestClass testClass = new TestClass(new World(new Vector2(0, 0), true), BodyDef.BodyType.KinematicBody, size, position);
+
+        Assertions.assertThat(testClass.body.getType()).isEqualTo(BodyDef.BodyType.KinematicBody);
+        Assertions.assertThat(testClass.body.getLinearVelocity()).isEqualTo(zeroVector);
+        Assertions.assertThat(testClass.body.getGravityScale()).isEqualTo(1);
+        Assertions.assertThat(testClass.body.isFixedRotation()).isTrue();
+        Assertions.assertThat(testClass.body.getFixtureList().get(0).getDensity()).isEqualTo(1);
+        Assertions.assertThat(testClass.body.getFixtureList().get(0).getFriction()).isEqualTo(Constants.Physics.Friction);
+        Assertions.assertThat(testClass.body.getFixtureList().get(0).getRestitution()).isEqualTo(0);
+        Assertions.assertThat(testClass.body.getFixtureList().get(0).getUserData()).isEqualTo(testClass);
+    }
 
     @Test
     public void testSetPositionBasic() {
