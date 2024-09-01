@@ -14,13 +14,13 @@ import core.general.Constants;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NewEntityFactory {
+public class EntityFactory {
     private final Vector2 baseEntitySize;
     private final World world;
 
     private final Map<Integer, IEntity> buttonsMap = new HashMap<>();
 
-    public NewEntityFactory(Vector2 baseEntitySize, World world) {
+    public EntityFactory(Vector2 baseEntitySize, World world) {
         this.baseEntitySize = baseEntitySize;
         this.world = world;
     }
@@ -110,7 +110,7 @@ public class NewEntityFactory {
 
         if (objProperties.containsKey("number")) {
             int number = (int)objProperties.get("number");
-            entity = new ButtonActionDamageDecorator(entity, number);
+            entity = new ButtonActionDamageDecorator(entity);
             buttonsMap.put(number, entity);
         }
 

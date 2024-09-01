@@ -3,7 +3,7 @@ package core.entities.decorators;
 import core.entities.IEntity;
 
 public class ButtonActionDamageDecorator extends BaseEntityDecorator {
-    public ButtonActionDamageDecorator(IEntity wrapped, int number) {
+    public ButtonActionDamageDecorator(IEntity wrapped) {
         super(wrapped);
     }
 

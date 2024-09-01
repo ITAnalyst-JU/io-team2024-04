@@ -70,7 +70,7 @@ public class LevelFactory {
             loadMap();
             contactListener = new LevelContactListener();
 
-            player = new NewEntityFactory(entitySize, world).getPlayer(map.getLayers().get("player").getObjects().get(0));
+            player = new EntityFactory(entitySize, world).getPlayer(map.getLayers().get("player").getObjects().get(0));
             entities = new ArrayList<>();
             entities.add(player);
             loadEntities();
@@ -123,7 +123,7 @@ public class LevelFactory {
         }
 
         private void loadEntities() {
-            NewEntityFactory factory = new NewEntityFactory(entitySize, world);
+            EntityFactory factory = new EntityFactory(entitySize, world);
             for (MapObject obj : map.getLayers().get("entities").getObjects()) {
                 entities.add(factory.getEntity(obj, true));
             }
