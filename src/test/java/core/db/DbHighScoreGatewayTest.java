@@ -42,10 +42,14 @@ public class DbHighScoreGatewayTest {
         verify(table).selectBestScoresForLevel(1, 5);
         assertThat(scores).isNotNull();
         assertThat(scores).hasSize(2);
-        assertThat(scores).containsExactly(
-                new HighScore(1, 1, "player1", 1000L),
-                new HighScore(2, 1, "player2", 500L)
-        );
+        assertThat(scores.get(0).getScoreId()).isEqualTo(1);
+        assertThat(scores.get(0).getLevelId()).isEqualTo(1);
+        assertThat(scores.get(0).getUsername()).isEqualTo("player1");
+        assertThat(scores.get(0).getTime()).isEqualTo(1000L);
+        assertThat(scores.get(1).getScoreId()).isEqualTo(2);
+        assertThat(scores.get(1).getLevelId()).isEqualTo(1);
+        assertThat(scores.get(1).getUsername()).isEqualTo("player2");
+        assertThat(scores.get(1).getTime()).isEqualTo(500L);
     }
 
     @Test
