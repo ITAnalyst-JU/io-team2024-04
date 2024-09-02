@@ -182,4 +182,43 @@ public class AudioManagerTest {
         audioManager.setMusicEnabled(false);
         assertThat(audioManager.isMusicEnabled()).isFalse();
     }
+
+    @Test
+    void testSetMusicEnabledWhenMusicIsPlaying() {
+        var audioManager = new AudioManager();
+        Music music = mock(Music.class);
+        audioManager.playMusic(music, false);
+
+        verify(music).play();
+        verify(music).setVolume(DEFAULT_MUSIC_VOLUME);
+
+        audioManager.setMusicEnabled(false);
+        verify(music).setVolume(0);
+
+        audioManager.setMusicEnabled(true);
+        verify(music, times(2)).setVolume(DEFAULT_MUSIC_VOLUME);
+    }
+
+    @Test
+    void testPlayMusicWhenAnotherMusicIsPlaying() {
+        var audioManager = new AudioManager();
+        Music oldMusic = mock(Music.class);
+        Music newMusic = mock(Music.class);
+
+        audioManager.playMusic(oldMusic, false);
+
+        verify(oldMusic).play();
+        verify(oldMusic).setLooping(false);
+        verify(oldMusic).setVolume(DEFAULT_MUSIC_VOLUME);
+
+        audioManager.playMusic(newMusic, true);
+
+        verify(oldMusic).stop();
+        verify(oldMusic).dispose();
+
+        verify(newMusic).setLooping(true);
+        verify(newMusic).setVolume(DEFAULT_MUSIC_VOLUME);
+        verify(newMusic).play();
+    }
+
 }
