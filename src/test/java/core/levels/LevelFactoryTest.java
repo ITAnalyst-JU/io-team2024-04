@@ -25,6 +25,8 @@ class LevelFactoryTest {
 
     // There are issues with file loading.
     // Tests have to emulate a loaded map, so it's not too deep, because it would take ages.
+    // They more less test if it doesn't crash.
+    // At the end there are tests which test remembering level, those are much better.
 
     private AssetManagerFactory assetManagerFactory;
     private IAssetManagerGetter assetManager;

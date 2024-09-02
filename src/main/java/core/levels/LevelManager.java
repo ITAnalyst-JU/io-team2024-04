@@ -55,12 +55,12 @@ public class LevelManager implements ILevelManager {
         beginTime = TimeUtils.millis();
     }
 
+    // Untestable. LibGDX only measures time when the game is running.
     @Override
     public void pause() {
         totalTime += TimeUtils.timeSinceMillis(beginTime);
     }
 
-    // Untestable. Dependancies on untestable libgdx parts, like camera.position .
     @Override
     public void step() {
         world.step(Gdx.graphics.getDeltaTime(), 6, 2);
@@ -148,6 +148,7 @@ public class LevelManager implements ILevelManager {
     public void resize(int i, int i1) {
         camera.viewportWidth = (float)i/3;
         camera.viewportHeight = (float)i1/3;
+        camera.update();
     }
 
     @Override
