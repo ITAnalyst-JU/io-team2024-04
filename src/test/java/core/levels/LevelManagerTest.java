@@ -16,8 +16,11 @@ import core.general.UserInputController;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unchecked")
@@ -46,6 +49,11 @@ public class LevelManagerTest {
         inputController = Mockito.mock(UserInputController.class);
         batch = Mockito.mock(Batch.class);
         Mockito.when(renderer.getBatch()).thenReturn(batch);
+        Gdx.graphics = Mockito.mock(Graphics.class);
+        Mockito.when(player.getPosition()).thenReturn(new Vector2(0, 0));
+        camera = Mockito.spy(new OrthographicCamera());
+        Mockito.doNothing().when(camera).update();
+        Gdx.input = Mockito.mock(Input.class);
     }
 
     @Test
@@ -90,8 +98,6 @@ public class LevelManagerTest {
     void testInputController() {
         var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController, 0);
 
-        Gdx.input = Mockito.mock(Input.class);
-
         levelManager.create();
         levelManager.resume();
         levelManager.pause();
@@ -103,8 +109,6 @@ public class LevelManagerTest {
     @Test
     void testLevelNumber() {
         var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController, 7);
-
-        Gdx.input = Mockito.mock(Input.class);
 
         levelManager.create();
         levelManager.resume();
@@ -129,7 +133,6 @@ public class LevelManagerTest {
     @Test
     void testGetTimePassed() {
         var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController, 0);
-        Gdx.input = Mockito.mock(Input.class);
 
         levelManager.create();
         levelManager.resume();
@@ -142,11 +145,10 @@ public class LevelManagerTest {
 
     @Test
     void testUpdate() {
-        camera = Mockito.spy(new OrthographicCamera());
+        List<LevelContactListener.Event> events = Mockito.spy(new ArrayList<>());
+        events.add(new LevelContactListener.Event(LevelContactListener.Event.Type.Finish, null));
+        Mockito.when(contactListener.getEvents()).thenReturn(events);
         var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController, 0);
-        Gdx.graphics = Mockito.mock(Graphics.class);
-        Mockito.when(player.getPosition()).thenReturn(new Vector2(0, 0));
-        Mockito.doNothing().when(camera).update();
 
         levelManager.step();
         Mockito.verify(world).step(Mockito.anyFloat(), Mockito.anyInt(), Mockito.anyInt());
@@ -157,5 +159,248 @@ public class LevelManagerTest {
         Mockito.verify(batch).begin();
         Mockito.verify(batch).end();
         Mockito.verify(entityManager).render(batch);
+        Mockito.verify(contactListener).getEvents();
+        Mockito.verify(events).clear();
+    }
+
+    @Test
+    void testGameEnded() {
+        var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController, 0);
+        Assertions.assertThat(levelManager.isGameEnded()).isFalse();
+        List<LevelContactListener.Event> events = new ArrayList<>();
+        events.add(new LevelContactListener.Event(LevelContactListener.Event.Type.Finish, null));
+        Mockito.when(contactListener.getEvents()).thenReturn(events);
+
+        levelManager.step();
+        var res = levelManager.isGameEnded();
+
+        Assertions.assertThat(res).isTrue();
+    }
+
+    @Test
+    void testCheckpoint() {
+        var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController, 0);
+        List<LevelContactListener.Event> events = new ArrayList<>();
+        events.add(new LevelContactListener.Event(LevelContactListener.Event.Type.Checkpoint, null));
+        Mockito.when(contactListener.getEvents()).thenReturn(events);
+
+        levelManager.step();
+        Mockito.verify(entityManager).remove(Mockito.any());
+        Mockito.verify(entityManager).saveState();
+    }
+
+    @Test
+    void testPlatformNotUserDamageable() {
+        var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController, 0);
+        List<LevelContactListener.Event> events = new ArrayList<>();
+        IEntity entity = Mockito.mock(IEntity.class);
+        events.add(new LevelContactListener.Event(LevelContactListener.Event.Type.Platform, entity));
+        Mockito.when(contactListener.getEvents()).thenReturn(events);
+        Mockito.when(entity.getUserDamageable()).thenReturn(false);
+
+        levelManager.step();
+
+        Mockito.verify(entityManager).update();
+        Mockito.verify(entityManager).render(Mockito.any());
+        Mockito.verify(entity).getUserDamageable();
+        Mockito.verifyNoMoreInteractions(entityManager, entity);
+    }
+
+    @Test
+    void testPlatformUserDamageableWithKill() {
+        var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController, 0);
+        List<LevelContactListener.Event> events = new ArrayList<>();
+        IEntity entity = Mockito.mock(IEntity.class);
+        events.add(new LevelContactListener.Event(LevelContactListener.Event.Type.Platform, entity));
+        Mockito.when(contactListener.getEvents()).thenReturn(events);
+        Mockito.when(entity.getUserDamageable()).thenReturn(true);
+        Mockito.when(entity.damage()).thenReturn(true);
+
+        levelManager.step();
+
+        Mockito.verify(entityManager).update();
+        Mockito.verify(entityManager).render(Mockito.any());
+        Mockito.verify(entity).getUserDamageable();
+        Mockito.verify(entity).damage();
+        Mockito.verify(entityManager).remove(entity);
+        Mockito.verifyNoMoreInteractions(entityManager, entity);
+    }
+
+    @Test
+    void testPlatformUserDamageableWithNoKill() {
+        var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController, 0);
+        List<LevelContactListener.Event> events = new ArrayList<>();
+        IEntity entity = Mockito.mock(IEntity.class);
+        events.add(new LevelContactListener.Event(LevelContactListener.Event.Type.Platform, entity));
+        Mockito.when(contactListener.getEvents()).thenReturn(events);
+        Mockito.when(entity.getUserDamageable()).thenReturn(true);
+        Mockito.when(entity.damage()).thenReturn(false);
+
+        levelManager.step();
+
+        Mockito.verify(entityManager).update();
+        Mockito.verify(entityManager).render(Mockito.any());
+        Mockito.verify(entity).getUserDamageable();
+        Mockito.verify(entity).damage();
+        Mockito.verifyNoMoreInteractions(entityManager, entity);
+    }
+
+    @Test
+    void testDeath() {
+        var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController, 0);
+        List<LevelContactListener.Event> events = new ArrayList<>();
+        events.add(new LevelContactListener.Event(LevelContactListener.Event.Type.Death, null));
+        Mockito.when(contactListener.getEvents()).thenReturn(events);
+
+        levelManager.step();
+
+        Mockito.verify(entityManager).update();
+        Mockito.verify(entityManager).render(Mockito.any());
+        Mockito.verify(entityManager).recoverState();
+        Mockito.verifyNoMoreInteractions(entityManager);
+    }
+
+    @Test
+    void testGravityReverse() {
+        var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController, 0);
+        List<LevelContactListener.Event> events = new ArrayList<>();
+        events.add(new LevelContactListener.Event(LevelContactListener.Event.Type.GravityReverse, null));
+        Mockito.when(contactListener.getEvents()).thenReturn(events);
+
+        levelManager.step();
+
+        Mockito.verify(entityManager).update();
+        Mockito.verify(entityManager).render(Mockito.any());
+        Mockito.verify(player).getPosition();
+        Mockito.verify(player).reverseGravity();
+        Mockito.verifyNoMoreInteractions(entityManager, player);
+    }
+
+    @Test
+    void testButtonWithObjectDeath() {
+        var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController, 0);
+        List<LevelContactListener.Event> events = new ArrayList<>();
+        IEntity entity = Mockito.mock(IEntity.class);
+        events.add(new LevelContactListener.Event(LevelContactListener.Event.Type.Button, entity));
+        Mockito.when(contactListener.getEvents()).thenReturn(events);
+        Mockito.when(entity.getButtonNumber()).thenReturn(0);
+        IEntity entity2 = Mockito.mock(IEntity.class);
+        Mockito.when(buttonActions.get(0)).thenReturn(entity2);
+        Mockito.when(entity2.buttonAction(entity2)).thenReturn(true);
+
+        levelManager.step();
+
+        Mockito.verify(entityManager).update();
+        Mockito.verify(entityManager).render(Mockito.any());
+        Mockito.verify(entity).getButtonNumber();
+        Mockito.verify(buttonActions).get(0);
+        Mockito.verify(entity2).buttonAction(entity2);
+        ArgumentCaptor<IEntity> entityCaptor = ArgumentCaptor.forClass(IEntity.class);
+        Mockito.verify(entityManager, Mockito.times(2)).remove(entityCaptor.capture());
+        Mockito.verifyNoMoreInteractions(entityManager, entity, buttonActions);
+        Assertions.assertThat(entityCaptor.getAllValues()).containsExactlyInAnyOrder(entity, entity2);
+    }
+
+    @Test
+    void testButtonWithNoObjectDeath() {
+        var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController, 0);
+        List<LevelContactListener.Event> events = new ArrayList<>();
+        IEntity entity = Mockito.mock(IEntity.class);
+        events.add(new LevelContactListener.Event(LevelContactListener.Event.Type.Button, entity));
+        Mockito.when(contactListener.getEvents()).thenReturn(events);
+        Mockito.when(entity.getButtonNumber()).thenReturn(0);
+        IEntity entity2 = Mockito.mock(IEntity.class);
+        Mockito.when(buttonActions.get(0)).thenReturn(entity2);
+        Mockito.when(entity2.buttonAction(entity2)).thenReturn(false);
+
+        levelManager.step();
+
+        Mockito.verify(entityManager).update();
+        Mockito.verify(entityManager).render(Mockito.any());
+        Mockito.verify(entity).getButtonNumber();
+        Mockito.verify(buttonActions).get(0);
+        Mockito.verify(entity2).buttonAction(entity2);
+        Mockito.verify(entityManager).remove(entity);
+        Mockito.verifyNoMoreInteractions(entityManager, entity, buttonActions);
+    }
+
+    @Test
+    void testCollisionJumpContactBegin() {
+        var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController, 0);
+        List<LevelContactListener.Event> events = new ArrayList<>();
+        events.add(new LevelContactListener.Event(LevelContactListener.Event.Type.CollisionJumpContactBegin, null));
+        Mockito.when(contactListener.getEvents()).thenReturn(events);
+
+        levelManager.step();
+
+        Mockito.verify(entityManager).update();
+        Mockito.verify(entityManager).render(Mockito.any());
+        Mockito.verify(player).getPosition();
+        Mockito.verify(player).jumpContactBegin();
+        Mockito.verifyNoMoreInteractions(entityManager, player);
+    }
+
+    @Test
+    void testCollisionJumpContactEnd() {
+        var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController, 0);
+        List<LevelContactListener.Event> events = new ArrayList<>();
+        events.add(new LevelContactListener.Event(LevelContactListener.Event.Type.CollisionJumpContactEnd, null));
+        Mockito.when(contactListener.getEvents()).thenReturn(events);
+
+        levelManager.step();
+
+        Mockito.verify(entityManager).update();
+        Mockito.verify(entityManager).render(Mockito.any());
+        Mockito.verify(player).getPosition();
+        Mockito.verify(player).jumpContactEnd();
+        Mockito.verifyNoMoreInteractions(entityManager, player);
+    }
+
+    @Test
+    void testLadderContactBegin() {
+        var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController, 0);
+        List<LevelContactListener.Event> events = new ArrayList<>();
+        events.add(new LevelContactListener.Event(LevelContactListener.Event.Type.LadderContactBegin, null));
+        Mockito.when(contactListener.getEvents()).thenReturn(events);
+
+        levelManager.step();
+
+        Mockito.verify(entityManager).update();
+        Mockito.verify(entityManager).render(Mockito.any());
+        Mockito.verify(player).getPosition();
+        Mockito.verify(player).ladderContactBegin();
+        Mockito.verifyNoMoreInteractions(entityManager, player);
+    }
+
+    @Test
+    void testLadderContactEnd() {
+        var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController, 0);
+        List<LevelContactListener.Event> events = new ArrayList<>();
+        events.add(new LevelContactListener.Event(LevelContactListener.Event.Type.LadderContactEnd, null));
+        Mockito.when(contactListener.getEvents()).thenReturn(events);
+
+        levelManager.step();
+
+        Mockito.verify(entityManager).update();
+        Mockito.verify(entityManager).render(Mockito.any());
+        Mockito.verify(player).getPosition();
+        Mockito.verify(player).ladderContactEnd();
+        Mockito.verifyNoMoreInteractions(entityManager, player);
+    }
+
+    @Test
+    void testTrampoline() {
+        var levelManager = new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputController, 0);
+        List<LevelContactListener.Event> events = new ArrayList<>();
+        events.add(new LevelContactListener.Event(LevelContactListener.Event.Type.Trampoline, null));
+        Mockito.when(contactListener.getEvents()).thenReturn(events);
+
+        levelManager.step();
+
+        Mockito.verify(entityManager).update();
+        Mockito.verify(entityManager).render(Mockito.any());
+        Mockito.verify(player).getPosition();
+        Mockito.verify(player).trampolineContact();
+        Mockito.verifyNoMoreInteractions(entityManager, player);
     }
 }
