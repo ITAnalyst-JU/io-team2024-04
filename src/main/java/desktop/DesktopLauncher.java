@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import core.assets.AssetManagerFactory;
 import core.assets.SupremeAssetManager;
 import core.levels.LevelFactory;
+import core.levels.LevelSupplementaryObjectsFactory;
 import core.orchestrator.SupremeOrchestrator;
 import core.preferences.InternalPreferencesInteractorFactory;
 import core.views.ScreenAbstractFactory;
@@ -30,7 +31,7 @@ public class DesktopLauncher {
                                         new SupremeInteractorFactory(
                                                 new InternalPreferencesInteractorFactory())),
                                 new HashMap<>()),
-                        new LevelFactory(),
+                        new LevelFactory(new LevelSupplementaryObjectsFactory()),
                         new AssetManagerFactory(new AssetManager())),
                 new ConfigFactory(
                         new FileHandler(),
@@ -39,3 +40,4 @@ public class DesktopLauncher {
                         .applyDesktopConfig(new Lwjgl3ApplicationConfiguration()));
     }
 }
+

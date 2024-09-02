@@ -24,10 +24,15 @@ import java.util.Map;
 
 public class LevelFactory implements ILevelFactory {
     private ILevelManager savedManager;
+    ILevelSupplementaryObjectsFactory supplementaryObjectsFactory;
+
+    public LevelFactory(ILevelSupplementaryObjectsFactory supplementaryObjectsFactory) {
+        this.supplementaryObjectsFactory = supplementaryObjectsFactory;
+    }
 
     @Override
     public ILevelManager createLevel(LevelEnum levelNumber, AssetManagerFactory assetManagerFactory) {
-        savedManager = new TemporaryFactoryObject(assetManagerFactory).createLevel(levelNumber.getLevelNumber(), assetManagerFactory);
+        savedManager = new TemporaryFactoryObject(assetManagerFactory, this.supplementaryObjectsFactory).createLevel(levelNumber.getLevelNumber(), assetManagerFactory);
         savedManager.create();
         return savedManager;
     }
@@ -48,6 +53,7 @@ public class LevelFactory implements ILevelFactory {
     private static class TemporaryFactoryObject {
 
         private final IAssetManagerGetter assetManager;
+        private final ILevelSupplementaryObjectsFactory supplementaryObjectsFactory;
 
         private TiledMap map;
         private World world;
@@ -61,8 +67,9 @@ public class LevelFactory implements ILevelFactory {
         private Map<Integer, IEntity> buttonActions;
         private UserInputController inputProcessor;
 
-        TemporaryFactoryObject(AssetManagerFactory assetManagerFactory) {
+        TemporaryFactoryObject(AssetManagerFactory assetManagerFactory, ILevelSupplementaryObjectsFactory supplementaryObjectsFactory) {
             assetManager = assetManagerFactory.getAssetManagerGetter();
+            this.supplementaryObjectsFactory = supplementaryObjectsFactory;
         }
 
         private LevelManager createLevel(int levelNumber, AssetManagerFactory assetManagerFactory) { // 1-indexed
@@ -70,6 +77,7 @@ public class LevelFactory implements ILevelFactory {
             try {
                 name = Constants.LevelNames.Prefix + Constants.LevelNames.List[levelNumber - 1];
             } catch (Exception e) {
+                // This will never throw unless enum has levels without corresponding maps.
                 throw new IllegalArgumentException("LevelFactory: Map corresponding to level not found.");
             }
             map = assetManagerFactory.getAssetManagerGetter().getMap(name);
@@ -96,8 +104,8 @@ public class LevelFactory implements ILevelFactory {
             entityManager.loadEntities(entities);
             entityManager.saveState();
 
-            renderer = new OrthogonalTiledMapRenderer(map);
-            camera = new OrthographicCamera();
+            renderer = supplementaryObjectsFactory.getRenderer(map);
+            camera = supplementaryObjectsFactory.getCamera();
 
             return new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputProcessor, levelNumber);
 
@@ -134,11 +142,11 @@ public class LevelFactory implements ILevelFactory {
         }
 
         private void loadEntities() {
-            EntityFactory factory = new EntityFactory(entitySize, world, assetManager, new DecoratorFactory());
-            for (MapObject obj : map.getLayers().get("entities").getObjects()) {
+            EntityFactory factory = supplementaryObjectsFactory.getEntityFactory(entitySize, world, assetManager, new DecoratorFactory());
+            for (MapObject obj : map.getLayers().get(Constants.LayerNames.Entities).getObjects()) {
                 entities.add(factory.getEntity(obj, true));
             }
-            for (MapObject obj : map.getLayers().get("bodyEntities").getObjects()) {
+            for (MapObject obj : map.getLayers().get(Constants.LayerNames.BodyEntities).getObjects()) {
                 entities.add(factory.getEntity(obj, false));
             }
             this.buttonActions = factory.getButtonsMap();
