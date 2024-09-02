@@ -1,7 +1,13 @@
 package core.assets;
 
 public class Paths {
-    public static final String[] PATHS_LOADING_SCREEN = {"loading_background/loading_background.atlas"};
+    public static final String[] PATHS_LOADING_SCREEN = {
+            "loading_background/far-clouds.png",
+            "loading_background/sky.png",
+            "loading_background/far-mountains.png",
+            "loading_background/trees.png",
+            "loading_background/mountains.png",
+            "loading_background/near-clouds.png"};
     public static final String[] PATHS_IMAGES = {"ui/background/triangles.png", "ui/background/gradle.jpg", "player/player.png", "entities/platform.png", "entities/platform2.png", "entities/enemy.png"};
     public static final String[] PATHS_ATLASES = {};
     public static final String[] PATHS_SOUNDS = {"audio/sound/jump.wav"};

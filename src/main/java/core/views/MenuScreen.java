@@ -1,18 +1,49 @@
 package core.views;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 
+import com.badlogic.gdx.utils.Array;
 import core.assets.AssetManagerFactory;
+import core.assets.IAssetManagerGetter;
 import core.audio.AudioInteractor;
+import core.parallax.ParallaxBackground;
+import core.parallax.ParallaxBackgroundFactory;
 import core.user.UserInteractor;
 import core.window.WindowInteractor;
 
 public class MenuScreen extends UIScreen {
+
+//    private Camera camera;
+
     public MenuScreen(Stage stage, AssetManagerFactory assetManagerFactory, AudioInteractor audioInteractor, WindowInteractor windowInteractor, UserInteractor userInteractor) {
         super(stage, assetManagerFactory);
         setBackgroundImage("ui/background/gradle.jpg");
+
+//        this.camera = new OrthographicCamera(stage.getWidth(), stage.getHeight());
+//        IAssetManagerGetter assetManagerGetter = assetManagerFactory.getAssetManagerGetter();
+//        Pixmap[] parallaxLayersPixmaps = {
+//                assetManagerGetter.getPixmap("loading_background/sky.png"),
+//                assetManagerGetter.getPixmap("loading_background/far-clouds.png"),
+//                assetManagerGetter.getPixmap("loading_background/near-clouds.png"),
+//                assetManagerGetter.getPixmap("loading_background/far-mountains.png"),
+//                assetManagerGetter.getPixmap("loading_background/mountains.png"),
+//                assetManagerGetter.getPixmap("loading_background/trees.png"),
+//        };
+//        ParallaxBackground parallaxBackground = ParallaxBackgroundFactory.createParallaxBackgroundScrolling(camera, parallaxLayersPixmaps);
+//        Array<Actor> actors = stage.getActors();
+//        stage.unfocusAll();
+//        stage.addActor(parallaxBackground);
+//        for (Actor actor : actors) {
+//            System.out.println("hello");
+//            stage.addActor(actor);
+//        }
+
 
         // TODO: probably should be in show() method or in LoadingScreen?
         audioInteractor.loadPreferences();

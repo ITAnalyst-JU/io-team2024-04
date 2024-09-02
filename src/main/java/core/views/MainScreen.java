@@ -2,13 +2,17 @@ package core.views;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import core.assets.AssetManagerFactory;
+import core.assets.IAssetManagerGetter;
 import core.general.UserControlsEnum;
 import core.general.Observer;
 import core.levels.ILevelManager;
 import core.db.app.HighScoreInteractor;
+import core.parallax.ParallaxBackground;
+import core.parallax.ParallaxBackgroundFactory;
 import core.user.UserInteractor;
 
 import java.util.Objects;
