@@ -34,18 +34,19 @@ public class MovingDecorator extends BaseEntityDecorator {
     @Override
     public void update() {
         Body body = wrapped.getBody();
+        Vector2 position = body.getPosition();
         switch (direction) {
             case HORIZONTAL:
-                if (body.getPosition().x < minPosition) {
+                if (position.x < minPosition) {
                     body.setLinearVelocity(new Vector2(Constants.Physics.EntitiesMoveSpeed, 0));
-                } else if (body.getPosition().x > maxPosition) {
+                } else if (position.x > maxPosition) {
                     body.setLinearVelocity(new Vector2(-Constants.Physics.EntitiesMoveSpeed, 0));
                 }
                 break;
             case VERTICAL:
-                if (body.getPosition().y < minPosition) {
+                if (position.y < minPosition) {
                     body.setLinearVelocity(new Vector2(0, Constants.Physics.EntitiesMoveSpeed));
-                } else if (body.getPosition().y > maxPosition) {
+                } else if (position.y > maxPosition) {
                     body.setLinearVelocity(new Vector2(0, -Constants.Physics.EntitiesMoveSpeed));
                 }
                 break;

@@ -88,8 +88,7 @@ public class EntityFactory {
         } else {
             throw new UnsupportedOperationException("Unknown object name: " + type);
         }
-        Texture texture = new Texture(texturePath);
-//        Texture texture = assetManager.getTexture(texturePath); // TODO: this should work
+        Texture texture = assetManager.getTexture(texturePath);
         entity = new SpriteDecorator(entity, new Sprite(texture), size);
 
         MovingDecorator.MovementDirection movementDirection;
@@ -115,7 +114,7 @@ public class EntityFactory {
 
         if (objProperties.containsKey("number")) {
             int number = (int)objProperties.get("number");
-            entity = new ButtonActionDamageDecorator(entity, number);
+            entity = new ButtonActionDamageDecorator(entity);
             buttonsMap.put(number, entity);
         }
 
@@ -128,7 +127,6 @@ public class EntityFactory {
             throw new UnsupportedOperationException("We only produce from rectangles");
         }
         IEntity entity = new BaseEntity(world, baseEntitySize, ((RectangleMapObject)mapObject).getRectangle().getPosition(new Vector2()));
-//        Texture texture = new Texture("player/player.png");
         Texture texture = assetManager.getTexture("player/player.png");
         entity = new SpriteDecorator(entity, new Sprite(texture), baseEntitySize);
 

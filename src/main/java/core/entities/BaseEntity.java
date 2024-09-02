@@ -13,8 +13,7 @@ public class BaseEntity implements IEntity {
 
     protected Map<String, Object> state;
 
-    // Impossible to inject dependence on Body class.
-    BaseEntity(World world, Vector2 size, Vector2 position) {
+    public BaseEntity(World world, Vector2 size, Vector2 position) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.fixedRotation = true;

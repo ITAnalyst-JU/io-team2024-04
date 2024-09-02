@@ -2,7 +2,7 @@ package core.general;
 
 import com.badlogic.gdx.Input;
 
-public class UserInputController extends Observable<Observer<UserControlsEnum>> implements InputController {
+public class UserInputController extends Observable<Observer<UserControlsEnum>> implements IInputController {
     @Override
     public boolean keyDown(int i) {
         UserControlsEnum action;
