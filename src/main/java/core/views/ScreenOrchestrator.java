@@ -4,7 +4,7 @@ import com.badlogic.gdx.Screen;
 import core.assets.AssetManagerFactory;
 import core.general.Observable;
 import core.general.Observer;
-import core.levels.LevelManager;
+import core.levels.ILevelManager;
 import core.levels.LevelEnum;
 import core.orchestrator.DomainEventEnum;
 
@@ -34,11 +34,11 @@ public class ScreenOrchestrator extends Observable<Observer<DomainEventEnum>> im
     }
 
     @Override
-    public void respondToLoadedLevel(LevelManager level, AssetManagerFactory assetManagerFactory) {
+    public void respondToLoadedLevel(ILevelManager level, AssetManagerFactory assetManagerFactory) {
         this.loadMainScreen(level, assetManagerFactory);
     }
 
-    private void loadMainScreen(LevelManager level, AssetManagerFactory assetManagerFactory) {
+    private void loadMainScreen(ILevelManager level, AssetManagerFactory assetManagerFactory) {
         AbstractScreen screen = screenAbstractFactory.createMainScreen(level, assetManagerFactory);
         screens.put(ScreenEnum.GAME, screen);
         screen.addObserver(this);

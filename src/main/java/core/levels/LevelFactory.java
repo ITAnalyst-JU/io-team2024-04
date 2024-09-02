@@ -22,19 +22,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class LevelFactory {
-    private LevelManager savedManager;
+public class LevelFactory implements ILevelFactory {
+    private ILevelManager savedManager;
 
-    public LevelManager createLevel(LevelEnum levelNumber, AssetManagerFactory assetManagerFactory) {
+    @Override
+    public ILevelManager createLevel(LevelEnum levelNumber, AssetManagerFactory assetManagerFactory) {
         savedManager = new TemporaryFactoryObject(assetManagerFactory).createLevel(levelNumber.getLevelNumber(), assetManagerFactory);
         savedManager.create();
         return savedManager;
     }
 
-    public LevelManager getSavedLevel() {
+    @Override
+    public ILevelManager getSavedLevel() {
         return savedManager;
     }
 
+    @Override
     public void clearSavedLevel() {
         if (savedManager != null) {
             savedManager.dispose();
