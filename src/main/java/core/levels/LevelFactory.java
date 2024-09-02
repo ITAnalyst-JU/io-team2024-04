@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import core.assets.AssetManagerFactory;
 import core.assets.IAssetManagerGetter;
 import core.entities.*;
+import core.entities.decorators.DecoratorFactory;
 import core.general.Constants;
 import core.general.UserInputController;
 
@@ -21,19 +22,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class LevelFactory {
-    private LevelManager savedManager;
+public class LevelFactory implements ILevelFactory {
+    private ILevelManager savedManager;
 
-    public LevelManager createLevel(LevelEnum levelNumber, AssetManagerFactory assetManagerFactory) {
+    @Override
+    public ILevelManager createLevel(LevelEnum levelNumber, AssetManagerFactory assetManagerFactory) {
         savedManager = new TemporaryFactoryObject(assetManagerFactory).createLevel(levelNumber.getLevelNumber(), assetManagerFactory);
         savedManager.create();
         return savedManager;
     }
 
-    public LevelManager getSavedLevel() {
+    @Override
+    public ILevelManager getSavedLevel() {
         return savedManager;
     }
 
+    @Override
     public void clearSavedLevel() {
         if (savedManager != null) {
             savedManager.dispose();
@@ -77,7 +81,7 @@ public class LevelFactory {
             loadMap();
             contactListener = new LevelContactListener();
 
-            player = new EntityFactory(entitySize, world, assetManager).getPlayer(map.getLayers().get("player").getObjects().get(0));
+            player = new EntityFactory(entitySize, world, assetManager, new DecoratorFactory()).getPlayer(map.getLayers().get("player").getObjects().get(0));
             entities = new ArrayList<>();
             entities.add(player);
             loadEntities();
@@ -130,7 +134,7 @@ public class LevelFactory {
         }
 
         private void loadEntities() {
-            EntityFactory factory = new EntityFactory(entitySize, world, assetManager);
+            EntityFactory factory = new EntityFactory(entitySize, world, assetManager, new DecoratorFactory());
             for (MapObject obj : map.getLayers().get("entities").getObjects()) {
                 entities.add(factory.getEntity(obj, true));
             }

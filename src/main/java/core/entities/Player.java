@@ -72,7 +72,7 @@ public class Player extends BaseEntityDecorator implements Observer<UserControls
     public void trampolineContact() {
         Body body = wrapped.getBody();
         tempSpeed.x = body.getLinearVelocity().x;
-        tempSpeed.y = 2 * Constants.Physics.PlayerMoveSpeed;
+        tempSpeed.y = 2 * Constants.Physics.PlayerJumpSpeed;
         body.setLinearVelocity(tempSpeed);
     }
 
