@@ -1,14 +1,11 @@
 package core.db.domain;
 
-import core.general.Observable;
-import core.general.Observer;
-
-public class HighScore extends Observable<Observer<HighScore>> {
+public class HighScore {
 
     private final int scoreId;
     private final int levelId;
-    private String username;
-    private long time;
+    private final String username;
+    private final long time;
 
     public HighScore(int scoreId, int levelId, String username, long time) {
         this.scoreId = scoreId;
@@ -32,11 +29,4 @@ public class HighScore extends Observable<Observer<HighScore>> {
     public long getTime() {
         return time;
     }
-
-    public void update(String username, long time) {
-        this.username = username;
-        this.time = time;
-        notifyObservers(observer -> observer.respondToEvent(this));
-    }
-
 }
