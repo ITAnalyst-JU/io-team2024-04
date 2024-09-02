@@ -9,9 +9,10 @@ import static core.general.Constants.Preferences.DEFAULT_SOUND_ENABLED;
 import static core.general.Constants.Preferences.DEFAULT_SOUND_VOLUME;
 
 public class SoundManager {
-    private Map<Long, Sound> playingSounds = new HashMap<>();
+    private final Map<Long, Sound> playingSounds = new HashMap<>();
     private float volume = DEFAULT_SOUND_VOLUME;
     private boolean isEnabled = DEFAULT_SOUND_ENABLED;
+    private float previousVolume = DEFAULT_SOUND_VOLUME;
 
     public void playSound(Sound sound) {
         long soundId;
@@ -50,11 +51,16 @@ public class SoundManager {
     }
 
     public void setSoundsEnabled(boolean enabled) {
-        isEnabled = enabled;
         if (!enabled) {
+            previousVolume = volume;
             setVolume(0);
         } else {
-            setVolume(volume);
+            setVolume(previousVolume);
         }
+        isEnabled = enabled;
+    }
+
+    public Map<Long, Sound> getPlayingSounds() {
+        return playingSounds;
     }
 }
