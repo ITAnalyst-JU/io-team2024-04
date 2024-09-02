@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import core.assets.AssetManagerFactory;
 import core.assets.IAssetManagerGetter;
 import core.entities.*;
+import core.entities.decorators.DecoratorFactory;
 import core.general.Constants;
 import core.general.UserInputController;
 
@@ -77,7 +78,7 @@ public class LevelFactory {
             loadMap();
             contactListener = new LevelContactListener();
 
-            player = new EntityFactory(entitySize, world, assetManager).getPlayer(map.getLayers().get("player").getObjects().get(0));
+            player = new EntityFactory(entitySize, world, assetManager, new DecoratorFactory()).getPlayer(map.getLayers().get("player").getObjects().get(0));
             entities = new ArrayList<>();
             entities.add(player);
             loadEntities();
@@ -130,7 +131,7 @@ public class LevelFactory {
         }
 
         private void loadEntities() {
-            EntityFactory factory = new EntityFactory(entitySize, world, assetManager);
+            EntityFactory factory = new EntityFactory(entitySize, world, assetManager, new DecoratorFactory());
             for (MapObject obj : map.getLayers().get("entities").getObjects()) {
                 entities.add(factory.getEntity(obj, true));
             }
