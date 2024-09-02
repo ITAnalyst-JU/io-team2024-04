@@ -73,14 +73,14 @@ public class LevelContactListener implements ContactListener {
         if (Constants.LayerNames.Checkpoint.equals(entity.getType())) {
             events.add(new Event(Event.Type.Checkpoint, entity));
         }
+        if ("platform".equals(entity.getType())) {
+            events.add(new Event(Event.Type.Platform, entity));
+        }
         if ("ladder".equals(entity.getType())) {
             events.add(new Event(Event.Type.LadderContactBegin, null));
         }
         if ("gravity".equals(entity.getType())) {
             events.add(new Event(Event.Type.GravityReverse, null));
-        }
-        if ("platform".equals(entity.getType())) {
-            events.add(new Event(Event.Type.Platform, entity));
         }
         if ("button".equals(entity.getType())) {
             events.add(new Event(Event.Type.Button, entity));

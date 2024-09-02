@@ -9,7 +9,7 @@ import core.assets.AssetManagerFactory;
 import core.assets.IAssetManagerGetter;
 import core.general.UserControlsEnum;
 import core.general.Observer;
-import core.levels.LevelManager;
+import core.levels.ILevelManager;
 import core.db.app.HighScoreInteractor;
 import core.parallax.ParallaxBackground;
 import core.parallax.ParallaxBackgroundFactory;
@@ -19,12 +19,12 @@ import java.util.Objects;
 
 public class MainScreen extends AbstractScreen implements Observer<UserControlsEnum> {
 
-    private final LevelManager level;
+    private final ILevelManager level;
     private final HighScoreInteractor highScoreInteractor;
     private final UserInteractor userInteractor;
     private boolean pause = false;
 
-    public MainScreen(Stage stage, AssetManagerFactory assetManagerFactory, LevelManager level, HighScoreInteractor highscoreInteractor, UserInteractor userInteractor) {
+    public MainScreen(Stage stage, AssetManagerFactory assetManagerFactory, ILevelManager level, HighScoreInteractor highscoreInteractor, UserInteractor userInteractor) {
         super(stage, assetManagerFactory);
         this.level = level;
         this.highScoreInteractor = highscoreInteractor;

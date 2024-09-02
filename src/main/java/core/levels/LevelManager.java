@@ -14,7 +14,7 @@ import core.general.UserInputController;
 import java.util.List;
 import java.util.Map;
 
-public class LevelManager {
+public class LevelManager implements ILevelManager {
     private final TiledMap map;
     private final OrthogonalTiledMapRenderer renderer;
     private final OrthographicCamera camera;
@@ -44,21 +44,25 @@ public class LevelManager {
         this.levelNumber = levelNumber;
     }
 
+    @Override
     public void create() {
         // Nothing to do. Factory does everything. Possibly remove?
     }
 
+    @Override
     public void resume() {
         Gdx.input.setInputProcessor(inputController);
         player.resetControls();
         beginTime = TimeUtils.millis();
     }
 
+    @Override
     public void pause() {
         totalTime += TimeUtils.timeSinceMillis(beginTime);
     }
 
     // Untestable. Dependancies on untestable libgdx parts, like camera.position .
+    @Override
     public void step() {
         world.step(Gdx.graphics.getDeltaTime(), 6, 2);
 
@@ -133,6 +137,7 @@ public class LevelManager {
     }
 
 
+    @Override
     public void dispose() {
         world.dispose();
         renderer.dispose();
@@ -140,23 +145,28 @@ public class LevelManager {
     }
 
 
+    @Override
     public void resize(int i, int i1) {
         camera.viewportWidth = (float)i/3;
         camera.viewportHeight = (float)i1/3;
     }
 
+    @Override
     public long getTimePassed() {
         return totalTime;
     }
 
+    @Override
     public boolean isGameEnded() {
         return gameEnded;
     }
     
+    @Override
     public UserInputController getInputController() {
         return inputController;
     }
 
+    @Override
     public int getLevelNumber() {
         return levelNumber;
     }

@@ -8,7 +8,6 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import core.assets.IAssetManager;
 import core.assets.IAssetManagerGetter;
 import core.entities.decorators.*;
 import core.general.Constants;
@@ -20,13 +19,15 @@ public class EntityFactory {
     private final Vector2 baseEntitySize;
     private final World world;
     private final IAssetManagerGetter assetManager;
+    private final DecoratorFactory decoratorFactory;
 
     private final Map<Integer, IEntity> buttonsMap = new HashMap<>();
 
-    public EntityFactory(Vector2 baseEntitySize, World world, IAssetManagerGetter assetManager) {
+    public EntityFactory(Vector2 baseEntitySize, World world, IAssetManagerGetter assetManager, DecoratorFactory decoratorFactory) {
         this.baseEntitySize = baseEntitySize;
         this.world = world;
         this.assetManager = assetManager;
+        this.decoratorFactory = decoratorFactory;
     }
 
     public Map<Integer, IEntity> getButtonsMap() {
@@ -58,11 +59,11 @@ public class EntityFactory {
         IEntity entity = new BaseEntity(world, size, position);
 
         String type = (String)mapObject.getProperties().get("type");
-        entity = new GenericTypeDecorator(entity, type);
+        entity = decoratorFactory.getGenericTypeDecorator(entity, type);
 
         if ("button".equals(type)) {
             int number = (int)objProperties.get("number");
-            entity = new ButtonDecorator(entity, number);
+            entity = decoratorFactory.getButtonDecorator(entity, number);
         }
         if (!visible) {
             entity.getBody().getFixtureList().get(0).setUserData(entity);
@@ -72,7 +73,7 @@ public class EntityFactory {
         boolean userDamageable = false;
         if ((objProperties.containsKey("isUserDamageable") && (boolean)objProperties.get("isUserDamageable"))
                 || (!objProperties.containsKey("isUserDamageable") && objProperties.containsKey("lives"))) {
-            entity = new UserDamageableDecorator(entity);
+            entity = decoratorFactory.getUserDamageableDecorator(entity);
             userDamageable = true;
         }
 
@@ -89,7 +90,7 @@ public class EntityFactory {
             throw new UnsupportedOperationException("Unknown object name: " + type);
         }
         Texture texture = assetManager.getTexture(texturePath);
-        entity = new SpriteDecorator(entity, new Sprite(texture), size);
+        entity = decoratorFactory.getSpriteDecorator(entity, new Sprite(texture), size);
 
         MovingDecorator.MovementDirection movementDirection;
         Vector2 movementBounds = new Vector2();
@@ -105,16 +106,16 @@ public class EntityFactory {
             movementBounds.y = (rectangle.getX() - size.x / 2f + rectangle.getWidth()) / Constants.Physics.Scale;
         }
         if (movementDirection != null) {
-            entity = new MovingDecorator(entity, movementDirection, movementBounds);
+            entity = decoratorFactory.getMovingDecorator(entity, movementDirection, movementBounds);
         }
 
         if (objProperties.containsKey("lives")) {
-            entity = new DamageableDecorator(entity, (int)objProperties.get("lives"));
+            entity = decoratorFactory.getDamageableDecorator(entity, (int)objProperties.get("lives"));
         }
 
         if (objProperties.containsKey("number")) {
             int number = (int)objProperties.get("number");
-            entity = new ButtonActionDamageDecorator(entity, number);
+            entity = decoratorFactory.getButtonActionDamageDecorator(entity);
             buttonsMap.put(number, entity);
         }
 
@@ -127,9 +128,8 @@ public class EntityFactory {
             throw new UnsupportedOperationException("We only produce from rectangles");
         }
         IEntity entity = new BaseEntity(world, baseEntitySize, ((RectangleMapObject)mapObject).getRectangle().getPosition(new Vector2()));
-//        Texture texture = new Texture("player/player.png");
         Texture texture = assetManager.getTexture("player/player.png");
-        entity = new SpriteDecorator(entity, new Sprite(texture), baseEntitySize);
+        entity = decoratorFactory.getSpriteDecorator(entity, new Sprite(texture), baseEntitySize);
 
         Player player = new Player(entity);
 

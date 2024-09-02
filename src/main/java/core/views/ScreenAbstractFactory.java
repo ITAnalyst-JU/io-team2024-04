@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.assets.AssetManagerFactory;
-import core.levels.LevelManager;
+import core.levels.ILevelManager;
 
 public class ScreenAbstractFactory {
     // TODO: maybe we can make this on request or throw it to supremeInteractorFactory ;)
@@ -27,7 +27,7 @@ public class ScreenAbstractFactory {
         };
     }
 
-    public MainScreen createMainScreen(LevelManager level, AssetManagerFactory assetManagerFactory) {
+    public MainScreen createMainScreen(ILevelManager level, AssetManagerFactory assetManagerFactory) {
         return new MainScreen(new Stage(new ScreenViewport()), assetManagerFactory, level, this.supremeInteractorFactory.getHighScoreInteractor(), this.supremeInteractorFactory.getUserInteractor());
     }
 }
