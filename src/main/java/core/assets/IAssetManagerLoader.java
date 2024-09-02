@@ -2,12 +2,14 @@ package core.assets;
 
 public interface IAssetManagerLoader {
     void loadLoadingScreen();
-    void loadImages();
+    void queueImages();
 
-    void loadAtlases();
-    void loadSounds();
-    void loadMusic();
-    void loadFonts();
-    void loadSkins();
-    void loadLevels();
+    void queueAtlases();
+    void queueSounds();
+    void queueMusic();
+    void queueFonts();
+    void queueSkins();
+    void queueLevels();
+
+    boolean loaded();
 }
