@@ -42,7 +42,6 @@ public class InternalPreferencesInteractor implements IInternalPreferencesIntera
         userPreferences.setSoundEffectsEnabled(enabled);
     }
 
-    // TODO: implemeent these methods
     @Override
     public void setFullscreen(boolean enabled) {
         userPreferences.setFullscreen(enabled);
