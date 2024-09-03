@@ -9,5 +9,7 @@ public enum ScreenEnum {
     LEVELSELECTION,
     LEADERBOARD,
     PAUSE,
-    RESUME_GAME
+    RESUME_GAME,
+    TUTORIAL,
+    TUTORIAL2,
 }
