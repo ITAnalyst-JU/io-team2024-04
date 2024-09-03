@@ -45,6 +45,8 @@ dependencies {
     testImplementation("org.assertj:assertj-core:3.+")
     testImplementation("org.mockito:mockito-core:5.+")
     implementation("org.xerial:sqlite-jdbc:3.41.2.2")
+    implementation("com.sparkjava:spark-core:2.9.3")
+    implementation("com.google.code.gson:gson:2.8.9")
 }
 
 application {

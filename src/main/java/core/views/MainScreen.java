@@ -8,7 +8,7 @@ import core.assets.AssetManagerFactory;
 import core.general.UserControlsEnum;
 import core.general.Observer;
 import core.levels.ILevelManager;
-import core.db.app.HighScoreInteractor;
+import core.network.HighScoreNetworkInteractor;
 import core.user.UserInteractor;
 
 import java.util.Objects;
@@ -16,11 +16,11 @@ import java.util.Objects;
 public class MainScreen extends AbstractScreen implements Observer<UserControlsEnum> {
 
     private final ILevelManager level;
-    private final HighScoreInteractor highScoreInteractor;
+    private final HighScoreNetworkInteractor highScoreInteractor;
     private final UserInteractor userInteractor;
     private boolean pause = false;
 
-    public MainScreen(Stage stage, AssetManagerFactory assetManagerFactory, ILevelManager level, HighScoreInteractor highscoreInteractor, UserInteractor userInteractor) {
+    public MainScreen(Stage stage, AssetManagerFactory assetManagerFactory, ILevelManager level, HighScoreNetworkInteractor highscoreInteractor, UserInteractor userInteractor) {
         super(stage, assetManagerFactory);
         this.level = level;
         this.highScoreInteractor = highscoreInteractor;
@@ -41,7 +41,6 @@ public class MainScreen extends AbstractScreen implements Observer<UserControlsE
         level.step();
 
         if (level.isGameEnded()) {
-            // TODO add dependent levelid and nickname
             highScoreInteractor.addHighScore(level.getLevelNumber(), userInteractor.getUserName(), (int) level.getTimePassed());
             this.notifyOrchestrator(ScreenEnum.ENDGAME);
         }

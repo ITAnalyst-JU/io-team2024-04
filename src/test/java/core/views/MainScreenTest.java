@@ -3,14 +3,13 @@ package core.views;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import core.db.app.HighScoreInteractor;
+import core.network.HighScoreNetworkInteractor;
 import core.general.Observer;
 import core.general.UserControlsEnum;
 import core.general.UserInputController;
 import core.levels.LevelManager;
 import core.user.UserInteractor;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 
 @SuppressWarnings("unchecked")
@@ -20,7 +19,7 @@ public class MainScreenTest {
     public void testShow() {
         var stage = Mockito.mock(Stage.class);
         var level = Mockito.mock(LevelManager.class);
-        var highScoreInteractor = Mockito.mock(HighScoreInteractor.class);
+        var highScoreInteractor = Mockito.mock(HighScoreNetworkInteractor.class);
         var userInteractor = Mockito.mock(UserInteractor.class);
         var assetManagerFactory = Mockito.mock(core.assets.AssetManagerFactory.class);
         var mainScreen = new MainScreen(stage, assetManagerFactory, level, highScoreInteractor, userInteractor);
@@ -37,7 +36,7 @@ public class MainScreenTest {
     public void testRender() {
         var stage = Mockito.mock(Stage.class);
         var level = Mockito.mock(LevelManager.class);
-        var highScoreInteractor = Mockito.mock(HighScoreInteractor.class);
+        var highScoreInteractor = Mockito.mock(HighScoreNetworkInteractor.class);
         var userInteractor = Mockito.mock(UserInteractor.class);
         var assetManagerFactory = Mockito.mock(core.assets.AssetManagerFactory.class);
         var mainScreen = new MainScreen(stage, assetManagerFactory, level, highScoreInteractor, userInteractor);
@@ -55,7 +54,7 @@ public class MainScreenTest {
     public void testGameEnded() {
         var stage = Mockito.mock(Stage.class);
         var level = Mockito.mock(LevelManager.class);
-        var highScoreInteractor = Mockito.mock(HighScoreInteractor.class);
+        var highScoreInteractor = Mockito.mock(HighScoreNetworkInteractor.class);
         var userInteractor = Mockito.mock(UserInteractor.class);
         var assetManagerFactory = Mockito.mock(core.assets.AssetManagerFactory.class);
         var mainScreen = new MainScreen(stage, assetManagerFactory, level, highScoreInteractor, userInteractor);
@@ -76,7 +75,7 @@ public class MainScreenTest {
     public void testGameEndedAdvanced() {
         var stage = Mockito.mock(Stage.class);
         var level = Mockito.mock(LevelManager.class);
-        var highScoreInteractor = Mockito.mock(HighScoreInteractor.class);
+        var highScoreInteractor = Mockito.mock(HighScoreNetworkInteractor.class);
         var userInteractor = Mockito.mock(UserInteractor.class);
         var assetManagerFactory = Mockito.mock(core.assets.AssetManagerFactory.class);
         var mainScreen = new MainScreen(stage, assetManagerFactory, level, highScoreInteractor, userInteractor);
@@ -96,7 +95,7 @@ public class MainScreenTest {
     public void testGamePause() {
         var stage = Mockito.mock(Stage.class);
         var level = Mockito.mock(LevelManager.class);
-        var highScoreInteractor = Mockito.mock(HighScoreInteractor.class);
+        var highScoreInteractor = Mockito.mock(HighScoreNetworkInteractor.class);
         var userInteractor = Mockito.mock(UserInteractor.class);
         var assetManagerFactory = Mockito.mock(core.assets.AssetManagerFactory.class);
         var mainScreen = new MainScreen(stage, assetManagerFactory, level, highScoreInteractor, userInteractor);
@@ -115,7 +114,7 @@ public class MainScreenTest {
     public void testRespondToEvent() {
         var stage = Mockito.mock(Stage.class);
         var level = Mockito.mock(LevelManager.class);
-        var highScoreInteractor = Mockito.mock(HighScoreInteractor.class);
+        var highScoreInteractor = Mockito.mock(HighScoreNetworkInteractor.class);
         var userInteractor = Mockito.mock(UserInteractor.class);
         var assetManagerFactory = Mockito.mock(core.assets.AssetManagerFactory.class);
         var mainScreen = new MainScreen(stage, assetManagerFactory, level, highScoreInteractor, userInteractor);
@@ -135,7 +134,7 @@ public class MainScreenTest {
     public void testDispose() {
         var stage = Mockito.mock(Stage.class);
         var level = Mockito.mock(LevelManager.class);
-        var highScoreInteractor = Mockito.mock(HighScoreInteractor.class);
+        var highScoreInteractor = Mockito.mock(HighScoreNetworkInteractor.class);
         var userInteractor = Mockito.mock(UserInteractor.class);
         var assetManagerFactory = Mockito.mock(core.assets.AssetManagerFactory.class);
         var mainScreen = new MainScreen(stage, assetManagerFactory, level, highScoreInteractor, userInteractor);
@@ -159,7 +158,7 @@ public class MainScreenTest {
     public void testHide() {
         var stage = Mockito.mock(Stage.class);
         var level = Mockito.mock(LevelManager.class);
-        var highScoreInteractor = Mockito.mock(HighScoreInteractor.class);
+        var highScoreInteractor = Mockito.mock(HighScoreNetworkInteractor.class);
         var userInteractor = Mockito.mock(UserInteractor.class);
         var assetManagerFactory = Mockito.mock(core.assets.AssetManagerFactory.class);
         var mainScreen = new MainScreen(stage, assetManagerFactory, level, highScoreInteractor, userInteractor);
@@ -183,7 +182,7 @@ public class MainScreenTest {
     public void testResize() {
         var stage = Mockito.mock(Stage.class);
         var level = Mockito.mock(LevelManager.class);
-        var highScoreInteractor = Mockito.mock(HighScoreInteractor.class);
+        var highScoreInteractor = Mockito.mock(HighScoreNetworkInteractor.class);
         var userInteractor = Mockito.mock(UserInteractor.class);
         var assetManagerFactory = Mockito.mock(core.assets.AssetManagerFactory.class);
         var mainScreen = new MainScreen(stage, assetManagerFactory, level, highScoreInteractor, userInteractor);
@@ -200,7 +199,7 @@ public class MainScreenTest {
     public void testPause() {
         var stage = Mockito.mock(Stage.class);
         var level = Mockito.mock(LevelManager.class);
-        var highScoreInteractor = Mockito.mock(HighScoreInteractor.class);
+        var highScoreInteractor = Mockito.mock(HighScoreNetworkInteractor.class);
         var userInteractor = Mockito.mock(UserInteractor.class);
         var assetManagerFactory = Mockito.mock(core.assets.AssetManagerFactory.class);
         var mainScreen = new MainScreen(stage, assetManagerFactory, level, highScoreInteractor, userInteractor);
@@ -216,7 +215,7 @@ public class MainScreenTest {
     public void testResume() {
         var stage = Mockito.mock(Stage.class);
         var level = Mockito.mock(LevelManager.class);
-        var highScoreInteractor = Mockito.mock(HighScoreInteractor.class);
+        var highScoreInteractor = Mockito.mock(HighScoreNetworkInteractor.class);
         var userInteractor = Mockito.mock(UserInteractor.class);
         var assetManagerFactory = Mockito.mock(core.assets.AssetManagerFactory.class);
         var mainScreen = new MainScreen(stage, assetManagerFactory, level, highScoreInteractor, userInteractor);

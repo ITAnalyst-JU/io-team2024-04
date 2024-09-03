@@ -4,14 +4,14 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import core.assets.AssetManagerFactory;
-import core.db.app.HighScoreInteractor;
+import core.network.HighScoreNetworkInteractor;
 
 public class LeaderboardScreen extends UIScreen {
-    private final HighScoreInteractor highScoreInteractor;
+    private final HighScoreNetworkInteractor highScoreInteractor;
     private final Table highScoreTable;
     private final Label levelLabel;
 
-    public LeaderboardScreen(Stage stage, AssetManagerFactory assetManagerFactory, HighScoreInteractor highScoreInteractor) {
+    public LeaderboardScreen(Stage stage, AssetManagerFactory assetManagerFactory, HighScoreNetworkInteractor highScoreInteractor) {
         super(stage, assetManagerFactory);
         this.highScoreInteractor = highScoreInteractor;
 
