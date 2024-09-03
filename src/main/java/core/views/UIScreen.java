@@ -138,6 +138,12 @@ public abstract class UIScreen extends AbstractScreen {
         return String.format("%02d:%02d:%03d", minutes, seconds, millis);
     }
 
+    protected Table createLabelWithBackground(String text) {
+        Table table = new Table();
+        table.setBackground(skin.getDrawable("round-gray"));
+        table.add(createLabel(text));
+        return table;
+    }
 
     @Override
     public void show() {

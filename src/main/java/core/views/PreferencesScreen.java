@@ -13,7 +13,7 @@ public class PreferencesScreen extends UIScreen {
     public PreferencesScreen(Stage stage, AssetManagerFactory assetManagerFactory, AudioInteractor audioInteractor, WindowInteractor windowInteractor) {
         super(stage, assetManagerFactory);
 
-        setBackgroundImage("ui/background/triangles.png");
+        setBackgroundImage("ui/background/preview.png");
 
         table.add(createLabel("Music Volume")).expandX().padBottom(10);
         table.row();

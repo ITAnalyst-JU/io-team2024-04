@@ -11,24 +11,21 @@ import core.assets.IAssetManagerGetter;
 import core.assets.IAssetManagerLoader;
 import core.parallax.ParallaxBackground;
 import core.parallax.ParallaxBackgroundFactory;
+import core.parallax.ScreenHook;
 
 public class LoadingScreen extends AbstractScreen {
-    private Camera camera;
     private int currentLoadingStage;
-    private float delay = 10.f;
+    private float delay = 3.f;
+
+    private final ParallaxBackground parallaxBackground;
 
     public LoadingScreen(Stage stage, AssetManagerFactory assetManagerFactory) {
         super(stage, assetManagerFactory);
-    }
-
-    @Override
-    public void show() {
         IAssetManagerLoader assetManagerLoader = assetManagerFactory.getAssetManagerLoader();
         IAssetManagerGetter assetManagerGetter = assetManagerFactory.getAssetManagerGetter();
         System.out.println("Loading loading screen assets...");
         assetManagerLoader.loadLoadingScreen();
         currentLoadingStage++;
-        this.camera = new OrthographicCamera(stage.getWidth(), stage.getHeight());
         Pixmap[] parallaxLayersPixmaps = {
                 assetManagerGetter.getPixmap("loading_background/sky.png"),
                 assetManagerGetter.getPixmap("loading_background/far-clouds.png"),
@@ -37,9 +34,10 @@ public class LoadingScreen extends AbstractScreen {
                 assetManagerGetter.getPixmap("loading_background/mountains.png"),
                 assetManagerGetter.getPixmap("loading_background/trees.png"),
         };
-        ParallaxBackground parallaxBackground = ParallaxBackgroundFactory.createParallaxBackgroundScrolling(camera, parallaxLayersPixmaps);
+        parallaxBackground = ParallaxBackgroundFactory.createParallaxBackgroundScrolling(parallaxLayersPixmaps, new ScreenHook(0, 0, (int) stage.getWidth(), (int) stage.getHeight()));
         stage.addActor(parallaxBackground);
     }
+
 
     @Override
     public void render(float delta) {
@@ -94,5 +92,11 @@ public class LoadingScreen extends AbstractScreen {
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
+        parallaxBackground.resizeHook(width, height);
     }
 }

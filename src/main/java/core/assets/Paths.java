@@ -8,7 +8,7 @@ public class Paths {
             "loading_background/trees.png",
             "loading_background/mountains.png",
             "loading_background/near-clouds.png"};
-    public static final String[] PATHS_IMAGES = {"ui/background/triangles.png", "ui/background/gradle.jpg", "player/player.png", "entities/platform.png", "entities/platform2.png", "entities/enemy.png"};
+    public static final String[] PATHS_IMAGES = {"ui/background/triangles.png", "ui/background/tutorial.png", "ui/background/tutorial2.png", "ui/background/preview.png", "ui/background/gradle.jpg", "player/player.png", "entities/platform.png", "entities/platform2.png", "entities/enemy.png"};
     public static final String[] PATHS_ATLASES = {};
     public static final String[] PATHS_SOUNDS = {"audio/sound/jump.wav"};
     public static final String[] PATHS_MUSIC = {"audio/music/epic_background.mp3"};

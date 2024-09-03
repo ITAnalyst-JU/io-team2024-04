@@ -49,4 +49,19 @@ public class ObservableTest {
         verify(observer2, times(1)).respondToEvent(event);
         verifyNoMoreInteractions(observer1, observer2);
     }
+
+    @Test
+    public void testNotNotifyRemovedObservers() {
+        var observable = new DummyObservable();
+        var observer1 = (Observer<DummyClass>) Mockito.mock(Observer.class);
+        var observer2 = (Observer<DummyClass>) Mockito.mock(Observer.class);
+        var event = new DummyClass();
+        observable.addObserver(observer1);
+        observable.addObserver(observer2);
+        observable.removeObserver(observer1);
+        observable.notifyObservers(observer -> observer.respondToEvent(event));
+        verify(observer1, never()).respondToEvent(event);
+        verify(observer2, times(1)).respondToEvent(event);
+        verifyNoMoreInteractions(observer1, observer2);
+    }
 }

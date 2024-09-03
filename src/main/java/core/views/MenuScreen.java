@@ -14,41 +14,30 @@ import core.assets.IAssetManagerGetter;
 import core.audio.AudioInteractor;
 import core.parallax.ParallaxBackground;
 import core.parallax.ParallaxBackgroundFactory;
+import core.parallax.ScreenHook;
 import core.user.UserInteractor;
 import core.window.WindowInteractor;
 
 public class MenuScreen extends UIScreen {
-
-//    private Camera camera;
-
+    private final ParallaxBackground parallaxBackground;
     public MenuScreen(Stage stage, AssetManagerFactory assetManagerFactory, AudioInteractor audioInteractor, WindowInteractor windowInteractor, UserInteractor userInteractor) {
         super(stage, assetManagerFactory);
-        setBackgroundImage("ui/background/gradle.jpg");
 
-//        this.camera = new OrthographicCamera(stage.getWidth(), stage.getHeight());
-//        IAssetManagerGetter assetManagerGetter = assetManagerFactory.getAssetManagerGetter();
-//        Pixmap[] parallaxLayersPixmaps = {
-//                assetManagerGetter.getPixmap("loading_background/sky.png"),
-//                assetManagerGetter.getPixmap("loading_background/far-clouds.png"),
-//                assetManagerGetter.getPixmap("loading_background/near-clouds.png"),
-//                assetManagerGetter.getPixmap("loading_background/far-mountains.png"),
-//                assetManagerGetter.getPixmap("loading_background/mountains.png"),
-//                assetManagerGetter.getPixmap("loading_background/trees.png"),
-//        };
-//        ParallaxBackground parallaxBackground = ParallaxBackgroundFactory.createParallaxBackgroundScrolling(camera, parallaxLayersPixmaps);
-//        Array<Actor> actors = stage.getActors();
-//        stage.unfocusAll();
-//        stage.addActor(parallaxBackground);
-//        for (Actor actor : actors) {
-//            System.out.println("hello");
-//            stage.addActor(actor);
-//        }
+        IAssetManagerGetter assetManagerGetter = assetManagerFactory.getAssetManagerGetter();
+        Pixmap[] parallaxLayersPixmaps = {
+                assetManagerGetter.getPixmap("loading_background/sky.png"),
+                assetManagerGetter.getPixmap("loading_background/far-clouds.png"),
+                assetManagerGetter.getPixmap("loading_background/near-clouds.png"),
+                assetManagerGetter.getPixmap("loading_background/far-mountains.png"),
+                assetManagerGetter.getPixmap("loading_background/mountains.png"),
+                assetManagerGetter.getPixmap("loading_background/trees.png"),
+        };
+        parallaxBackground = ParallaxBackgroundFactory.createParallaxBackgroundScrolling(parallaxLayersPixmaps, new ScreenHook(0, 0, (int) stage.getWidth(), (int) stage.getHeight()));
+        stage.addActor(parallaxBackground);
 
-
-        // TODO: probably should be in show() method or in LoadingScreen?
         audioInteractor.loadPreferences();
         windowInteractor.loadPreferences();
-        audioInteractor.playBackgroundMusic(assetManagerFactory.getAssetManagerGetter().getMusic("audio/music/epic_background.mp3"), true);
+        audioInteractor.playBackgroundMusic(assetManagerGetter.getMusic("audio/music/epic_background.mp3"), true);
 
         Table greyBackground = new Table();
         greyBackground.setBackground(skin.getDrawable("round-gray"));
@@ -83,5 +72,11 @@ public class MenuScreen extends UIScreen {
         inputTable.add(updateButton);
         table.add(inputTable).padBottom(10);
         table.row();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        super.resize(width, height);
+        parallaxBackground.resizeHook(width, height);
     }
 }

@@ -10,9 +10,9 @@ public class PauseScreen extends UIScreen {
 
     public PauseScreen(Stage stage, AssetManagerFactory assetManagerFactory) {
         super(stage, assetManagerFactory);
-        setBackgroundImage("ui/background/triangles.png");
+        setBackgroundImage("ui/background/preview.png");
 
-        Label titleLabel = createLabel("Game is paused");
+        Table titleLabel = createLabelWithBackground("Game is paused");
         table.top().padTop(50);
         table.add(titleLabel).expandX().padBottom(50);
         table.row();

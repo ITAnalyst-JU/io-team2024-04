@@ -44,6 +44,7 @@ public class WindowInteractor {
     }
 
     public void loadPreferences() {
+        System.out.println("Loading window preferences...");
         boolean isFullscreen = internalWindowPreferencesInteractor.isFullscreen();
         internalWindowPreferencesInteractor.setFullscreen(isFullscreen);
 

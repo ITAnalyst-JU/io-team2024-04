@@ -26,7 +26,7 @@ public class LevelSelectionScreen extends UIScreen {
         this.highScoreInteractor = highScoreInteractor;
         this.userInteractor = userInteractor;
 
-        setBackgroundImage("ui/background/triangles.png");
+        setBackgroundImage("ui/background/preview.png");
 
         Table greyBackground = new Table();
         greyBackground.setBackground(skin.getDrawable("round-gray"));

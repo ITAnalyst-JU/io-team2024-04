@@ -1,25 +1,24 @@
 package core.parallax;
 
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Pixmap;
 
 import java.util.Arrays;
 
 public class ParallaxBackgroundFactory {
-    public static ParallaxBackground createParallaxBackgroundScrolling(Camera camera, Pixmap[] pixmaps) {
-        return new ParallaxBackground(prepareParallaxLayers(camera, pixmaps), camera, true);
+    public static ParallaxBackground createParallaxBackgroundScrolling(Pixmap[] pixmaps, ScreenHook screenHook) {
+        return new ParallaxBackground(prepareParallaxLayers(pixmaps, screenHook), screenHook, true);
     }
 
-    public static ParallaxBackground createParallaxBackgroundInteractive(Camera camera, Pixmap[] pixmaps) {
-        return new ParallaxBackground(prepareParallaxLayers(camera, pixmaps), camera, false);
+    public static ParallaxBackground createParallaxBackgroundInteractive(Pixmap[] pixmaps, ScreenHook screenHook) {
+        return new ParallaxBackground(prepareParallaxLayers(pixmaps, screenHook), screenHook, false);
     }
 
-    private static ParallaxLayer[] prepareParallaxLayers(Camera camera, Pixmap[] pixmaps) {
+    private static ParallaxLayer[] prepareParallaxLayers(Pixmap[] pixmaps, ScreenHook screenHook) {
         final float[] prevFactor = {0.f};
         final float[] currFactor = {0.1f};
         return Arrays.stream(pixmaps)
                 .map(pixmap -> {
-                    ParallaxLayer layer = new ParallaxLayer(pixmap, currFactor[0], true, true, camera);
+                    ParallaxLayer layer = new ParallaxLayer(pixmap, currFactor[0], true, true, screenHook);
                     float temp = currFactor[0];
                     currFactor[0] += prevFactor[0];
                     prevFactor[0] = temp;

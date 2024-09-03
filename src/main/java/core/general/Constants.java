@@ -3,8 +3,6 @@ package core.general;
 import com.badlogic.gdx.math.Vector2;
 import core.preferences.WindowMode;
 
-import java.awt.*;
-
 public final class Constants {
     public static final class Physics {
         public static final float Scale = 16f;
