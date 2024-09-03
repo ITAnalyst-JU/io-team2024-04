@@ -13,5 +13,6 @@ public interface IScreenOrchestrator {
 
     // TODO: consider making it with domain event
     void respondToLoadedLevel(ILevelManager level, AssetManagerFactory assetManagerFactory);
+    void respondToEndLevel(int levelNumber, AssetManagerFactory assetManagerFactory);
     void dispose();
 }

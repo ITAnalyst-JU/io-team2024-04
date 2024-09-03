@@ -1,7 +1,5 @@
 package core.views;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.assets.AssetManagerFactory;
@@ -18,7 +16,6 @@ public class ScreenAbstractFactory {
         return switch (screenEnum) {
             case MENU -> new MenuScreen(new Stage(new ScreenViewport()), assetManagerFactory, this.supremeInteractorFactory.getAudioInteractor(), this.supremeInteractorFactory.getWindowInteractor(), this.supremeInteractorFactory.getUserInteractor());
             case PREFERENCES -> new PreferencesScreen(new Stage(new ScreenViewport()), assetManagerFactory, this.supremeInteractorFactory.getAudioInteractor(), this.supremeInteractorFactory.getWindowInteractor());
-            case ENDGAME -> new EndScreen(new Stage(new ScreenViewport()), assetManagerFactory, this.supremeInteractorFactory.getHighScoreInteractor());
             case LOADING -> new LoadingScreen(new Stage(new ScreenViewport()), assetManagerFactory);
             case LEVELSELECTION -> new LevelSelectionScreen(new Stage(new ScreenViewport()), assetManagerFactory, this.supremeInteractorFactory.getHighScoreInteractor(), this.supremeInteractorFactory.getUserInteractor());
             case LEADERBOARD -> new LeaderboardScreen(new Stage(new ScreenViewport()), assetManagerFactory, this.supremeInteractorFactory.getHighScoreInteractor());
@@ -31,5 +28,9 @@ public class ScreenAbstractFactory {
 
     public MainScreen createMainScreen(ILevelManager level, AssetManagerFactory assetManagerFactory) {
         return new MainScreen(new Stage(new ScreenViewport()), assetManagerFactory, level, this.supremeInteractorFactory.getHighScoreInteractor(), this.supremeInteractorFactory.getUserInteractor());
+    }
+
+    public EndScreen createEndScreen(int levelNumber, AssetManagerFactory assetManagerFactory) {
+        return new EndScreen(new Stage(new ScreenViewport()), assetManagerFactory, this.supremeInteractorFactory.getHighScoreInteractor(), levelNumber);
     }
 }

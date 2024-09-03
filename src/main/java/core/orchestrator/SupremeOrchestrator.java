@@ -38,12 +38,19 @@ public class SupremeOrchestrator extends Game implements Observer<DomainEventEnu
         this.screenOrchestrator.respondToLoadedLevel(level, assetManagerFactory);
     }
 
+    private void notifyScreenOrchestratorLevelEnded(int levelNumber, AssetManagerFactory assetManagerFactory) {
+        this.screenOrchestrator.respondToEndLevel(levelNumber, assetManagerFactory);
+    }
+
     @Override
     public void respondToEvent(DomainEventEnum param) {
         ILevelManager nextLevel;
         switch (param) {
             case CHANGESCREEN:
                 var nextScreen = screenOrchestrator.getNextScreenEnum();
+                if (nextScreen == ScreenEnum.ENDGAME) {
+                    this.notifyScreenOrchestratorLevelEnded(levelFactory.getSavedLevel().getLevelNumber(), assetManagerFactory);
+                }
                 if (nextScreen == ScreenEnum.MENU) {
                     levelFactory.clearSavedLevel();
                 }

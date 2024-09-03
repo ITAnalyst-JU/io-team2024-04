@@ -38,9 +38,25 @@ public class ScreenOrchestrator extends Observable<Observer<DomainEventEnum>> im
         this.loadMainScreen(level, assetManagerFactory);
     }
 
+    @Override
+    public void respondToEndLevel(int level, AssetManagerFactory assetManagerFactory) {
+        this.loadEndScreen(level, assetManagerFactory);
+    }
+
     private void loadMainScreen(ILevelManager level, AssetManagerFactory assetManagerFactory) {
         AbstractScreen screen = screenAbstractFactory.createMainScreen(level, assetManagerFactory);
         screens.put(ScreenEnum.GAME, screen);
+        screen.addObserver(this);
+    }
+
+    private void loadEndScreen(int levelNumber, AssetManagerFactory assetManagerFactory) {
+        // TODO move screen removal logic to another place?
+        if (screens.containsKey(ScreenEnum.ENDGAME)) {
+            screens.get(ScreenEnum.ENDGAME).dispose();
+            screens.remove(ScreenEnum.ENDGAME);
+        }
+        AbstractScreen screen = screenAbstractFactory.createEndScreen(levelNumber, assetManagerFactory);
+        screens.put(ScreenEnum.ENDGAME, screen);
         screen.addObserver(this);
     }
 
@@ -77,6 +93,7 @@ public class ScreenOrchestrator extends Observable<Observer<DomainEventEnum>> im
             screen.removeObserver(this);
         }
     }
+
     @Override
     public void dispose() {
         stopObservingScreens();
