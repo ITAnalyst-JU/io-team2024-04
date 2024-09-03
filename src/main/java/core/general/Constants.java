@@ -30,7 +30,9 @@ public final class Constants {
         public static final String[] List = new String[]{
                 "map.tmx",
                 "map2.tmx",
+                "newMap.tmx",
         };
+        public static final String Background = "background.tmx";
     }
 
     public static final class Preferences {

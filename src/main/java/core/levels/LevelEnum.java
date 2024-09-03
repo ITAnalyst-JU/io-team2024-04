@@ -2,7 +2,8 @@ package core.levels;
 
 public enum LevelEnum {
     LEVEL_1(1),
-    LEVEL_2(2);
+    LEVEL_2(2),
+    LEVEL_3(3);
 
     private final int levelNumber;
 

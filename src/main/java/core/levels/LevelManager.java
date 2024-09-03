@@ -6,8 +6,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.viewport.*;
 import core.entities.*;
 import core.general.UserInputController;
 
@@ -25,13 +27,17 @@ public class LevelManager implements ILevelManager {
     private final Map<Integer, IEntity> buttonActions;
     private final UserInputController inputController;
     private final int levelNumber;
+    private final OrthogonalTiledMapRenderer backgroundRenderer;
+    private final Viewport backgroundViewport;
 
     private long totalTime = 0;
     private long beginTime;
     public boolean gameEnded = false;
 
+
     // Do we need to have so many things? Unfortunately it seems yes.
-    public LevelManager(TiledMap map, OrthogonalTiledMapRenderer renderer, OrthographicCamera camera, World world, EntityManager entityManager, Player player, LevelContactListener contactListener, Map<Integer, IEntity> buttonActions, UserInputController inputController, int levelNumber) {
+    public LevelManager(TiledMap map, OrthogonalTiledMapRenderer renderer, OrthographicCamera camera, World world, EntityManager entityManager, Player player, LevelContactListener contactListener, Map<Integer, IEntity> buttonActions,
+                        UserInputController inputController, int levelNumber, OrthogonalTiledMapRenderer backgroundRenderer, Viewport backgroundViewport) {
         this.map = map;
         this.renderer = renderer;
         this.camera = camera;
@@ -42,6 +48,8 @@ public class LevelManager implements ILevelManager {
         this.buttonActions = buttonActions;
         this.inputController = inputController;
         this.levelNumber = levelNumber;
+        this.backgroundViewport = backgroundViewport;
+        this.backgroundRenderer = backgroundRenderer;
     }
 
     @Override
@@ -67,6 +75,10 @@ public class LevelManager implements ILevelManager {
         world.step(Gdx.graphics.getDeltaTime(), 6, 2);
 
         entityManager.update();
+
+
+        backgroundRenderer.setView((OrthographicCamera) backgroundViewport.getCamera());
+        backgroundRenderer.render();
 
         camera.position.set(player.getPosition(), 0);
         camera.update();
@@ -150,6 +162,8 @@ public class LevelManager implements ILevelManager {
         camera.viewportWidth = (float)i/3;
         camera.viewportHeight = (float)i1/3;
         camera.update();
+
+        backgroundViewport.update(i, i1);
     }
 
     @Override

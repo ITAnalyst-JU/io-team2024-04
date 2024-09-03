@@ -1,5 +1,7 @@
 package core.levels;
 
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapLayers;
@@ -101,6 +103,7 @@ class LevelFactoryTest {
         Mockito.when(supplementaryObjectsFactory.getEntityFactory(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(entityFactory);
         Mockito.when(supplementaryObjectsFactory.getRenderer(Mockito.any())).thenReturn(renderer);
         Mockito.when(entityFactory.getEntity(Mockito.any(), Mockito.anyBoolean())).thenReturn(Mockito.mock(IEntity.class));
+        Mockito.when(supplementaryObjectsFactory.getCamera()).thenReturn(new OrthographicCamera());
 
         entitiesLayerObjects.add(Mockito.mock(MapObject.class));
         bodyEntitiesLayerObjects.add(Mockito.mock(MapObject.class));

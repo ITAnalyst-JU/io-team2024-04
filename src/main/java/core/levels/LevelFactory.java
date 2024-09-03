@@ -80,7 +80,7 @@ public class LevelFactory implements ILevelFactory {
                 // This will never throw unless enum has levels without corresponding maps.
                 throw new IllegalArgumentException("LevelFactory: Map corresponding to level not found.");
             }
-            map = assetManagerFactory.getAssetManagerGetter().getMap(name);
+            map = assetManager.getMap(name);
 
             world = new World(Constants.Physics.Gravity, true);
             entitySize = new Vector2(((TiledMapTileLayer) map.getLayers().get(Constants.LayerNames.Tiles)).getTileHeight(),
@@ -107,8 +107,13 @@ public class LevelFactory implements ILevelFactory {
             renderer = supplementaryObjectsFactory.getRenderer(map);
             camera = supplementaryObjectsFactory.getCamera();
 
-            return new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputProcessor, levelNumber);
+            var backgroundMap = assetManager.getMap(Constants.LevelNames.Prefix + Constants.LevelNames.Background);
+            var backgroundRenderer = supplementaryObjectsFactory.getRenderer(backgroundMap);
+            var backgroundCamera = supplementaryObjectsFactory.getCamera();
+            backgroundCamera.position.set(new Vector2(160, 120), 0);
+            var backgroundViewport = supplementaryObjectsFactory.getViewport(320, 240, backgroundCamera);
 
+            return new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputProcessor, levelNumber, backgroundRenderer, backgroundViewport);
         }
 
 

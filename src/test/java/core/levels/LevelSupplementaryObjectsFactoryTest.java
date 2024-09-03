@@ -3,6 +3,8 @@ package core.levels;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import core.assets.IAssetManagerGetter;
 import core.entities.EntityFactory;
 import core.entities.decorators.DecoratorFactory;
@@ -29,5 +31,14 @@ class LevelSupplementaryObjectsFactoryTest {
         EntityFactory entityFactory = factory.getEntityFactory(baseEntitySize, world, assetManager, decoratorFactory);
 
         Assertions.assertThat(entityFactory).isNotNull();
+    }
+
+    @Test
+    void testGetViewport() {
+        ILevelSupplementaryObjectsFactory factory = new LevelSupplementaryObjectsFactory();
+        OrthographicCamera camera = Mockito.mock(OrthographicCamera.class);
+        Viewport viewport = factory.getViewport(10, 10, camera);
+
+        Assertions.assertThat(viewport).isInstanceOf(StretchViewport.class);
     }
 }

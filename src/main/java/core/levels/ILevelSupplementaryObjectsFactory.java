@@ -5,6 +5,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import core.assets.IAssetManagerGetter;
 import core.entities.EntityFactory;
 import core.entities.decorators.DecoratorFactory;
@@ -15,4 +16,6 @@ public interface ILevelSupplementaryObjectsFactory {
     OrthographicCamera getCamera();
 
     EntityFactory getEntityFactory(Vector2 baseEntitySize, World world, IAssetManagerGetter assetManager, DecoratorFactory decoratorFactory);
+
+    public Viewport getViewport(int worldWidth, int worldHeight, OrthographicCamera camera);
 }

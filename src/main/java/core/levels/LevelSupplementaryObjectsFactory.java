@@ -5,6 +5,8 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import core.assets.IAssetManagerGetter;
 import core.entities.EntityFactory;
 import core.entities.decorators.DecoratorFactory;
@@ -26,5 +28,10 @@ public class LevelSupplementaryObjectsFactory implements ILevelSupplementaryObje
     @Override
     public EntityFactory getEntityFactory(Vector2 baseEntitySize, World world, IAssetManagerGetter assetManager, DecoratorFactory decoratorFactory) {
         return new EntityFactory(baseEntitySize, world, assetManager, decoratorFactory);
+    }
+
+    @Override
+    public Viewport getViewport(int worldWidth, int worldHeight, OrthographicCamera camera) {
+        return new StretchViewport(worldWidth, worldHeight, camera);
     }
 }

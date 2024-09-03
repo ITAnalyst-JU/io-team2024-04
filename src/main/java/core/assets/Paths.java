@@ -15,5 +15,5 @@ public class Paths {
     public static final String[] PATHS_FONTS = {};
     public static final String[] PATHS_SKINS = {"ui/skin/plain-james-ui.json"};
 
-    public static final String[] PATHS_LEVELS = {"map/map.tmx", "map/map2.tmx"};
+    public static final String[] PATHS_LEVELS = {"map/map.tmx", "map/map2.tmx", "map/newMap.tmx", "map/background.tmx"};
 }
