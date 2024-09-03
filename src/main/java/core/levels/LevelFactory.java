@@ -61,7 +61,7 @@ public class LevelFactory implements ILevelFactory {
         private LevelContactListener contactListener;
         private Player player;
         private List<IEntity> entities;
-        private EntityManager entityManager;
+        private IEntityManager IEntityManager;
         private OrthogonalTiledMapRenderer renderer;
         private OrthographicCamera camera;
         private Map<Integer, IEntity> buttonActions;
@@ -100,9 +100,9 @@ public class LevelFactory implements ILevelFactory {
             world.setContactListener(contactListener);
             Gdx.input.setInputProcessor(inputProcessor);
 
-            entityManager = new BasicEntityManager();
-            entityManager.loadEntities(entities);
-            entityManager.saveState();
+            IEntityManager = new EntityManager();
+            IEntityManager.loadEntities(entities);
+            IEntityManager.saveState();
 
             renderer = supplementaryObjectsFactory.getRenderer(map);
             camera = supplementaryObjectsFactory.getCamera();
@@ -113,7 +113,7 @@ public class LevelFactory implements ILevelFactory {
             backgroundCamera.position.set(new Vector2(160, 120), 0);
             var backgroundViewport = supplementaryObjectsFactory.getViewport(320, 240, backgroundCamera);
 
-            return new LevelManager(map, renderer, camera, world, entityManager, player, contactListener, buttonActions, inputProcessor, levelNumber, backgroundRenderer, backgroundViewport);
+            return new LevelManager(map, renderer, camera, world, IEntityManager, player, contactListener, buttonActions, inputProcessor, levelNumber, backgroundRenderer, backgroundViewport);
         }
 
 

@@ -104,4 +104,9 @@ public class ScreenOrchestrator extends Observable<Observer<DomainEventEnum>> im
     public void respondToEvent(ScreenEnum param) {
         this.changeScreen(param);
     }
+
+    @Override
+    public void addObserver(Observer<DomainEventEnum> observer) {
+        super.addObserver(observer);
+    }
 }

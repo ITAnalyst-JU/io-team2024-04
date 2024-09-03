@@ -16,7 +16,7 @@ public class SupremeOrchestrator extends Game implements Observer<DomainEventEnu
 
     public SupremeOrchestrator(IScreenOrchestrator screenOrchestrator, ILevelFactory levelFactory, AssetManagerFactory assetManagerFactory) {
         this.screenOrchestrator = screenOrchestrator;
-        ((ScreenOrchestrator) screenOrchestrator).addObserver(this);
+        screenOrchestrator.addObserver(this);
         this.levelFactory = levelFactory;
         this.assetManagerFactory = assetManagerFactory;
     }

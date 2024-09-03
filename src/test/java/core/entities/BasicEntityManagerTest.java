@@ -8,13 +8,13 @@ import org.mockito.Mockito;
 import java.util.List;
 
 public class BasicEntityManagerTest {
-    EntityManager manager;
+    IEntityManager manager;
     IEntity object1;
     IEntity object2;
 
     @BeforeEach
     public void setUp() {
-        manager = new BasicEntityManager();
+        manager = new EntityManager();
         object1 = Mockito.mock(IEntity.class);
         object2 = Mockito.mock(IEntity.class);
         manager.loadEntities(List.of(object1, object2));

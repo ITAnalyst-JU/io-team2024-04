@@ -1,12 +1,10 @@
 package core.levels;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.*;
@@ -21,7 +19,7 @@ public class LevelManager implements ILevelManager {
     private final OrthogonalTiledMapRenderer renderer;
     private final OrthographicCamera camera;
     private final World world;
-    private final EntityManager entityManager;
+    private final IEntityManager IEntityManager;
     private final Player player;
     private final LevelContactListener contactListener;
     private final Map<Integer, IEntity> buttonActions;
@@ -36,13 +34,13 @@ public class LevelManager implements ILevelManager {
 
 
     // Do we need to have so many things? Unfortunately it seems yes.
-    public LevelManager(TiledMap map, OrthogonalTiledMapRenderer renderer, OrthographicCamera camera, World world, EntityManager entityManager, Player player, LevelContactListener contactListener, Map<Integer, IEntity> buttonActions,
+    public LevelManager(TiledMap map, OrthogonalTiledMapRenderer renderer, OrthographicCamera camera, World world, IEntityManager IEntityManager, Player player, LevelContactListener contactListener, Map<Integer, IEntity> buttonActions,
                         UserInputController inputController, int levelNumber, OrthogonalTiledMapRenderer backgroundRenderer, Viewport backgroundViewport) {
         this.map = map;
         this.renderer = renderer;
         this.camera = camera;
         this.world = world;
-        this.entityManager = entityManager;
+        this.IEntityManager = IEntityManager;
         this.player = player;
         this.contactListener = contactListener;
         this.buttonActions = buttonActions;
@@ -74,7 +72,7 @@ public class LevelManager implements ILevelManager {
     public void step() {
         world.step(Gdx.graphics.getDeltaTime(), 6, 2);
 
-        entityManager.update();
+        IEntityManager.update();
 
 
         backgroundRenderer.setView((OrthographicCamera) backgroundViewport.getCamera());
@@ -87,7 +85,7 @@ public class LevelManager implements ILevelManager {
 
         Batch batch = renderer.getBatch();
         batch.begin();
-        entityManager.render(batch);
+        IEntityManager.render(batch);
         batch.end();
 
         handleCollisionEvents();
@@ -102,19 +100,19 @@ public class LevelManager implements ILevelManager {
                     gameEnded = true;
                     break;
                 case LevelContactListener.Event.Type.Checkpoint:
-                    entityManager.remove(event.object);
-                    entityManager.saveState();
+                    IEntityManager.remove(event.object);
+                    IEntityManager.saveState();
                     break;
                 case LevelContactListener.Event.Type.Platform:
                     if (event.object.getUserDamageable()) {
                         boolean destroyed = event.object.damage();
                         if (destroyed) {
-                            entityManager.remove(event.object);
+                            IEntityManager.remove(event.object);
                         }
                     }
                     break;
                 case LevelContactListener.Event.Type.Death:
-                    entityManager.recoverState();
+                    IEntityManager.recoverState();
                     break;
                 case LevelContactListener.Event.Type.GravityReverse:
                     player.reverseGravity();
@@ -124,9 +122,9 @@ public class LevelManager implements ILevelManager {
                     IEntity buttonAction = buttonActions.get(num);
                     boolean destroyed = buttonAction.buttonAction(buttonAction);
                     if (destroyed) {
-                        entityManager.remove(buttonAction);
+                        IEntityManager.remove(buttonAction);
                     }
-                    entityManager.remove(event.object);
+                    IEntityManager.remove(event.object);
                     break;
                 case LevelContactListener.Event.Type.CollisionJumpContactBegin:
                     player.jumpContactBegin();
