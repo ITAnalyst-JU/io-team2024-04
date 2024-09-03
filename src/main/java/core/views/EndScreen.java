@@ -8,12 +8,8 @@ import core.assets.AssetManagerFactory;
 import core.db.app.HighScoreInteractor;
 
 public class EndScreen extends UIScreen {
-    private final HighScoreInteractor highScoreInteractor;
-    private final Table highScoreTable;
-
-    public EndScreen(Stage stage, AssetManagerFactory assetManagerFactory, HighScoreInteractor highScoreInteractor) {
+    public EndScreen(Stage stage, AssetManagerFactory assetManagerFactory, HighScoreInteractor highScoreInteractor, int levelNumber) {
         super(stage, assetManagerFactory);
-        this.highScoreInteractor = highScoreInteractor;
 
         setBackgroundImage("ui/background/triangles.png");
 
@@ -28,15 +24,9 @@ public class EndScreen extends UIScreen {
         table.add(createButton("Back to Menu", () -> notifyOrchestrator(ScreenEnum.MENU))).expandX().padTop(20);
         table.row();
 
-        highScoreTable = new Table();
+        Table highScoreTable = new Table();
         highScoreTable.setBackground(skin.getDrawable("round-gray"));
         table.add(highScoreTable).expand().center().pad(10);
-    }
-
-    @Override
-    public void show() {
-        super.show();
-        // TODO pass parameters depending on which level
-        generateHighScoresTable(highScoreTable,highScoreInteractor,1, 5);
+        generateHighScoresTable(highScoreTable,highScoreInteractor, levelNumber, 5);
     }
 }

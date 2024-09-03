@@ -160,6 +160,5 @@ public abstract class UIScreen extends AbstractScreen {
     public void dispose() {
         stage.dispose();
         font.dispose();
-        skin.dispose();
     }
 }
