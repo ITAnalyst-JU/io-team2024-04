@@ -43,23 +43,23 @@ public class LevelSelectionScreen extends UIScreen {
         table.row();
 
         table.add(createButtonWithHover(
-                "Mario",
+                "Climbing the Mountain",
                 () -> {
                     nextLevel = LevelEnum.LEVEL_1;
                     notifyOrchestrator(ScreenEnum.GAME);
                 },
-                () -> handleHover(LevelEnum.LEVEL_1, "Mario"),
+                () -> handleHover(LevelEnum.LEVEL_1, "Climbing the Mountain"),
                 this::hideHoverInfo
         )).expandX().padBottom(10);
         table.row();
 
         table.add(createButtonWithHover(
-                "Mario 2",
+                "Speedrun",
                 () -> {
                     nextLevel = LevelEnum.LEVEL_2;
                     notifyOrchestrator(ScreenEnum.GAME);
                 },
-                () -> handleHover(LevelEnum.LEVEL_2, "Mario 2"),
+                () -> handleHover(LevelEnum.LEVEL_2, "Speedrun"),
                 this::hideHoverInfo
         )).expandX().padBottom(10);
         table.row();
