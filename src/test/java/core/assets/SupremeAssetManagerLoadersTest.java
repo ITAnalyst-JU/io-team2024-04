@@ -23,6 +23,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class SupremeAssetManagerLoadersTest {
+    // NOTE: 93% line coverage, because some paths are empty ;)
     @Test
     void testLoadLoadingScreen() {
         AssetManager assetManager = mock(AssetManager.class);

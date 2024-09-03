@@ -10,7 +10,7 @@ import static desktop.constants.ErrorCodes.*;
 public class FileHandler {
     public File createFile(String path) {
         File file = new File(path);
-        file.getParentFile().mkdirs();
+        if (file.getParentFile() != null) file.getParentFile().mkdirs();
         try {
             file.createNewFile();
         } catch (IOException e) {

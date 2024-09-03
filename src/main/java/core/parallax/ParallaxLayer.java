@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import org.w3c.dom.Text;
 
+// NOTE: UNTESTABLE
 public class ParallaxLayer {
     private final Pixmap pixmap;
     private Texture texture;
@@ -19,7 +20,6 @@ public class ParallaxLayer {
         this.wrapVertically = wrapVertically;
         this.pixmap = pixmap;
         this.texture = getResizedTexture(screenHook);
-
     }
 
     private Texture getResizedTexture(ScreenHook screenHook) {
@@ -50,6 +50,7 @@ public class ParallaxLayer {
 
     public void resize(ScreenHook screenHook) {
         texture.dispose();
+        texture = null;
         this.texture = getResizedTexture(screenHook);
     }
 }
