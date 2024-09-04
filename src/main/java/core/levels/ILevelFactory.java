@@ -1,9 +1,9 @@
 package core.levels;
 
-import core.assets.AssetManagerFactory;
+import core.assets.IAssetManagerFactory;
 
 public interface ILevelFactory {
-    ILevelManager createLevel(LevelEnum levelNumber, AssetManagerFactory assetManagerFactory);
+    ILevelManager createLevel(LevelEnum levelNumber, IAssetManagerFactory assetManagerFactory);
 
     ILevelManager getSavedLevel();
 

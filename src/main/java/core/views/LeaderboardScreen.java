@@ -3,7 +3,7 @@ package core.views;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import core.assets.AssetManagerFactory;
+import core.assets.IAssetManagerFactory;
 import core.db.app.HighScoreInteractor;
 
 public class LeaderboardScreen extends UIScreen {
@@ -11,7 +11,7 @@ public class LeaderboardScreen extends UIScreen {
     private final Table highScoreTable;
     private final Label levelLabel;
 
-    public LeaderboardScreen(Stage stage, AssetManagerFactory assetManagerFactory, HighScoreInteractor highScoreInteractor) {
+    public LeaderboardScreen(Stage stage, IAssetManagerFactory assetManagerFactory, HighScoreInteractor highScoreInteractor) {
         super(stage, assetManagerFactory);
         this.highScoreInteractor = highScoreInteractor;
 

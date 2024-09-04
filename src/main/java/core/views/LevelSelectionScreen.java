@@ -3,7 +3,7 @@ package core.views;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import core.assets.AssetManagerFactory;
+import core.assets.IAssetManagerFactory;
 import core.levels.LevelEnum;
 import core.db.app.HighScoreInteractor;
 import core.db.domain.HighScore;
@@ -21,7 +21,7 @@ public class LevelSelectionScreen extends UIScreen {
         return nextLevel;
     }
 
-    public LevelSelectionScreen(Stage stage, AssetManagerFactory assetManagerFactory, HighScoreInteractor highScoreInteractor, UserInteractor userInteractor) {
+    public LevelSelectionScreen(Stage stage, IAssetManagerFactory assetManagerFactory, HighScoreInteractor highScoreInteractor, UserInteractor userInteractor) {
         super(stage, assetManagerFactory);
         this.highScoreInteractor = highScoreInteractor;
         this.userInteractor = userInteractor;

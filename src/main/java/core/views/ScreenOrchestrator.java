@@ -1,7 +1,7 @@
 package core.views;
 
 import com.badlogic.gdx.Screen;
-import core.assets.AssetManagerFactory;
+import core.assets.IAssetManagerFactory;
 import core.general.Observable;
 import core.general.Observer;
 import core.levels.ILevelManager;
@@ -22,7 +22,7 @@ public class ScreenOrchestrator extends Observable<Observer<DomainEventEnum>> im
         this.nextScreenEnum = ScreenEnum.LOADING;
     }
 
-    public Screen getScreen(ScreenEnum screenEnum, AssetManagerFactory assetManagerFactory) {
+    public Screen getScreen(ScreenEnum screenEnum, IAssetManagerFactory assetManagerFactory) {
         if (!screens.containsKey(screenEnum)) {
             this.loadScreen(screenEnum, assetManagerFactory);
         }
@@ -34,22 +34,22 @@ public class ScreenOrchestrator extends Observable<Observer<DomainEventEnum>> im
     }
 
     @Override
-    public void respondToLoadedLevel(ILevelManager level, AssetManagerFactory assetManagerFactory) {
+    public void respondToLoadedLevel(ILevelManager level, IAssetManagerFactory assetManagerFactory) {
         this.loadMainScreen(level, assetManagerFactory);
     }
 
     @Override
-    public void respondToEndLevel(int level, AssetManagerFactory assetManagerFactory) {
+    public void respondToEndLevel(int level, IAssetManagerFactory assetManagerFactory) {
         this.loadEndScreen(level, assetManagerFactory);
     }
 
-    private void loadMainScreen(ILevelManager level, AssetManagerFactory assetManagerFactory) {
+    private void loadMainScreen(ILevelManager level, IAssetManagerFactory assetManagerFactory) {
         AbstractScreen screen = screenAbstractFactory.createMainScreen(level, assetManagerFactory);
         screens.put(ScreenEnum.GAME, screen);
         screen.addObserver(this);
     }
 
-    private void loadEndScreen(int levelNumber, AssetManagerFactory assetManagerFactory) {
+    private void loadEndScreen(int levelNumber, IAssetManagerFactory assetManagerFactory) {
         // TODO move screen removal logic to another place?
         if (screens.containsKey(ScreenEnum.ENDGAME)) {
             screens.get(ScreenEnum.ENDGAME).dispose();
@@ -60,7 +60,7 @@ public class ScreenOrchestrator extends Observable<Observer<DomainEventEnum>> im
         screen.addObserver(this);
     }
 
-    private void loadScreen(ScreenEnum screenEnum, AssetManagerFactory assetManagerFactory) {
+    private void loadScreen(ScreenEnum screenEnum, IAssetManagerFactory assetManagerFactory) {
         AbstractScreen screen;
         screen = screenAbstractFactory.createScreen(screenEnum, assetManagerFactory);
         screens.put(screenEnum, screen);
