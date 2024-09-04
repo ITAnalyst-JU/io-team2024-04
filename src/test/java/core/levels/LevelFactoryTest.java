@@ -1,6 +1,6 @@
 package core.levels;
 
-import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.MapLayer;
@@ -13,7 +13,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import core.assets.AssetManagerFactory;
+import core.assets.IAssetManagerFactory;
 import core.assets.IAssetManagerGetter;
 import core.entities.EntityFactory;
 import core.entities.IEntity;
@@ -26,11 +26,11 @@ import org.mockito.Mockito;
 class LevelFactoryTest {
 
     // There are issues with file loading.
-    // Tests have to emulate a loaded map, so it's not too deep, because it would take ages.
+    // Tests have to emulate a loaded map, so it's not too deep.
     // They more less test if it doesn't crash.
     // At the end there are tests which test remembering level, those are much better.
 
-    private AssetManagerFactory assetManagerFactory;
+    private IAssetManagerFactory assetManagerFactory;
     private IAssetManagerGetter assetManager;
     private TiledMap map;
     private Texture texture;
@@ -54,7 +54,7 @@ class LevelFactoryTest {
 
     @BeforeEach
     void setUp() {
-        assetManagerFactory = Mockito.mock(AssetManagerFactory.class);
+        assetManagerFactory = Mockito.mock(IAssetManagerFactory.class);
         assetManager = Mockito.mock(IAssetManagerGetter.class);
         map = Mockito.mock(TiledMap.class);
         texture = Mockito.mock(Texture.class);
@@ -97,7 +97,7 @@ class LevelFactoryTest {
         mapLayers.add(bodyEntitiesLayer);
         mapLayers.add(collisionLayer);
 
-        com.badlogic.gdx.Gdx.input = Mockito.mock(com.badlogic.gdx.Input.class);
+        Gdx.input = Mockito.mock(com.badlogic.gdx.Input.class);
         supplementaryObjectsFactory = Mockito.mock(ILevelSupplementaryObjectsFactory.class);
         entityFactory = Mockito.mock(EntityFactory.class);
         Mockito.when(supplementaryObjectsFactory.getEntityFactory(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(entityFactory);
@@ -184,7 +184,7 @@ class LevelFactoryTest {
         // We can only indirectly test if dispose() was called.
         // But, other tests confirm that LevelManager.dispose calls renderer.dispose().
         // Still not ideal, but in my opinion better than nothing.
-        Mockito.verify(renderer).dispose();
+        Mockito.verify(renderer, Mockito.times(2)).dispose();
     }
 
     @Test
