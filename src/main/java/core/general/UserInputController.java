@@ -8,15 +8,19 @@ public class UserInputController extends Observable<Observer<UserControlsEnum>> 
         UserControlsEnum action;
         switch (i) {
             case Input.Keys.A:
+            case Input.Keys.LEFT:
                 action = UserControlsEnum.A_down;
                 break;
             case Input.Keys.D:
+            case Input.Keys.RIGHT:
                 action = UserControlsEnum.D_down;
                 break;
             case Input.Keys.W:
+            case Input.Keys.UP:
                 action = UserControlsEnum.W_down;
                 break;
             case Input.Keys.S:
+            case Input.Keys.DOWN:
                 action = UserControlsEnum.S_down;
                 break;
             case Input.Keys.ESCAPE:
@@ -35,15 +39,19 @@ public class UserInputController extends Observable<Observer<UserControlsEnum>> 
         UserControlsEnum action;
         switch (i) {
             case Input.Keys.A:
+            case Input.Keys.LEFT:
                 action = UserControlsEnum.A_up;
                 break;
             case Input.Keys.D:
+            case Input.Keys.RIGHT:
                 action = UserControlsEnum.D_up;
                 break;
             case Input.Keys.W:
+            case Input.Keys.UP:
                 action = UserControlsEnum.W_up;
                 break;
             case Input.Keys.S:
+            case Input.Keys.DOWN:
                 action = UserControlsEnum.S_up;
                 break;
             default:
