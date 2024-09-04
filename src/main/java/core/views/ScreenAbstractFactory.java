@@ -6,7 +6,6 @@ import core.assets.IAssetManagerFactory;
 import core.levels.ILevelManager;
 
 public class ScreenAbstractFactory {
-    // TODO: maybe we can make this on request or throw it to supremeInteractorFactory ;)
     SupremeInteractorFactory supremeInteractorFactory;
     public ScreenAbstractFactory(SupremeInteractorFactory supremeInteractorFactory) {
         this.supremeInteractorFactory = supremeInteractorFactory;
