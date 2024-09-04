@@ -2,7 +2,7 @@ package core.views;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import core.assets.AssetManagerFactory;
+import core.assets.IAssetManagerFactory;
 import core.levels.ILevelManager;
 
 public class ScreenAbstractFactory {
@@ -12,7 +12,7 @@ public class ScreenAbstractFactory {
         this.supremeInteractorFactory = supremeInteractorFactory;
     }
 
-    public AbstractScreen createScreen(ScreenEnum screenEnum, AssetManagerFactory assetManagerFactory) {
+    public AbstractScreen createScreen(ScreenEnum screenEnum, IAssetManagerFactory assetManagerFactory) {
         return switch (screenEnum) {
             case MENU -> new MenuScreen(new Stage(new ScreenViewport()), assetManagerFactory, this.supremeInteractorFactory.getAudioInteractor(), this.supremeInteractorFactory.getWindowInteractor(), this.supremeInteractorFactory.getUserInteractor());
             case PREFERENCES -> new PreferencesScreen(new Stage(new ScreenViewport()), assetManagerFactory, this.supremeInteractorFactory.getAudioInteractor(), this.supremeInteractorFactory.getWindowInteractor());
@@ -26,11 +26,11 @@ public class ScreenAbstractFactory {
         };
     }
 
-    public MainScreen createMainScreen(ILevelManager level, AssetManagerFactory assetManagerFactory) {
+    public MainScreen createMainScreen(ILevelManager level, IAssetManagerFactory assetManagerFactory) {
         return new MainScreen(new Stage(new ScreenViewport()), assetManagerFactory, level, this.supremeInteractorFactory.getHighScoreInteractor(), this.supremeInteractorFactory.getUserInteractor());
     }
 
-    public EndScreen createEndScreen(int levelNumber, AssetManagerFactory assetManagerFactory) {
+    public EndScreen createEndScreen(int levelNumber, IAssetManagerFactory assetManagerFactory) {
         return new EndScreen(new Stage(new ScreenViewport()), assetManagerFactory, this.supremeInteractorFactory.getHighScoreInteractor(), levelNumber);
     }
 }

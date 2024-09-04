@@ -3,7 +3,7 @@ package core.assets;
 import com.badlogic.gdx.assets.AssetManager;
 
 
-public class AssetManagerFactory {
+public class AssetManagerFactory implements IAssetManagerFactory {
 
     private final AssetManager assetManager;
 
@@ -11,14 +11,17 @@ public class AssetManagerFactory {
         this.assetManager = assetManager;
     }
 
+    @Override
     public IAssetManager getAssetManager() {
         return new SupremeAssetManager(assetManager);
     }
 
+    @Override
     public IAssetManagerGetter getAssetManagerGetter() {
         return new SupremeAssetManager(assetManager);
     }
 
+    @Override
     public IAssetManagerLoader getAssetManagerLoader() {
         return new SupremeAssetManager(assetManager);
     }

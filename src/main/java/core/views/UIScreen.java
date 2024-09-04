@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import core.assets.AssetManagerFactory;
+import core.assets.IAssetManagerFactory;
 import core.db.app.HighScoreInteractor;
 import core.db.domain.HighScore;
 
@@ -21,7 +21,7 @@ public abstract class UIScreen extends AbstractScreen {
     protected BitmapFont font;
     protected Table table;
 
-    public UIScreen(Stage stage, AssetManagerFactory assetManagerFactory) {
+    public UIScreen(Stage stage, IAssetManagerFactory assetManagerFactory) {
         super(stage, assetManagerFactory);
         initializeUIComponents();
         Gdx.input.setInputProcessor(super.stage);

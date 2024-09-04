@@ -146,7 +146,7 @@ public class LevelManagerTest {
         levelManager.pause();
         var timePassed = levelManager.getTimePassed();
 
-        // Unfortunately, it will always be 0 in testing.
+        // Unfortunately, it should always be 0 in testing.
         Assertions.assertThat(timePassed).isEqualTo(0);
     }
 

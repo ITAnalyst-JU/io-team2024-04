@@ -3,10 +3,8 @@ package core.views;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Array;
-import core.assets.AssetManagerFactory;
+import core.assets.IAssetManagerFactory;
 import core.general.Observable;
 import core.general.Observer;
 
@@ -16,9 +14,9 @@ public class AbstractScreen extends Observable<Observer<ScreenEnum>> implements 
     // observer pattern used
     // dependency inversion principle applied ;)
     protected Stage stage;
-    protected AssetManagerFactory assetManagerFactory;
+    protected IAssetManagerFactory assetManagerFactory;
 
-    public AbstractScreen(Stage stage, AssetManagerFactory assetManagerFactory) {
+    public AbstractScreen(Stage stage, IAssetManagerFactory assetManagerFactory) {
         this.stage = stage;
         this.assetManagerFactory = assetManagerFactory;
     }
