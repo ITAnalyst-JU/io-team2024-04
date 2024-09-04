@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import core.assets.AssetManagerFactory;
 import core.db.app.HighScoreInteractor;
 
+// NOTE: UNTESTABLE
 public class LeaderboardScreen extends UIScreen {
     private final HighScoreInteractor highScoreInteractor;
     private final Table highScoreTable;
@@ -42,7 +43,7 @@ public class LeaderboardScreen extends UIScreen {
         generateHighScoresTable(highScoreTable, highScoreInteractor, 1, 5);
     }
 
-    public void updateHighScoresForLevel(int levelId) {
+    private void updateHighScoresForLevel(int levelId) {
         levelLabel.setText("Level: " + levelId);
         generateHighScoresTable(highScoreTable, highScoreInteractor, levelId, 5);
     }

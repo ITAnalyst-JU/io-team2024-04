@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import core.assets.AssetManagerFactory;
 
+// NOTE: UNTESTABLE
 public class TutorialScreen extends UIScreen {
 
     public TutorialScreen(Stage stage, AssetManagerFactory assetManagerFactory) {

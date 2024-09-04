@@ -88,7 +88,7 @@ public class LevelSelectionScreen extends UIScreen {
             userBestTimeLabel.setText("Level not completed");
         }
 
-        generateHighScoresTable(topScoresTable, highScoreInteractor, level.getLevelNumber(), 3);
+        generateHighScoresTable(topScoresTable, highScoreInteractor, level.getLevelNumber(), 1);
     }
 
     private void hideHoverInfo() {

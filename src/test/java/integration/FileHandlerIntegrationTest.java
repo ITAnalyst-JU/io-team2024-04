@@ -1,12 +1,19 @@
 package integration;
 
+import com.ginsberg.junit.exit.ExpectSystemExitWithStatus;
 import desktop.handlers.FileHandler;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -70,6 +77,4 @@ public class FileHandlerIntegrationTest {
         var content = fileHandler.readFromFile(file);
         assertThat(content).isEqualToIgnoringNewLines("Spice is life.");
     }
-
-
 }

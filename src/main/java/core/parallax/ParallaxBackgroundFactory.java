@@ -4,14 +4,15 @@ import com.badlogic.gdx.graphics.Pixmap;
 
 import java.util.Arrays;
 
+// UNTESTABLE
 public class ParallaxBackgroundFactory {
     public static ParallaxBackground createParallaxBackgroundScrolling(Pixmap[] pixmaps, ScreenHook screenHook) {
         return new ParallaxBackground(prepareParallaxLayers(pixmaps, screenHook), screenHook, true);
     }
 
-    public static ParallaxBackground createParallaxBackgroundInteractive(Pixmap[] pixmaps, ScreenHook screenHook) {
+    /*public static ParallaxBackground createParallaxBackgroundInteractive(Pixmap[] pixmaps, ScreenHook screenHook) {
         return new ParallaxBackground(prepareParallaxLayers(pixmaps, screenHook), screenHook, false);
-    }
+    }*/
 
     private static ParallaxLayer[] prepareParallaxLayers(Pixmap[] pixmaps, ScreenHook screenHook) {
         final float[] prevFactor = {0.f};

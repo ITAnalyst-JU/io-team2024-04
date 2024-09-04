@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import core.assets.AssetManagerFactory;
 import core.db.app.HighScoreInteractor;
 
+// NOTE: UNTESTABLE
 public class EndScreen extends UIScreen {
     public EndScreen(Stage stage, AssetManagerFactory assetManagerFactory, HighScoreInteractor highScoreInteractor, int levelNumber) {
         super(stage, assetManagerFactory);
