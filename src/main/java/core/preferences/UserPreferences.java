@@ -5,10 +5,6 @@ import com.badlogic.gdx.Preferences;
 
 import static core.general.Constants.Preferences.*;
 
-// TODO: think about having this in home directory, is it good idea?
-// TODO: integration test
-// NOTE: UNTESTABLE with UTs
-
 public class UserPreferences {
 
     private static final String PREFS_NAME = "gradle.demon.adventures.preferences";
@@ -107,7 +103,6 @@ public class UserPreferences {
     }
 
     public String getUserName() {
-        // TODO: maybe we can rand it
         return this.getPreferences().getString(PREFS_USER_NAME, DEFAULT_USER_NAME);
     }
 

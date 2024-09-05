@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import core.assets.IAssetManagerFactory;
-import core.db.app.HighScoreInteractor;
+import core.network.HighScoreNetworkInteractor;
 import core.db.domain.HighScore;
 
 import java.util.List;
@@ -108,26 +108,45 @@ public abstract class UIScreen extends AbstractScreen {
         return button;
     }
 
-    protected void generateHighScoresTable(Table highScoreTable, HighScoreInteractor highScoreInteractor, int levelId, int limit) {
+    private boolean isLoadingHighScores = false;
+
+    protected void generateHighScoresTable(Table highScoreTable, HighScoreNetworkInteractor highScoreInteractor, int levelId, int limit) {
+        if (isLoadingHighScores) return; // Prevent multiple loads
+
+        isLoadingHighScores = true;
         highScoreTable.clear();
 
         highScoreTable.add(createLabel("Nick")).pad(10);
         highScoreTable.add(createLabel("Time")).pad(10);
         highScoreTable.row();
 
-        List<HighScore> highScores = highScoreInteractor.getBestScoresForLevel(levelId, limit);
+        highScoreInteractor.getBestScores(levelId, limit, new HighScoreNetworkInteractor.Callback<>() {
+            @Override
+            public void onSuccess(List<HighScore> highScores) {
+                Gdx.app.postRunnable(() -> {
+                    highScoreTable.clear();
+                    if (highScores.isEmpty()) {
+                        highScoreTable.add(createLabel("No scores available yet")).expandX().padTop(10);
+                    } else {
+                        for (HighScore score : highScores) {
+                            highScoreTable.add(createLabel(score.getUsername())).pad(10);
+                            highScoreTable.add(createLabel(formatTime(score.getTime()))).pad(10);
+                            highScoreTable.row();
+                        }
+                    }
+                    isLoadingHighScores = false;
+                });
+            }
 
-        if (highScores.isEmpty()) {
-            highScoreTable.clear();
-            highScoreTable.add(createLabel("No scores available yet")).expandX().padTop(10);
-            return;
-        }
-
-        for (HighScore score : highScores) {
-            highScoreTable.add(createLabel(score.getUsername())).pad(10);
-            highScoreTable.add(createLabel(formatTime(score.getTime()))).pad(10);
-            highScoreTable.row();
-        }
+            @Override
+            public void onError(String errorMessage) {
+                Gdx.app.postRunnable(() -> {
+                    highScoreTable.clear();
+                    highScoreTable.add(createLabel("Error: " + errorMessage)).expandX().padTop(10);
+                    isLoadingHighScores = false;
+                });
+            }
+        });
     }
 
     protected String formatTime(long milliseconds) {

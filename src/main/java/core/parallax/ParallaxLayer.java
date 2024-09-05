@@ -4,11 +4,14 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import core.general.Observable;
+import core.general.Observer;
 import org.w3c.dom.Text;
 
 // NOTE: UNTESTABLE
 public class ParallaxLayer {
     private final Pixmap pixmap;
+
     private Texture texture;
     private final float factor;
     private final boolean wrapHorizontally;

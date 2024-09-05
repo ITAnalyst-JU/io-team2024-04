@@ -42,7 +42,6 @@ public class InternalPreferencesInteractor implements IInternalPreferencesIntera
         userPreferences.setSoundEffectsEnabled(enabled);
     }
 
-    @Override
     public void setFullscreen(boolean enabled) {
         userPreferences.setFullscreen(enabled);
         if (enabled) {
@@ -52,12 +51,10 @@ public class InternalPreferencesInteractor implements IInternalPreferencesIntera
         }
     }
 
-    @Override
     public boolean isFullscreen() {
         return userPreferences.isFullscreen();
     }
 
-    @Override
     public void setWindowSize(int width, int height) {
         userPreferences.setWindowSize(width, height);
         if (!userPreferences.isFullscreen()) {
@@ -65,44 +62,35 @@ public class InternalPreferencesInteractor implements IInternalPreferencesIntera
         }
     }
 
-    @Override
     public int getWindowWidth() {
         return userPreferences.getWindowWidth();
     }
 
-    @Override
     public int getWindowHeight() {
         return userPreferences.getWindowHeight();
     }
 
-    @Override
     public void setFps(int fps) {
         userPreferences.setFps(fps);
         Gdx.graphics.setForegroundFPS(fps);
     }
-
-    @Override
     public int getFps() {
         return userPreferences.getFps();
     }
 
-    @Override
     public void setVSync(boolean enabled) {
         userPreferences.setVSync(enabled);
         Gdx.graphics.setVSync(enabled);
     }
 
-    @Override
     public boolean isVSync() {
         return userPreferences.isVSync();
     }
 
-    @Override
     public void setUserName(String name) {
         userPreferences.setUserName(name);
     }
 
-    @Override
     public String getUserName() {
         return userPreferences.getUserName();
     }

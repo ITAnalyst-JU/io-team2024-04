@@ -13,7 +13,6 @@ public interface IScreenOrchestrator {
     LevelEnum getNextLevel();
     ScreenEnum getNextScreenEnum();
 
-    // TODO: consider making it with domain event
     void respondToLoadedLevel(ILevelManager level, IAssetManagerFactory assetManagerFactory);
     void respondToEndLevel(int levelNumber, IAssetManagerFactory assetManagerFactory);
     void dispose();

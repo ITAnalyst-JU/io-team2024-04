@@ -42,8 +42,8 @@ public final class Constants {
         public static final boolean DEFAULT_SOUND_ENABLED = true;
 
         public static final boolean DEFAULT_FULLSCREEN_ENABLED = false;
-        public static final int DEFAULT_WINDOW_WIDTH = 1280;
-        public static final int DEFAULT_WINDOW_HEIGHT = 720;
+        public static final int DEFAULT_WINDOW_WIDTH = 800;
+        public static final int DEFAULT_WINDOW_HEIGHT = 600;
         public static final int DEFAULT_FPS = 60;
 
         public static final boolean DEFAULT_VSYNC = true;
@@ -57,5 +57,7 @@ public final class Constants {
         };
 
         public static final Integer[] FPS_OPTIONS = {60, 120};
+
+        public static final String SERVER_URL = "http://localhost:8080";
     }
 }

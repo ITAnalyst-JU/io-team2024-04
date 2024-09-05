@@ -44,7 +44,12 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.assertj:assertj-core:3.+")
     testImplementation("org.mockito:mockito-core:5.+")
+    testImplementation("com.ginsberg:junit5-system-exit:1.1.1")
     implementation("org.xerial:sqlite-jdbc:3.41.2.2")
+    implementation("com.sparkjava:spark-core:2.9.3")
+    implementation("com.google.code.gson:gson:2.8.9")
+    implementation("org.slf4j:slf4j-api:2.0.16")
+    implementation("org.slf4j:slf4j-nop:2.0.16")
 }
 
 application {

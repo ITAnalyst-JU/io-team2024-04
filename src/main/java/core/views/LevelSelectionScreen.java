@@ -1,17 +1,18 @@
 package core.views;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import core.assets.IAssetManagerFactory;
 import core.levels.LevelEnum;
-import core.db.app.HighScoreInteractor;
+import core.network.HighScoreNetworkInteractor;
 import core.db.domain.HighScore;
 import core.user.UserInteractor;
 
 public class LevelSelectionScreen extends UIScreen {
     private LevelEnum nextLevel;
-    private final HighScoreInteractor highScoreInteractor;
+    private final HighScoreNetworkInteractor highScoreInteractor;
     private final UserInteractor userInteractor;
     private final Label userBestTimeLabel;
     private final Table topScoresTable;
@@ -21,7 +22,7 @@ public class LevelSelectionScreen extends UIScreen {
         return nextLevel;
     }
 
-    public LevelSelectionScreen(Stage stage, IAssetManagerFactory assetManagerFactory, HighScoreInteractor highScoreInteractor, UserInteractor userInteractor) {
+    public LevelSelectionScreen(Stage stage, IAssetManagerFactory assetManagerFactory, HighScoreNetworkInteractor highScoreInteractor, UserInteractor userInteractor) {
         super(stage, assetManagerFactory);
         this.highScoreInteractor = highScoreInteractor;
         this.userInteractor = userInteractor;
@@ -87,16 +88,30 @@ public class LevelSelectionScreen extends UIScreen {
     }
 
     private void handleHover(LevelEnum level, String label) {
-        HighScore userBestScore = highScoreInteractor.getBestScoreForUserAndLevel(level.getLevelNumber(), userInteractor.getUserName());
+        highScoreInteractor.getBestScoreForUser(level.getLevelNumber(), userInteractor.getUserName(), new HighScoreNetworkInteractor.Callback<HighScore>() {
+            @Override
+            public void onSuccess(HighScore userBestScore) {
+                Gdx.app.postRunnable(() -> {
+                    labelTable.setVisible(true);
+                    if (userBestScore != null) {
+                        userBestTimeLabel.setText("Your Best Time for " + label + ": " + formatTime(userBestScore.getTime()));
+                    } else {
+                        userBestTimeLabel.setText("Level not completed");
+                    }
+                    generateHighScoresTable(topScoresTable, highScoreInteractor, level.getLevelNumber(), 3);
+                });
+            }
 
-        labelTable.setVisible(true);
-        if (userBestScore != null) {
-            userBestTimeLabel.setText("Your Best Time for " + label + ": " + formatTime(userBestScore.getTime()));
-        } else {
-            userBestTimeLabel.setText("Level not completed");
-        }
+            @Override
+            public void onError(String errorMessage) {
+                Gdx.app.postRunnable(() -> {
+                    labelTable.setVisible(true);
+                    userBestTimeLabel.setText("Error: " + errorMessage);
+                    generateHighScoresTable(topScoresTable, highScoreInteractor, level.getLevelNumber(), 3);
 
-        generateHighScoresTable(topScoresTable, highScoreInteractor, level.getLevelNumber(), 3);
+                });
+            }
+        });
     }
 
     private void hideHoverInfo() {
