@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import core.assets.AssetManagerFactory;
+import core.assets.IAssetManagerFactory;
 import core.levels.LevelEnum;
 import core.network.HighScoreNetworkInteractor;
 import core.db.domain.HighScore;
@@ -22,7 +22,7 @@ public class LevelSelectionScreen extends UIScreen {
         return nextLevel;
     }
 
-    public LevelSelectionScreen(Stage stage, AssetManagerFactory assetManagerFactory, HighScoreNetworkInteractor highScoreInteractor, UserInteractor userInteractor) {
+    public LevelSelectionScreen(Stage stage, IAssetManagerFactory assetManagerFactory, HighScoreNetworkInteractor highScoreInteractor, UserInteractor userInteractor) {
         super(stage, assetManagerFactory);
         this.highScoreInteractor = highScoreInteractor;
         this.userInteractor = userInteractor;

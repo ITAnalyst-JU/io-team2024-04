@@ -1,14 +1,13 @@
 package core.views;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import core.assets.AssetManagerFactory;
+import core.assets.IAssetManagerFactory;
 
 public class PauseScreen extends UIScreen {
     private Table highScoreTable;
 
-    public PauseScreen(Stage stage, AssetManagerFactory assetManagerFactory) {
+    public PauseScreen(Stage stage, IAssetManagerFactory assetManagerFactory) {
         super(stage, assetManagerFactory);
         setBackgroundImage("ui/background/preview.png");
 

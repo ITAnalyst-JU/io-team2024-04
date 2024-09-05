@@ -3,15 +3,16 @@ package core.views;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import core.assets.AssetManagerFactory;
+import core.assets.IAssetManagerFactory;
 import core.network.HighScoreNetworkInteractor;
 
+// NOTE: UNTESTABLE
 public class LeaderboardScreen extends UIScreen {
     private final HighScoreNetworkInteractor highScoreInteractor;
     private final Table highScoreTable;
     private final Label levelLabel;
 
-    public LeaderboardScreen(Stage stage, AssetManagerFactory assetManagerFactory, HighScoreNetworkInteractor highScoreInteractor) {
+    public LeaderboardScreen(Stage stage, IAssetManagerFactory assetManagerFactory, HighScoreNetworkInteractor highScoreInteractor) {
         super(stage, assetManagerFactory);
         this.highScoreInteractor = highScoreInteractor;
 
@@ -42,7 +43,7 @@ public class LeaderboardScreen extends UIScreen {
         generateHighScoresTable(highScoreTable, highScoreInteractor, 1, 5);
     }
 
-    public void updateHighScoresForLevel(int levelId) {
+    private void updateHighScoresForLevel(int levelId) {
         levelLabel.setText("Level: " + levelId);
         generateHighScoresTable(highScoreTable, highScoreInteractor, levelId, 5);
     }

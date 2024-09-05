@@ -2,11 +2,12 @@ package core.views;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import core.assets.AssetManagerFactory;
+import core.assets.IAssetManagerFactory;
 
+// NOTE: UNTESTABLE
 public class Tutorial2Screen extends UIScreen {
 
-    public Tutorial2Screen(Stage stage, AssetManagerFactory assetManagerFactory) {
+    public Tutorial2Screen(Stage stage, IAssetManagerFactory assetManagerFactory) {
         super(stage, assetManagerFactory);
         setBackgroundImage("ui/background/tutorial2.png");
 

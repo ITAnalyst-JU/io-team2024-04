@@ -9,52 +9,88 @@ import org.mockito.Mockito;
 public class UserInputControllerTest {
 
     @Test
-    public void testWDown() {
+    void testWDown() {
         UserInputController controller = new UserInputController();
         var object = Mockito.mock(Observer.class);
         controller.addObserver((Observer<UserControlsEnum>)object);
         controller.keyDown(Input.Keys.W);
-        Mockito.verify(object, Mockito.times(1)).respondToEvent(UserControlsEnum.W_down);
+        Mockito.verify(object).respondToEvent(UserControlsEnum.W_down);
     }
 
     @Test
-    public void testADown() {
+    void testUpDown() {
+        UserInputController controller = new UserInputController();
+        var object = Mockito.mock(Observer.class);
+        controller.addObserver((Observer<UserControlsEnum>)object);
+        controller.keyDown(Input.Keys.UP);
+        Mockito.verify(object).respondToEvent(UserControlsEnum.W_down);
+    }
+
+    @Test
+    void testADown() {
         UserInputController controller = new UserInputController();
         var object = Mockito.mock(Observer.class);
         controller.addObserver((Observer<UserControlsEnum>)object);
         controller.keyDown(Input.Keys.A);
-        Mockito.verify(object, Mockito.times(1)).respondToEvent(UserControlsEnum.A_down);
+        Mockito.verify(object).respondToEvent(UserControlsEnum.A_down);
     }
 
     @Test
-    public void testSDown() {
+    void testLeftDown() {
+        UserInputController controller = new UserInputController();
+        var object = Mockito.mock(Observer.class);
+        controller.addObserver((Observer<UserControlsEnum>)object);
+        controller.keyDown(Input.Keys.LEFT);
+        Mockito.verify(object).respondToEvent(UserControlsEnum.A_down);
+    }
+
+    @Test
+    void testSDown() {
         UserInputController controller = new UserInputController();
         var object = Mockito.mock(Observer.class);
         controller.addObserver((Observer<UserControlsEnum>)object);
         controller.keyDown(Input.Keys.S);
-        Mockito.verify(object, Mockito.times(1)).respondToEvent(UserControlsEnum.S_down);
+        Mockito.verify(object).respondToEvent(UserControlsEnum.S_down);
     }
 
     @Test
-    public void testDDown() {
+    void testDownDown() {
+        UserInputController controller = new UserInputController();
+        var object = Mockito.mock(Observer.class);
+        controller.addObserver((Observer<UserControlsEnum>)object);
+        controller.keyDown(Input.Keys.DOWN);
+        Mockito.verify(object).respondToEvent(UserControlsEnum.S_down);
+    }
+
+    @Test
+    void testDDown() {
         UserInputController controller = new UserInputController();
         var object = Mockito.mock(Observer.class);
         controller.addObserver((Observer<UserControlsEnum>)object);
         controller.keyDown(Input.Keys.D);
-        Mockito.verify(object, Mockito.times(1)).respondToEvent(UserControlsEnum.D_down);
+        Mockito.verify(object).respondToEvent(UserControlsEnum.D_down);
     }
 
     @Test
-    public void testEscDown() {
+    void testRightDown() {
+        UserInputController controller = new UserInputController();
+        var object = Mockito.mock(Observer.class);
+        controller.addObserver((Observer<UserControlsEnum>)object);
+        controller.keyDown(Input.Keys.RIGHT);
+        Mockito.verify(object).respondToEvent(UserControlsEnum.D_down);
+    }
+
+    @Test
+    void testEscDown() {
         UserInputController controller = new UserInputController();
         var object = Mockito.mock(Observer.class);
         controller.addObserver((Observer<UserControlsEnum>)object);
         controller.keyDown(Input.Keys.ESCAPE);
-        Mockito.verify(object, Mockito.times(1)).respondToEvent(UserControlsEnum.Pause);
+        Mockito.verify(object).respondToEvent(UserControlsEnum.Pause);
     }
 
     @Test
-    public void testDefaultDown() {
+    void testDefaultDown() {
         UserInputController controller = new UserInputController();
         var object = Mockito.mock(Observer.class);
         controller.addObserver((Observer<UserControlsEnum>)object);
@@ -64,43 +100,79 @@ public class UserInputControllerTest {
     }
 
     @Test
-    public void testWUp() {
+    void testWUp() {
         UserInputController controller = new UserInputController();
         var object = Mockito.mock(Observer.class);
         controller.addObserver((Observer<UserControlsEnum>)object);
         controller.keyUp(Input.Keys.W);
-        Mockito.verify(object, Mockito.times(1)).respondToEvent(UserControlsEnum.W_up);
+        Mockito.verify(object).respondToEvent(UserControlsEnum.W_up);
     }
 
     @Test
-    public void testAUp() {
+    void testUpUp() {
+        UserInputController controller = new UserInputController();
+        var object = Mockito.mock(Observer.class);
+        controller.addObserver((Observer<UserControlsEnum>)object);
+        controller.keyUp(Input.Keys.UP);
+        Mockito.verify(object).respondToEvent(UserControlsEnum.W_up);
+    }
+
+    @Test
+    void testAUp() {
         UserInputController controller = new UserInputController();
         var object = Mockito.mock(Observer.class);
         controller.addObserver((Observer<UserControlsEnum>)object);
         controller.keyUp(Input.Keys.A);
-        Mockito.verify(object, Mockito.times(1)).respondToEvent(UserControlsEnum.A_up);
+        Mockito.verify(object).respondToEvent(UserControlsEnum.A_up);
     }
 
     @Test
-    public void testSUp() {
+    void testLeftUp() {
+        UserInputController controller = new UserInputController();
+        var object = Mockito.mock(Observer.class);
+        controller.addObserver((Observer<UserControlsEnum>)object);
+        controller.keyUp(Input.Keys.LEFT);
+        Mockito.verify(object).respondToEvent(UserControlsEnum.A_up);
+    }
+
+    @Test
+    void testSUp() {
         UserInputController controller = new UserInputController();
         var object = Mockito.mock(Observer.class);
         controller.addObserver((Observer<UserControlsEnum>)object);
         controller.keyUp(Input.Keys.S);
-        Mockito.verify(object, Mockito.times(1)).respondToEvent(UserControlsEnum.S_up);
+        Mockito.verify(object).respondToEvent(UserControlsEnum.S_up);
     }
 
     @Test
-    public void testDUp() {
+    void testDownUp() {
+        UserInputController controller = new UserInputController();
+        var object = Mockito.mock(Observer.class);
+        controller.addObserver((Observer<UserControlsEnum>)object);
+        controller.keyUp(Input.Keys.DOWN);
+        Mockito.verify(object).respondToEvent(UserControlsEnum.S_up);
+    }
+
+    @Test
+    void testDUp() {
         UserInputController controller = new UserInputController();
         var object = Mockito.mock(Observer.class);
         controller.addObserver((Observer<UserControlsEnum>)object);
         controller.keyUp(Input.Keys.D);
-        Mockito.verify(object, Mockito.times(1)).respondToEvent(UserControlsEnum.D_up);
+        Mockito.verify(object).respondToEvent(UserControlsEnum.D_up);
     }
 
     @Test
-    public void testDefaultUp() {
+    void testRightUp() {
+        UserInputController controller = new UserInputController();
+        var object = Mockito.mock(Observer.class);
+        controller.addObserver((Observer<UserControlsEnum>)object);
+        controller.keyUp(Input.Keys.RIGHT);
+        Mockito.verify(object).respondToEvent(UserControlsEnum.D_up);
+    }
+
+    @Test
+    void testDefaultUp() {
         UserInputController controller = new UserInputController();
         var object = Mockito.mock(Observer.class);
         controller.addObserver((Observer<UserControlsEnum>)object);

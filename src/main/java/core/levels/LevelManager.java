@@ -151,6 +151,7 @@ public class LevelManager implements ILevelManager {
     public void dispose() {
         world.dispose();
         renderer.dispose();
+        backgroundRenderer.dispose();
         map.dispose();
     }
 

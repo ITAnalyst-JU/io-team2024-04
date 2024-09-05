@@ -11,7 +11,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import core.assets.AssetManagerFactory;
+import core.assets.IAssetManagerFactory;
 import core.assets.IAssetManagerGetter;
 import core.entities.*;
 import core.entities.decorators.DecoratorFactory;
@@ -31,7 +31,7 @@ public class LevelFactory implements ILevelFactory {
     }
 
     @Override
-    public ILevelManager createLevel(LevelEnum levelNumber, AssetManagerFactory assetManagerFactory) {
+    public ILevelManager createLevel(LevelEnum levelNumber, IAssetManagerFactory assetManagerFactory) {
         savedManager = new TemporaryFactoryObject(assetManagerFactory, this.supplementaryObjectsFactory).createLevel(levelNumber.getLevelNumber(), assetManagerFactory);
         savedManager.create();
         return savedManager;
@@ -67,12 +67,12 @@ public class LevelFactory implements ILevelFactory {
         private Map<Integer, IEntity> buttonActions;
         private UserInputController inputProcessor;
 
-        TemporaryFactoryObject(AssetManagerFactory assetManagerFactory, ILevelSupplementaryObjectsFactory supplementaryObjectsFactory) {
+        TemporaryFactoryObject(IAssetManagerFactory assetManagerFactory, ILevelSupplementaryObjectsFactory supplementaryObjectsFactory) {
             assetManager = assetManagerFactory.getAssetManagerGetter();
             this.supplementaryObjectsFactory = supplementaryObjectsFactory;
         }
 
-        private LevelManager createLevel(int levelNumber, AssetManagerFactory assetManagerFactory) { // 1-indexed
+        private LevelManager createLevel(int levelNumber, IAssetManagerFactory assetManagerFactory) { // 1-indexed
             String name;
             try {
                 name = Constants.LevelNames.Prefix + Constants.LevelNames.List[levelNumber - 1];

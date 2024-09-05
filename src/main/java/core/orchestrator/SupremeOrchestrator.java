@@ -1,7 +1,7 @@
 package core.orchestrator;
 
 import com.badlogic.gdx.Game;
-import core.assets.AssetManagerFactory;
+import core.assets.IAssetManagerFactory;
 import core.general.Observer;
 import core.levels.ILevelFactory;
 import core.levels.ILevelManager;
@@ -12,9 +12,9 @@ public class SupremeOrchestrator extends Game implements Observer<DomainEventEnu
     private final IScreenOrchestrator screenOrchestrator;
     private final ILevelFactory levelFactory;
 
-    private final AssetManagerFactory assetManagerFactory;
+    private final IAssetManagerFactory assetManagerFactory;
 
-    public SupremeOrchestrator(IScreenOrchestrator screenOrchestrator, ILevelFactory levelFactory, AssetManagerFactory assetManagerFactory) {
+    public SupremeOrchestrator(IScreenOrchestrator screenOrchestrator, ILevelFactory levelFactory, IAssetManagerFactory assetManagerFactory) {
         this.screenOrchestrator = screenOrchestrator;
         screenOrchestrator.addObserver(this);
         this.levelFactory = levelFactory;
@@ -33,11 +33,11 @@ public class SupremeOrchestrator extends Game implements Observer<DomainEventEnu
         assetManagerFactory.getAssetManager().dispose();
     }
 
-    private void notifyScreenOrchestratorLevelLoaded(ILevelManager level, AssetManagerFactory assetManagerFactory) {
+    private void notifyScreenOrchestratorLevelLoaded(ILevelManager level, IAssetManagerFactory assetManagerFactory) {
         this.screenOrchestrator.respondToLoadedLevel(level, assetManagerFactory);
     }
 
-    private void notifyScreenOrchestratorLevelEnded(int levelNumber, AssetManagerFactory assetManagerFactory) {
+    private void notifyScreenOrchestratorLevelEnded(int levelNumber, IAssetManagerFactory assetManagerFactory) {
         this.screenOrchestrator.respondToEndLevel(levelNumber, assetManagerFactory);
     }
 

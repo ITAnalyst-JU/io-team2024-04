@@ -1,7 +1,8 @@
 package core.views;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
-import core.assets.AssetManagerFactory;
+import core.assets.IAssetManagerFactory;
 import core.general.Observable;
 import core.general.Observer;
 import core.levels.ILevelManager;
@@ -22,10 +23,8 @@ public class ScreenOrchestrator extends Observable<Observer<DomainEventEnum>> im
         this.nextScreenEnum = ScreenEnum.LOADING;
     }
 
-    public Screen getScreen(ScreenEnum screenEnum, AssetManagerFactory assetManagerFactory) {
-        if (!screens.containsKey(screenEnum)) {
-            this.loadScreen(screenEnum, assetManagerFactory);
-        }
+    public Screen getScreen(ScreenEnum screenEnum, IAssetManagerFactory assetManagerFactory) {
+        if (screenEnum != ScreenEnum.GAME && screenEnum != ScreenEnum.ENDGAME) this.loadScreen(screenEnum, assetManagerFactory);
         return screens.get(screenEnum);
     }
 
@@ -34,35 +33,39 @@ public class ScreenOrchestrator extends Observable<Observer<DomainEventEnum>> im
     }
 
     @Override
-    public void respondToLoadedLevel(ILevelManager level, AssetManagerFactory assetManagerFactory) {
+    public void respondToLoadedLevel(ILevelManager level, IAssetManagerFactory assetManagerFactory) {
         this.loadMainScreen(level, assetManagerFactory);
     }
 
     @Override
-    public void respondToEndLevel(int level, AssetManagerFactory assetManagerFactory) {
+    public void respondToEndLevel(int level, IAssetManagerFactory assetManagerFactory) {
         this.loadEndScreen(level, assetManagerFactory);
     }
 
-    private void loadMainScreen(ILevelManager level, AssetManagerFactory assetManagerFactory) {
+    private void loadMainScreen(ILevelManager level, IAssetManagerFactory assetManagerFactory) {
+        reloadScreen(ScreenEnum.GAME);
         AbstractScreen screen = screenAbstractFactory.createMainScreen(level, assetManagerFactory);
         screens.put(ScreenEnum.GAME, screen);
         screen.addObserver(this);
     }
 
-    private void loadEndScreen(int levelNumber, AssetManagerFactory assetManagerFactory) {
-        // TODO move screen removal logic to another place?
-        if (screens.containsKey(ScreenEnum.ENDGAME)) {
-            screens.get(ScreenEnum.ENDGAME).dispose();
-            screens.remove(ScreenEnum.ENDGAME);
+    private void reloadScreen(ScreenEnum screenEnum) {
+        if (screens.containsKey(screenEnum)) {
+            screens.get(screenEnum).dispose();
+            screens.remove(screenEnum);
         }
+    }
+
+    private void loadEndScreen(int levelNumber, IAssetManagerFactory assetManagerFactory) {
+        reloadScreen(ScreenEnum.ENDGAME);
         AbstractScreen screen = screenAbstractFactory.createEndScreen(levelNumber, assetManagerFactory);
         screens.put(ScreenEnum.ENDGAME, screen);
         screen.addObserver(this);
     }
 
-    private void loadScreen(ScreenEnum screenEnum, AssetManagerFactory assetManagerFactory) {
-        AbstractScreen screen;
-        screen = screenAbstractFactory.createScreen(screenEnum, assetManagerFactory);
+    private void loadScreen(ScreenEnum screenEnum, IAssetManagerFactory assetManagerFactory) {
+        reloadScreen(screenEnum);
+        AbstractScreen screen = screenAbstractFactory.createScreen(screenEnum, assetManagerFactory);
         screens.put(screenEnum, screen);
         screen.addObserver(this);
     }
@@ -76,7 +79,6 @@ public class ScreenOrchestrator extends Observable<Observer<DomainEventEnum>> im
         notifyObservers(observer -> observer.respondToEvent(domainEventEnum));
     }
 
-    // TODO: think about screens as temporary objects, delete them and set null
     private void changeScreen(ScreenEnum screenEnum) {
         this.nextScreenEnum = screenEnum;
         if (Objects.requireNonNull(screenEnum) == ScreenEnum.GAME) {
@@ -97,16 +99,12 @@ public class ScreenOrchestrator extends Observable<Observer<DomainEventEnum>> im
     @Override
     public void dispose() {
         stopObservingScreens();
+        screens.values().forEach(AbstractScreen::dispose);
         screens.clear();
     }
 
     @Override
     public void respondToEvent(ScreenEnum param) {
         this.changeScreen(param);
-    }
-
-    @Override
-    public void addObserver(Observer<DomainEventEnum> observer) {
-        super.addObserver(observer);
     }
 }

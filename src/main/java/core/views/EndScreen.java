@@ -3,11 +3,12 @@ package core.views;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
-import core.assets.AssetManagerFactory;
+import core.assets.IAssetManagerFactory;
 import core.network.HighScoreNetworkInteractor;
 
+// NOTE: UNTESTABLE
 public class EndScreen extends UIScreen {
-    public EndScreen(Stage stage, AssetManagerFactory assetManagerFactory, HighScoreNetworkInteractor highScoreInteractor, int levelNumber) {
+    public EndScreen(Stage stage, IAssetManagerFactory assetManagerFactory, HighScoreNetworkInteractor highScoreInteractor, int levelNumber) {
         super(stage, assetManagerFactory);
 
         setBackgroundImage("ui/background/gradle.jpg");

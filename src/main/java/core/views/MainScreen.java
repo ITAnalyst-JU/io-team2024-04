@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import com.badlogic.gdx.utils.Timer;
-import core.assets.AssetManagerFactory;
+import core.assets.IAssetManagerFactory;
 import core.general.UserControlsEnum;
 import core.general.Observer;
 import core.levels.ILevelManager;
@@ -21,7 +21,7 @@ public class MainScreen extends AbstractScreen implements Observer<UserControlsE
     private final UserInteractor userInteractor;
     private boolean pause = false;
 
-    public MainScreen(Stage stage, AssetManagerFactory assetManagerFactory, ILevelManager level, HighScoreNetworkInteractor highscoreInteractor, UserInteractor userInteractor) {
+public MainScreen(Stage stage, IAssetManagerFactory assetManagerFactory, ILevelManager level, HighScoreNetworkInteractor highscoreInteractor, UserInteractor userInteractor) {
         super(stage, assetManagerFactory);
         this.level = level;
         this.highScoreInteractor = highscoreInteractor;

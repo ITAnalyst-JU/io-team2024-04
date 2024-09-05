@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 
-import core.assets.AssetManagerFactory;
+import core.assets.IAssetManagerFactory;
 import core.assets.IAssetManagerGetter;
 import core.audio.AudioInteractor;
 import core.parallax.ParallaxBackground;
@@ -16,7 +16,7 @@ import core.window.WindowInteractor;
 
 public class MenuScreen extends UIScreen {
     private final ParallaxBackground parallaxBackground;
-    public MenuScreen(Stage stage, AssetManagerFactory assetManagerFactory, AudioInteractor audioInteractor, WindowInteractor windowInteractor, UserInteractor userInteractor) {
+    public MenuScreen(Stage stage, IAssetManagerFactory assetManagerFactory, AudioInteractor audioInteractor, WindowInteractor windowInteractor, UserInteractor userInteractor) {
         super(stage, assetManagerFactory);
 
         IAssetManagerGetter assetManagerGetter = assetManagerFactory.getAssetManagerGetter();
