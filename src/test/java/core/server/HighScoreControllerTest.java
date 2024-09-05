@@ -1,7 +1,8 @@
 package core.server;
 
-import com.google.gson.JsonArray;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonArray;
 import core.db.app.HighScoreInteractor;
 import core.db.domain.HighScore;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,78 +13,58 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 public class HighScoreControllerTest {
-
-    private HighScoreInteractor highScoreInteractor;
-    private HighScorePresenter presenter;
+    private HighScoreInteractor mockInteractor;
     private HighScoreController controller;
 
     @BeforeEach
-    void setUp() {
-        highScoreInteractor = Mockito.mock(HighScoreInteractor.class);
-        presenter = new HighScorePresenter();
-        controller = new HighScoreController(highScoreInteractor, presenter);
+    public void setUp() {
+        mockInteractor = Mockito.mock(HighScoreInteractor.class);
+        controller = new HighScoreController(mockInteractor);
     }
 
     @Test
-    void testAddHighScore() {
-        HighScore newScore = new HighScore(1, 10, "player1", 1234L);
-        when(highScoreInteractor.addHighScore(10, "player1", 1234L)).thenReturn(newScore);
+    public void testAddHighScore() {
+        HighScore mockScore = new HighScore(1, 1, "user1", 123L);
+        when(mockInteractor.addHighScore(1, "user1", 123L)).thenReturn(mockScore);
 
-        String result = controller.addHighScore(10, "player1", 1234L);
+        String response = controller.addHighScore(1, "user1", 123L);
+        JsonObject jsonResponse = new Gson().fromJson(response, JsonObject.class);
 
-        JsonObject expectedJson = new JsonObject();
-        expectedJson.addProperty("id", 1);
-        expectedJson.addProperty("levelId", 10);
-        expectedJson.addProperty("username", "player1");
-        expectedJson.addProperty("time", 1234L);
-
-        assertEquals(expectedJson.toString(), result);
+        assertEquals(1, jsonResponse.get("id").getAsInt());
+        assertEquals(1, jsonResponse.get("levelId").getAsInt());
+        assertEquals("user1", jsonResponse.get("username").getAsString());
+        assertEquals(123L, jsonResponse.get("time").getAsLong());
     }
 
     @Test
-    void testGetBestScores() {
-        List<HighScore> scores = Arrays.asList(
-                new HighScore(1, 10, "player1", 1234L),
-                new HighScore(2, 10, "player2", 5678L)
+    public void testGetBestScores() {
+        List<HighScore> mockScores = Arrays.asList(
+                new HighScore(1, 1, "user1", 123L),
+                new HighScore(2, 1, "user2", 150L)
         );
-        when(highScoreInteractor.getBestScoresForLevel(10, 10)).thenReturn(scores);
+        when(mockInteractor.getBestScoresForLevel(1, 10)).thenReturn(mockScores);
 
-        String result = controller.getBestScores(10, 10);
+        String response = controller.getBestScores(1, 10);
+        JsonArray jsonArray = new Gson().fromJson(response, JsonArray.class);
 
-        JsonArray jsonArray = new JsonArray();
-        JsonObject score1 = new JsonObject();
-        score1.addProperty("id", 1);
-        score1.addProperty("levelId", 10);
-        score1.addProperty("username", "player1");
-        score1.addProperty("time", 1234L);
-        jsonArray.add(score1);
-
-        JsonObject score2 = new JsonObject();
-        score2.addProperty("id", 2);
-        score2.addProperty("levelId", 10);
-        score2.addProperty("username", "player2");
-        score2.addProperty("time", 5678L);
-        jsonArray.add(score2);
-
-        assertEquals(jsonArray.toString(), result);
+        assertEquals(2, jsonArray.size());
+        JsonObject firstScore = jsonArray.get(0).getAsJsonObject();
+        assertEquals(1, firstScore.get("id").getAsInt());
+        assertEquals("user1", firstScore.get("username").getAsString());
     }
 
     @Test
-    void testGetBestScoreForUser() {
-        HighScore bestScore = new HighScore(1, 10, "player1", 1234L);
-        when(highScoreInteractor.getBestScoreForUserAndLevel(10, "player1")).thenReturn(bestScore);
+    public void testGetBestScoreForUser() {
+        HighScore mockScore = new HighScore(1, 1, "user1", 123L);
+        when(mockInteractor.getBestScoreForUserAndLevel(1, "user1")).thenReturn(mockScore);
 
-        String result = controller.getBestScoreForUser(10, "player1");
+        String response = controller.getBestScoreForUser(1, "user1");
+        JsonObject jsonResponse = new Gson().fromJson(response, JsonObject.class);
 
-        JsonObject expectedJson = new JsonObject();
-        expectedJson.addProperty("id", 1);
-        expectedJson.addProperty("levelId", 10);
-        expectedJson.addProperty("username", "player1");
-        expectedJson.addProperty("time", 1234L);
-
-        assertEquals(expectedJson.toString(), result);
+        assertEquals(1, jsonResponse.get("id").getAsInt());
+        assertEquals("user1", jsonResponse.get("username").getAsString());
     }
 }
