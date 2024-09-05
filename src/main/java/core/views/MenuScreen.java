@@ -50,8 +50,6 @@ public class MenuScreen extends UIScreen {
         table.row();
         table.add(createButton("Tutorial", () -> notifyOrchestrator(ScreenEnum.TUTORIAL))).expandX().padBottom(10);
         table.row();
-        table.add(createButton("Custom action", () -> System.out.println("Gdzie jest Nero"))).expandX().padBottom(10);
-        table.row();
         table.add(createButton("Exit", Gdx.app::exit)).expandX().padBottom(10);
         table.row();
 

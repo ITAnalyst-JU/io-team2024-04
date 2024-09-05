@@ -39,16 +39,24 @@ public class LevelSelectionScreen extends UIScreen {
         table.add(greyBackground).expandX().padTop(20).padBottom(10);
         table.row();
 
-        table.add(createButton("P = NP", () -> System.out.println("Not for you"))).expandX().padBottom(10);
-        table.row();
-
         table.add(createButtonWithHover(
-                "Climbing the Mountain",
+                "First adventure",
                 () -> {
                     nextLevel = LevelEnum.LEVEL_1;
                     notifyOrchestrator(ScreenEnum.GAME);
                 },
                 () -> handleHover(LevelEnum.LEVEL_1, "Climbing the Mountain"),
+                this::hideHoverInfo
+        )).expandX().padBottom(10);
+        table.row();
+
+        table.add(createButtonWithHover(
+                "Climbing the mountain",
+                () -> {
+                    nextLevel = LevelEnum.LEVEL_3;
+                    notifyOrchestrator(ScreenEnum.GAME);
+                },
+                () -> handleHover(LevelEnum.LEVEL_3, "Speedrun"),
                 this::hideHoverInfo
         )).expandX().padBottom(10);
         table.row();
