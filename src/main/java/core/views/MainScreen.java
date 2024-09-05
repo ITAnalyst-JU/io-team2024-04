@@ -4,11 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
+import com.badlogic.gdx.utils.Timer;
 import core.assets.IAssetManagerFactory;
 import core.general.UserControlsEnum;
 import core.general.Observer;
 import core.levels.ILevelManager;
-import core.db.app.HighScoreInteractor;
+import core.network.HighScoreNetworkInteractor;
 import core.user.UserInteractor;
 
 import java.util.Objects;
@@ -16,11 +17,11 @@ import java.util.Objects;
 public class MainScreen extends AbstractScreen implements Observer<UserControlsEnum> {
 
     private final ILevelManager level;
-    private final HighScoreInteractor highScoreInteractor;
+    private final HighScoreNetworkInteractor highScoreInteractor;
     private final UserInteractor userInteractor;
     private boolean pause = false;
 
-    public MainScreen(Stage stage, IAssetManagerFactory assetManagerFactory, ILevelManager level, HighScoreInteractor highscoreInteractor, UserInteractor userInteractor) {
+public MainScreen(Stage stage, IAssetManagerFactory assetManagerFactory, ILevelManager level, HighScoreNetworkInteractor highscoreInteractor, UserInteractor userInteractor) {
         super(stage, assetManagerFactory);
         this.level = level;
         this.highScoreInteractor = highscoreInteractor;
@@ -41,10 +42,29 @@ public class MainScreen extends AbstractScreen implements Observer<UserControlsE
         level.step();
 
         if (level.isGameEnded()) {
-            // TODO add dependent levelid and nickname
-            highScoreInteractor.addHighScore(level.getLevelNumber(), userInteractor.getUserName(), (int) level.getTimePassed());
-            this.notifyOrchestrator(ScreenEnum.ENDGAME);
+            highScoreInteractor.addHighScore(level.getLevelNumber(), userInteractor.getUserName(), (int) level.getTimePassed(), new HighScoreNetworkInteractor.Callback<>() {
+                @Override
+                public void onSuccess(Void result) {
+                    Gdx.app.postRunnable(() -> {
+                        // Delayed transition to the next screen
+                        Timer.schedule(new Timer.Task() {
+                            @Override
+                            public void run() {
+                                notifyOrchestrator(ScreenEnum.ENDGAME);
+                            }
+                        }, 0.5f);
+                    });
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+                    Gdx.app.log("HighScore", "Error adding high score: " + errorMessage);
+                }
+            });
+
+            notifyOrchestrator(ScreenEnum.ENDGAME);
         }
+
 
         if (pause) {
             this.notifyOrchestrator(ScreenEnum.PAUSE);

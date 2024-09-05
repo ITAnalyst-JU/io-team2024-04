@@ -2,13 +2,14 @@ package core.views;
 
 import core.audio.AudioInteractor;
 import core.audio.AudioManagerFactory;
-import core.db.app.HighScoreInteractor;
-import core.db.app.HighScoreInteractorWithGateway;
-import core.db.database.DbHighScoreGateway;
-import core.db.sqldb.SqlDbFactory;
+import core.network.HighScoreClient;
+import core.network.HighScoreNetworkInteractor;
+import core.network.HttpClient;
 import core.preferences.InternalPreferencesInteractorFactory;
 import core.user.UserInteractor;
 import core.window.WindowInteractor;
+
+import static core.general.Constants.Preferences.SERVER_URL;
 
 public class SupremeInteractorFactory {
     InternalPreferencesInteractorFactory internalPreferencesInteractorFactory;
@@ -16,8 +17,8 @@ public class SupremeInteractorFactory {
         this.internalPreferencesInteractorFactory = internalPreferencesInteractorFactory;
     }
 
-    public HighScoreInteractor getHighScoreInteractor() {
-        return new HighScoreInteractorWithGateway(new DbHighScoreGateway(SqlDbFactory.highScoreTable()));
+    public HighScoreNetworkInteractor getHighScoreInteractor() {
+        return new HighScoreNetworkInteractor(new HighScoreClient(new HttpClient(SERVER_URL)));
     }
 
     public AudioInteractor getAudioInteractor() {
