@@ -12,6 +12,9 @@ import core.user.UserInteractor;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+
 @SuppressWarnings("unchecked")
 public class MainScreenTest {
 
@@ -67,8 +70,7 @@ public class MainScreenTest {
         mainScreen.render(0.0f);
         Mockito.verify(level).isGameEnded();
         Mockito.verify(level).getTimePassed();
-        Mockito.verify(highScoreInteractor).addHighScore(Mockito.anyInt(), Mockito.eq("Player1"), Mockito.eq(17L));
-        Mockito.verify(highScoreInteractor).addHighScore(Mockito.eq(3), Mockito.anyString(), Mockito.eq(17L));
+        Mockito.verify(highScoreInteractor).addHighScore(eq(3), eq("Player1"), eq(17L), any(HighScoreNetworkInteractor.Callback.class));
     }
 
     @Test
