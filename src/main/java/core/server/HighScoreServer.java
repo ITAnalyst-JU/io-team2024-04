@@ -14,7 +14,8 @@ public class HighScoreServer {
     public static void main(String[] args) {
         HighScoreGateway highScoreGateway = new DbHighScoreGateway(SqlDbFactory.highScoreTable());
         HighScoreInteractor highScoreInteractor = new HighScoreInteractorWithGateway(highScoreGateway);
-        HighScoreController controller = new HighScoreController(highScoreInteractor);
+        HighScorePresenter presenter = new HighScorePresenter();
+        HighScoreController controller = new HighScoreController(highScoreInteractor, presenter);
 
         port(8080);
 
