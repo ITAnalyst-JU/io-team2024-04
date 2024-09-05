@@ -11,12 +11,22 @@ public class HighScoreNetworkInteractor {
         this.highScoreClient = highScoreClient;
     }
 
-    public void addHighScore(int levelId, String username, long time) {
-        highScoreClient.addHighScore(levelId, username, time);
+    public void addHighScore(int levelId, String username, long time, Callback<Void> callback) {
+        highScoreClient.addHighScore(levelId, username, time, new HighScoreClient.Callback<>() {
+            @Override
+            public void onSuccess(Void result) {
+                callback.onSuccess(result);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onError(errorMessage);
+            }
+        });
     }
 
     public void getBestScores(int levelId, int limit, Callback<List<HighScore>> callback) {
-        highScoreClient.getTopScores(levelId, limit, new HighScoreClient.Callback<List<HighScore>>() {
+        highScoreClient.getTopScores(levelId, limit, new HighScoreClient.Callback<>() {
             @Override
             public void onSuccess(List<HighScore> highScores) {
                 callback.onSuccess(highScores);
@@ -30,7 +40,7 @@ public class HighScoreNetworkInteractor {
     }
 
     public void getBestScoreForUser(int levelId, String username, Callback<HighScore> callback) {
-        highScoreClient.getBestScoreForUser(levelId, username, new HighScoreClient.Callback<HighScore>() {
+        highScoreClient.getBestScoreForUser(levelId, username, new HighScoreClient.Callback<>() {
             @Override
             public void onSuccess(HighScore highScore) {
                 callback.onSuccess(highScore);

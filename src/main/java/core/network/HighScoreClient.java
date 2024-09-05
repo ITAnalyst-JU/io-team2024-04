@@ -18,7 +18,7 @@ public class HighScoreClient {
         this.httpClient = httpClient;
     }
 
-    public void addHighScore(int levelId, String username, long time) {
+    public void addHighScore(int levelId, String username, long time, Callback<Void> callback) {
         HttpRequest request = httpClient.createPostRequest("/highscores",
                 "{ \"levelId\": " + levelId + ", \"username\": \"" + username + "\", \"time\": " + time + " }");
         httpClient.sendRequest(request, new HttpResponseListener() {
@@ -26,20 +26,20 @@ public class HighScoreClient {
             public void handleHttpResponse(Net.HttpResponse httpResponse) {
                 int statusCode = httpResponse.getStatus().getStatusCode();
                 if (statusCode == 200) {
-                    System.out.println("Success! Response: " + httpResponse.getResultAsString());
+                    callback.onSuccess(null);
                 } else {
-                    System.err.println("Error: " + statusCode);
+                    callback.onError("Error: " + statusCode);
                 }
             }
 
             @Override
             public void failed(Throwable t) {
-                System.err.println("Request failed: " + t.getMessage());
+                callback.onError("Request failed: " + t.getMessage());
             }
 
             @Override
             public void cancelled() {
-                System.out.println("Request cancelled.");
+                callback.onError("Request cancelled.");
             }
         });
     }
@@ -52,6 +52,10 @@ public class HighScoreClient {
                 int statusCode = httpResponse.getStatus().getStatusCode();
                 if (statusCode == 200) {
                     String responseJson = httpResponse.getResultAsString();
+                    if (responseJson == null || responseJson.equals("{}")) {
+                        callback.onSuccess(null);
+                        return;
+                    }
                     Type listType = new TypeToken<List<HighScore>>() {}.getType();
                     List<HighScore> highScores = gson.fromJson(responseJson, listType);
                     callback.onSuccess(highScores);
@@ -80,6 +84,10 @@ public class HighScoreClient {
                 int statusCode = httpResponse.getStatus().getStatusCode();
                 if (statusCode == 200) {
                     String responseJson = httpResponse.getResultAsString();
+                    if (responseJson == null || responseJson.equals("{}")) {
+                        callback.onSuccess(null);
+                        return;
+                    }
                     HighScore highScore = gson.fromJson(responseJson, HighScore.class);
                     callback.onSuccess(highScore);
                 } else {

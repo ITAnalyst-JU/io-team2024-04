@@ -108,19 +108,24 @@ public abstract class UIScreen extends AbstractScreen {
         return button;
     }
 
+    private boolean isLoadingHighScores = false;
+
     protected void generateHighScoresTable(Table highScoreTable, HighScoreNetworkInteractor highScoreInteractor, int levelId, int limit) {
+        if (isLoadingHighScores) return; // Prevent multiple loads
+
+        isLoadingHighScores = true;
         highScoreTable.clear();
 
         highScoreTable.add(createLabel("Nick")).pad(10);
         highScoreTable.add(createLabel("Time")).pad(10);
         highScoreTable.row();
 
-        highScoreInteractor.getBestScores(levelId, limit, new HighScoreNetworkInteractor.Callback<List<HighScore>>() {
+        highScoreInteractor.getBestScores(levelId, limit, new HighScoreNetworkInteractor.Callback<>() {
             @Override
             public void onSuccess(List<HighScore> highScores) {
                 Gdx.app.postRunnable(() -> {
+                    highScoreTable.clear();
                     if (highScores.isEmpty()) {
-                        highScoreTable.clear();
                         highScoreTable.add(createLabel("No scores available yet")).expandX().padTop(10);
                     } else {
                         for (HighScore score : highScores) {
@@ -129,6 +134,7 @@ public abstract class UIScreen extends AbstractScreen {
                             highScoreTable.row();
                         }
                     }
+                    isLoadingHighScores = false;
                 });
             }
 
@@ -137,6 +143,7 @@ public abstract class UIScreen extends AbstractScreen {
                 Gdx.app.postRunnable(() -> {
                     highScoreTable.clear();
                     highScoreTable.add(createLabel("Error: " + errorMessage)).expandX().padTop(10);
+                    isLoadingHighScores = false;
                 });
             }
         });

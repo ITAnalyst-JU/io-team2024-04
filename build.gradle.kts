@@ -47,6 +47,8 @@ dependencies {
     implementation("org.xerial:sqlite-jdbc:3.41.2.2")
     implementation("com.sparkjava:spark-core:2.9.3")
     implementation("com.google.code.gson:gson:2.8.9")
+    implementation("org.slf4j:slf4j-api:2.0.16")
+    implementation("org.slf4j:slf4j-nop:2.0.16")
 }
 
 application {
