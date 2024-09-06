@@ -1,4 +1,4 @@
-To use, clone the repo and run with "./gradlew run".
+To use, clone the repo and run with `./gradlew run`.
 The scores are on a remote server.
 
 There is an in-game tutorial.
