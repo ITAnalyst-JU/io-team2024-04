@@ -50,8 +50,8 @@ public final class Constants {
 
         public static final String DEFAULT_USER_NAME = "Anon";
         public static final WindowMode[] WINDOW_MODES = {
-                new WindowMode(800, 600),
                 new WindowMode(1280, 720),
+                new WindowMode(1600, 1200),
                 new WindowMode(1920, 1080),
                 new WindowMode(2560, 1440),
         };
