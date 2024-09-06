@@ -37,7 +37,7 @@ public class MenuScreen extends UIScreen {
 
         Table greyBackground = new Table();
         greyBackground.setBackground(skin.getDrawable("round-gray"));
-        Label welcomeLabel = createLabel("Wake the fuck up, " + userInteractor.getUserName() + "! Your build.gradle needs fixing!");
+        Label welcomeLabel = createLabel("Wake up, " + userInteractor.getUserName() + "! Your build.gradle needs fixing!");
         greyBackground.add(welcomeLabel);
         table.add(greyBackground).expandX().padBottom(20).center();
         table.row();
@@ -59,7 +59,7 @@ public class MenuScreen extends UIScreen {
             if (name.isEmpty()) {
                 name = "Anon";
             }
-            welcomeLabel.setText("Wake the fuck up, " + name + "! Your build.gradle needs fixing!");
+            welcomeLabel.setText("Wake up, " + name + "! Your build.gradle needs fixing!");
             userInteractor.setUserName(name);
         });
 
