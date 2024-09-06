@@ -58,6 +58,6 @@ public final class Constants {
 
         public static final Integer[] FPS_OPTIONS = {60, 120};
 
-        public static final String SERVER_URL = "http://localhost:8080";
+        public static final String SERVER_URL = "http://20.123.61.66:8080";
     }
 }

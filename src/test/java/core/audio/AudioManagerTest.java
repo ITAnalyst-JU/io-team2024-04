@@ -45,6 +45,7 @@ public class AudioManagerTest {
         audioManager.stopAllSounds();
 
         verify(sound).stop();
+        verify(sound).dispose();
     }
 
     @Test
@@ -86,12 +87,34 @@ public class AudioManagerTest {
     @Test
     void testSetSoundsEnabled() {
         var audioManager = new AudioManager();
+        var sound = mock(Sound.class);
+        audioManager.playSound(sound);
 
         audioManager.setSoundsEnabled(true);
         assertThat(audioManager.isSoundsEnabled()).isTrue();
 
         audioManager.setSoundsEnabled(false);
         assertThat(audioManager.isSoundsEnabled()).isFalse();
+
+        verify(sound).setVolume(anyLong(), eq(0f));
+    }
+
+    @Test
+    void testSetSoundsEnabledWhenSoundIsPlaying() {
+        var audioManager = new AudioManager();
+        var sound = mock(Sound.class);
+
+        audioManager.setSoundsEnabled(true);
+        audioManager.setSoundsVolume(0.6f);
+        audioManager.playSound(sound);
+
+        verify(sound).play(0.6f);
+
+        audioManager.setSoundsEnabled(false);
+        verify(sound).setVolume(anyLong(), eq(0f));
+
+        audioManager.setSoundsEnabled(true);
+        verify(sound).setVolume(anyLong(), eq(0.6f));
     }
 
     // Music Management Tests
